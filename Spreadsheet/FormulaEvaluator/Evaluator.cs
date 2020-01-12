@@ -2,7 +2,7 @@
 
 namespace FormulaEvaluator
 {
-    public class Class1
+    public class Evaluator
     {
     }
 }

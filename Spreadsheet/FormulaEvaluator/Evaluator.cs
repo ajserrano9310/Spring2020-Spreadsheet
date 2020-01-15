@@ -15,7 +15,7 @@ namespace FormulaEvaluator
             for(int i = 0; i < substrings.Length; i++)
             {
                 substrings[i]=substrings[i].Trim();
-                Console.WriteLine(substrings[i]);
+                //Console.WriteLine(substrings[i]);
             }
             Stack<string> opStack = new Stack<string>();
             Stack<int> valStack = new Stack<int>();
@@ -30,7 +30,7 @@ namespace FormulaEvaluator
                         if (opStack.Peek().Equals("/"))
                         {
                             int val1 = valStack.Pop();
-                            Console.WriteLine(temp);
+                            //Console.WriteLine(temp);
                             opStack.Pop();
                             int val = val1 / tryInt;
                             valStack.Push(val);
@@ -39,7 +39,7 @@ namespace FormulaEvaluator
                         if (opStack.Peek().Equals("*"))
                         {
                             int val1 = valStack.Pop();
-                            Console.WriteLine(temp);
+                            //Console.WriteLine(temp);
                             opStack.Pop();
                             int val = val1 * tryInt;
                             valStack.Push(val);
@@ -57,39 +57,40 @@ namespace FormulaEvaluator
                     }
 
 
+
                 }
+
                 if (substrings[j].Equals("+") || substrings[j].Equals("-"))
                 {
                     if (opStack.Count != 0 && valStack.Count > 1)
                     {
                         if (opStack.Peek().Equals("-"))
                         {
-                            int val1 = (int)valStack.Pop();
-                            int val2 = (int)valStack.Pop();
-                            int val = val1 - val2;
-                            valStack.Push(val);
+                            int val1 = valStack.Pop();
+                            int val2 = valStack.Pop();
                             opStack.Pop();
+                            int val = val1 - val2;
+
+                            valStack.Push(val);
+                            
                             opStack.Push(substrings[j]);
                         }
-                        else
-                            if (opStack.Peek().Equals("+"))
+                            else if (opStack.Peek().Equals("+"))
                         {
-                            int val1 = (int)valStack.Pop();
-                            int val2 = (int)valStack.Pop();
+                            int val1 = valStack.Pop();
+                            int val2 = valStack.Pop();
+                            opStack.Pop();
                             int val = val1 + val2;
                             valStack.Push(val);
-                            opStack.Pop();
-                            opStack.Push(substrings[j]);
-                        }
-                        else
-                        {
                             
                         }
+
+                        
+
                     }
-                    else
-                    {
-                        //opStack.Push(substrings[j]);
-                    }
+
+                        opStack.Push(substrings[j]);
+                    
                 }
 
 
@@ -119,7 +120,7 @@ namespace FormulaEvaluator
                             valStack.Push(val);
                             opStack.Pop();
                         }
-                        if (opStack.Peek().Equals("-"))
+                        else if (opStack.Peek().Equals("-"))
                         {
                             int val1 = valStack.Pop();
                             int val2 = valStack.Pop();
@@ -128,7 +129,7 @@ namespace FormulaEvaluator
                             valStack.Push(val);
                             opStack.Pop();
                         }
-                        if (opStack.Peek().Equals("*")){
+                        else if (opStack.Peek().Equals("*")){
                             int val1 = valStack.Pop();
                             int val2 = valStack.Pop();
                             int val = val1 * val2;
@@ -137,7 +138,7 @@ namespace FormulaEvaluator
                             opStack.Pop();
                         }
 
-                        if (opStack.Peek().Equals("/")){
+                        else if (opStack.Peek().Equals("/")){
                             int val1 = valStack.Pop();
                             int val2 = valStack.Pop();
                             int val = val1 / val2;
@@ -152,7 +153,7 @@ namespace FormulaEvaluator
 
             
             result = valStack.Pop();
-            Console.WriteLine(result);
+            //Console.WriteLine(result);
             return result;
         }
     }

@@ -10,6 +10,14 @@ namespace FormulaEvaluator
 
         public static int Evaluate(String expression, Lookup variableEvaluator)
         {
+            if (expression.Equals(null))
+            {
+                throw new ArgumentException();
+            }
+            if (expression.Equals(" "))
+            {
+                throw new ArgumentException();
+            }
             int result = 0;
             string[] substrings = Regex.Split(expression, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
             for(int i = 0; i < substrings.Length; i++)
@@ -23,26 +31,52 @@ namespace FormulaEvaluator
             int tryInt = 0;
             for (int j = 0; j < substrings.Length; j++)
             {
-                if (int.TryParse(substrings[j], out tryInt))
+                if (substrings[j].Equals(" "))
                 {
-                    if (opStack.Count != 0 && valStack.Count != 0)
+
+                }
+                else
+                {
+
+
+                    if (int.TryParse(substrings[j], out tryInt))
                     {
-                        if (opStack.Peek().Equals("/"))
+                        if (opStack.Count > 0)
                         {
-                            int val1 = valStack.Pop();
-                            //Console.WriteLine(temp);
-                            opStack.Pop();
-                            int val = val1 / tryInt;
-                            valStack.Push(val);
-                        }
-                        else
-                        if (opStack.Peek().Equals("*"))
-                        {
-                            int val1 = valStack.Pop();
-                            //Console.WriteLine(temp);
-                            opStack.Pop();
-                            int val = val1 * tryInt;
-                            valStack.Push(val);
+                            if (opStack.Peek().Equals("/"))
+                            {
+                                if (valStack.Count == 0)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                if (tryInt == 0)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                int val1 = valStack.Pop();
+                                //Console.WriteLine(temp);
+                                opStack.Pop();
+                                int val = val1 / tryInt;
+                                valStack.Push(val);
+                            }
+                            else
+                            if (opStack.Peek().Equals("*"))
+                            {
+                                if (valStack.Count == 0)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                int val1 = valStack.Pop();
+                                //Console.WriteLine(temp);
+                                opStack.Pop();
+                                int val = val1 * tryInt;
+                                valStack.Push(val);
+                            }
+                            else
+                            {
+                                int.TryParse(substrings[j], out tryInt);
+                                valStack.Push(tryInt);
+                            }
                         }
                         else
                         {
@@ -50,110 +84,132 @@ namespace FormulaEvaluator
                             valStack.Push(tryInt);
                         }
                     }
-                    else
+
+
+
+
+
+                    else if (substrings[j].Equals("+") || substrings[j].Equals("-"))
                     {
-                        int.TryParse(substrings[j], out tryInt);
-                        valStack.Push(tryInt);
-                    }
-
-
-
-                }
-
-                if (substrings[j].Equals("+") || substrings[j].Equals("-"))
-                {
-                    if (opStack.Count != 0 && valStack.Count > 1)
-                    {
-                        if (opStack.Peek().Equals("-"))
+                        if (opStack.Count != 0)
                         {
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            opStack.Pop();
-                            int val = val1 - val2;
+                            if (opStack.Peek().Equals("-"))
+                            {
+                                if (valStack.Count < 2)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                int val1 = valStack.Pop();
+                                int val2 = valStack.Pop();
+                                opStack.Pop();
+                                int val = val2 - val1;
 
-                            valStack.Push(val);
-                            
-                            opStack.Push(substrings[j]);
-                        }
+                                valStack.Push(val);
+
+                                opStack.Push(substrings[j]);
+                            }
                             else if (opStack.Peek().Equals("+"))
-                        {
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            opStack.Pop();
-                            int val = val1 + val2;
-                            valStack.Push(val);
-                            
+                            {
+                                if (valStack.Count < 2)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                int val1 = valStack.Pop();
+                                int val2 = valStack.Pop();
+                                opStack.Pop();
+                                int val = val2 + val1;
+                                valStack.Push(val);
+
+                            }
+
+
+
                         }
-
-                        
-
-                    }
 
                         opStack.Push(substrings[j]);
-                    
-                }
+
+                    }
 
 
-                if (substrings[j].Equals("*"))
-                {
-                    opStack.Push("*");
-                }
-                if (substrings[j].Equals("/"))
-                {
-                    opStack.Push("/");
-                }
-
-                if (substrings[j].Equals("("))
-                {
-                    opStack.Push("(");
-                }
-
-                if (substrings[j].Equals(")")){
-                    if (opStack.Count != 0 && valStack.Count > 1)
+                    else if (substrings[j].Equals("*"))
                     {
-                        if (opStack.Peek().Equals("+"))
-                        {
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val1 + val2;
-                            opStack.Pop();
-                            valStack.Push(val);
-                            opStack.Pop();
-                        }
-                        else if (opStack.Peek().Equals("-"))
-                        {
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val1 - val2;
-                            opStack.Pop();
-                            valStack.Push(val);
-                            opStack.Pop();
-                        }
-                        else if (opStack.Peek().Equals("*")){
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val1 * val2;
-                            opStack.Pop();
-                            valStack.Push(val);
-                            opStack.Pop();
-                        }
+                        opStack.Push("*");
+                    }
+                    else if (substrings[j].Equals("/"))
+                    {
+                        opStack.Push("/");
+                    }
 
-                        else if (opStack.Peek().Equals("/")){
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val1 / val2;
-                            opStack.Pop();
-                            valStack.Push(val);
-                            opStack.Pop();
+                    else if (substrings[j].Equals("("))
+                    {
+                        opStack.Push("(");
+                    }
+
+                    else if (substrings[j].Equals(")"))
+                    {
+                        if (opStack.Count != 0 && valStack.Count > 1)
+                        {
+                            if (opStack.Peek().Equals("+"))
+                            {
+                                int val1 = valStack.Pop();
+                                int val2 = valStack.Pop();
+                                int val = val2 + val1;
+                                opStack.Pop();
+                                valStack.Push(val);
+                                opStack.Pop();
+                            }
+                            else if (opStack.Peek().Equals("-"))
+                            {
+                                int val1 = valStack.Pop();
+                                int val2 = valStack.Pop();
+                                int val = val2 - val1;
+                                opStack.Pop();
+                                valStack.Push(val);
+                                opStack.Pop();
+                            }
+                            else if (opStack.Peek().Equals("*"))
+                            {
+                                int val1 = valStack.Pop();
+                                int val2 = valStack.Pop();
+                                int val = val2 * val1;
+                                opStack.Pop();
+                                valStack.Push(val);
+                                opStack.Pop();
+                            }
+
+                            else if (opStack.Peek().Equals("/"))
+                            {
+                                int val1 = valStack.Pop();
+                                int val2 = valStack.Pop();
+                                int val = val2 / val1;
+                                opStack.Pop();
+                                valStack.Push(val);
+                                opStack.Pop();
+                            }
                         }
                     }
                 }
             }
 
+            if (opStack.Count == 0)
+            {
+                result = valStack.Pop();
+            }
+            else
+            {
+                int val1 = valStack.Pop();
+                int val2 = valStack.Pop();
+                String sign = opStack.Pop();
 
-            
-            result = valStack.Pop();
-            //Console.WriteLine(result);
+                if (sign.Equals("-"))
+                {
+                    result = val2 - val1;
+                }
+                else
+                {
+                    result = val2 + val1;
+                }
+            }
             return result;
         }
     }

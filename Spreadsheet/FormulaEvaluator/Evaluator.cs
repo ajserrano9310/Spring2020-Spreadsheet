@@ -23,11 +23,9 @@ namespace FormulaEvaluator
             for(int i = 0; i < substrings.Length; i++)
             {
                 substrings[i]=substrings[i].Trim();
-                //Console.WriteLine(substrings[i]);
             }
             Stack<string> opStack = new Stack<string>();
             Stack<int> valStack = new Stack<int>();
-            int temp = 0;
             int tryInt = 0;
             for (int j = 0; j < substrings.Length; j++)
             {
@@ -188,6 +186,10 @@ namespace FormulaEvaluator
                             }
                         }
                     }
+                    else
+                    {
+                        int val = variableEvaluator(substrings[j]);
+                    }
                 }
             }
 
@@ -212,5 +214,39 @@ namespace FormulaEvaluator
             }
             return result;
         }
+
+
+        public static Boolean hasOnTop(this Stack<string> stack, string value)
+        {
+            if (stack.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                if (stack.Peek().Equals(value))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+
+
+        //Testing purposes
+
+
+
+
+
+
+
+
+
     }
+
 }

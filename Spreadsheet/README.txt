@@ -1,9 +1,9 @@
-Author:     [Your Name]
-Partner:    [Partner Name or None]
+Author:     Alejandro Rubio
+Partner:    None
 Date:       [Date of Creation]
-Course:     CS 4540, University of Utah, School of Computing
-Assignment: Assignment # - Name of Assignment
-Copyright:  CS 3500 and [Your Name(s)] - This work may not be copied for use in Academic Coursework.
+Course:     CS 3500, University of Utah, School of Computing
+Assignment: Assignment 1 - Formula Evaluator
+Copyright:  CS 3500 and Alejandro Rubio - This work may not be copied for use in Academic Coursework.
 
 1. Comments to Evaluators:
 
@@ -14,7 +14,7 @@ Any additional feedback or write up required by the assignment.
 
 3. Consulted Peers:
 
-List any peers (or other people) in the class (or outside for that matter) that you talked with about the project for more than one minute.
+Alejandro Serrano
 
 4. References:
 

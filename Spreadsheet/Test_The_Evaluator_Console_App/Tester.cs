@@ -1,49 +1,42 @@
 ﻿using FormulaEvaluator;
 using System;
-
 namespace Test_The_Evaluator_Console_App
 {
     class Tester
     {
         static void Main(string[] args)
         {
-            //if (Evaluator.Evaluate("(2 + 3) * 5 + 2", a) != 27) Console.WriteLine("Error");
-            //Console.WriteLine(Evaluator.Evaluate("(2 + 3) * 5 + 2", a));
-            //Console.WriteLine(Evaluator.Evaluate("10/5",SimpleLookup));
-
-            //Console.WriteLine(Evaluator.Evaluate("jfg34^wuf$u+10", SimpleLookup));
-
-
             Console.WriteLine(testOneNumber());
             Console.WriteLine(testSimpleAddition());
             Console.WriteLine(testSimpleSubstraction());
             Console.WriteLine(testSimpleMultiplication());
             Console.WriteLine(testSimpleDivision());
-
-
             Console.WriteLine(testOneNumberWithParenthesis());
             Console.WriteLine(testSimpleAdditionWithParenthesis());
             Console.WriteLine(testSimpleSubstractionWithParenthesis());
             Console.WriteLine(testSimpleMultiplicationWithParenthesis());
             Console.WriteLine(testSimpleDivisionWithParenthesis());
-
             Console.WriteLine(testSimpleExpression());
-
             Console.WriteLine(testNull());
-
-            // verficar resta y division orden bien
-            
+            Console.WriteLine(testWrongVariable());
+            Console.WriteLine(testWithVariables());
+            Console.WriteLine(testDivideByZero());
+            Console.WriteLine(testWeirdExpression());
+            Console.WriteLine(testWeirdVariable());
+            Console.WriteLine(testDivideByZeroWithParenthesis());
+            Console.WriteLine(testJustSymbol());
         }
-
         public static int SimpleLookup(string v)
         {
             // Do anything here. Decide whether or not this delegate 
             // has a value for v, and return its value, or throw if it doesn't.
 
-            if (v == "Z6")
-                return 20;
+            if (v == "A7")
+                return 5;
             else if (v == "jfg34^wuf$u")
                 return 10;
+            else if (v == "A1")
+                return 2;
             else
                 throw new ArgumentException();
         }
@@ -215,8 +208,157 @@ namespace Test_The_Evaluator_Console_App
             }
         }
 
-        
 
+        public static string testWrongVariable()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("A123+5", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testWrongVariable Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testWrongVariable Failed! " + "Expected: ArgumentException";
+            }
+        }
+
+        public static string testWithVariables()
+        {
+            int result = Evaluator.Evaluate("(2 + 3) * A7 + 2 + A1", SimpleLookup);
+            if (result == 29)
+            {
+                return "testWithVariables Passed! " + "Expected: 29 Actual: " + result;
+            }
+            else
+            {
+                return "testWithVariables Failed! " + "Expected: 29 Actual: " + result;
+            }
+        }
+
+        public static string testDivideByZero()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("5/0", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testDivideByZero Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testDivideByZero Failed! " + "Expected: ArgumentException";
+            }
+        }
+
+        public static string testDivideByZeroWithParenthesis()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("(5/0)", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testDivideByZeroWithParenthesis Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testDivideByZeroWithParenthesis Failed! " + "Expected: ArgumentException";
+            }
+        }
+
+        public static string testWeirdExpression()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("(/4+2)*3)", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testWeirdExpression Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testWeirdExpression Failed! " + "Expected: ArgumentException";
+            }
+        }
+        public static string testWeirdVariable()
+        {
+            int result = Evaluator.Evaluate("jfg34^wuf$u", SimpleLookup);
+            if (result == 10)
+            {
+                return "testWeirdVariable Passed! " + "Expected: 10 Actual: " + result;
+            }
+            else
+            {
+                return "testWeirdVariable Failed! " + "Expected: 10 Actual: " + result;
+            }
+        }
+
+        public static string testJustSymbol()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("*", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testJustSymbol Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testJustSymbol Failed! " + "Expected: ArgumentException";
+            }
+        }
+
+        public static string testMissingNumber()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("*4", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testMissingNumber Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testMissingNumber Failed! " + "Expected: ArgumentException";
+            }
+        }
 
 
         //Test 1 number

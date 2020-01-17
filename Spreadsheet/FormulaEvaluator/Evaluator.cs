@@ -15,11 +15,12 @@ namespace FormulaEvaluator
             }
             // Create variables to use later
             int result;
-            string[] substrings = Regex.Split(expression, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
             Stack<string> opStack = new Stack<string>();
             Stack<int> valStack = new Stack<int>();
             int tryInt;
             String actualString;
+            // Convert expression into tokens
+            string[] substrings = Regex.Split(expression, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
             // Go trough each of the elements (tokens) from the expression
             for (int i = 0; i < substrings.Length; i++)
             {
@@ -33,75 +34,75 @@ namespace FormulaEvaluator
                     if (int.TryParse(actualString, out tryInt))
                     {
                         // Case where we need to divide
-                            if (hasOnTop(opStack,"/"))
-                            {
+                        if (hasOnTop(opStack, "/"))
+                        {
                             // If the stack of values has 0 elements we dont have the correct number of elements to perform a division
-                                if (valStack.Count == 0)
-                                {
-                                    throw new ArgumentException();
-                                }
-                                // We cant divide by 0
-                                if (tryInt == 0)
-                                {
-                                    throw new ArgumentException();
-                                }
-                                // Perform division
-                                int val1 = valStack.Pop();
-                                opStack.Pop();
-                                int val = val1 / tryInt;
-                                valStack.Push(val);
-                            }
-                            // Case where we need to multiply
-                            else if (hasOnTop(opStack, "*"))
+                            if (valStack.Count == 0)
                             {
+                                throw new ArgumentException();
+                            }
+                            // We cant divide by 0
+                            if (tryInt == 0)
+                            {
+                                throw new ArgumentException();
+                            }
+                            // Perform division
+                            int val1 = valStack.Pop();
+                            opStack.Pop();
+                            int val = val1 / tryInt;
+                            valStack.Push(val);
+                        }
+                        // Case where we need to multiply
+                        else if (hasOnTop(opStack, "*"))
+                        {
                             // If the stack of values has 0 elements we dont have the correct number of elements to perform a multiplication
-                                if (valStack.Count == 0)
-                                {
-                                    throw new ArgumentException();
-                                }
-                                // Perform multiplication
-                                int val1 = valStack.Pop();
-                                opStack.Pop();
-                                int val = val1 * tryInt;
-                                valStack.Push(val);
-                            }else
+                            if (valStack.Count == 0)
                             {
-                                valStack.Push(tryInt);
+                                throw new ArgumentException();
                             }
+                            // Perform multiplication
+                            int val1 = valStack.Pop();
+                            opStack.Pop();
+                            int val = val1 * tryInt;
+                            valStack.Push(val);
+                        }
+                        else
+                        {
+                            valStack.Push(tryInt);
+                        }
                     }
                     // Case of addition and substraction
                     else if (actualString.Equals("+") || actualString.Equals("-"))
                     {
                         // Case of substraction
-                            if (hasOnTop(opStack, "-"))
-                            {
+                        if (hasOnTop(opStack, "-"))
+                        {
                             // We need 2 values for substraction
-                                if (valStack.Count < 2)
-                                {
-                                    throw new ArgumentException();
-                                }
-                                // Perform substraction
-                                int val1 = valStack.Pop();
-                                int val2 = valStack.Pop();
-                                opStack.Pop();
-                                int val = val2 - val1;
-                                valStack.Push(val);
-                            }
-                            // Case of addition
-                            else if (hasOnTop(opStack, "+"))
+                            if (valStack.Count < 2)
                             {
+                                throw new ArgumentException();
+                            }
+                            // Perform substraction
+                            int val1 = valStack.Pop();
+                            int val2 = valStack.Pop();
+                            opStack.Pop();
+                            int val = val2 - val1;
+                            valStack.Push(val);
+                        }
+                        // Case of addition
+                        else if (hasOnTop(opStack, "+"))
+                        {
                             // We need 2 values for addition
-                                if (valStack.Count < 2)
-                                {
-                                    throw new ArgumentException();
-                                }
-                                // Perform addition
-                                int val1 = valStack.Pop();
-                                int val2 = valStack.Pop();
-                                opStack.Pop();
-                                int val = val2 + val1;
-                                valStack.Push(val);
-                            
+                            if (valStack.Count < 2)
+                            {
+                                throw new ArgumentException();
+                            }
+                            // Perform addition
+                            int val1 = valStack.Pop();
+                            int val2 = valStack.Pop();
+                            opStack.Pop();
+                            int val = val2 + val1;
+                            valStack.Push(val);
                         }
                         opStack.Push(actualString);
                     }
@@ -152,10 +153,10 @@ namespace FormulaEvaluator
                             int val = val2 - val1;
                             opStack.Pop();
                             valStack.Push(val);
-                            }
+                        }
                         // Case of multiplication with parenthesis
-                            else if (hasOnTop(opStack, "*"))
-                            {
+                        else if (hasOnTop(opStack, "*"))
+                        {
                             // We need 2 values for multiplication
                             if (valStack.Count < 2)
                             {
@@ -163,14 +164,14 @@ namespace FormulaEvaluator
                             }
                             // Perform multiplication
                             int val1 = valStack.Pop();
-                                int val2 = valStack.Pop();
-                                int val = val2 * val1;
-                                opStack.Pop();
-                                valStack.Push(val);
-                            }
+                            int val2 = valStack.Pop();
+                            int val = val2 * val1;
+                            opStack.Pop();
+                            valStack.Push(val);
+                        }
                         // Case of division with parenthesis
-                            else if (hasOnTop(opStack, "/"))
-                            {
+                        else if (hasOnTop(opStack, "/"))
+                        {
                             // We need 2 values for division
                             if (valStack.Count < 2)
                             {
@@ -178,17 +179,17 @@ namespace FormulaEvaluator
                             }
                             // Get the 2 values
                             int val1 = valStack.Pop();
-                                int val2 = valStack.Pop();
+                            int val2 = valStack.Pop();
                             // Check if the divisor is going to be 0 because we cant do that
                             if (val2 == 0)
                             {
                                 throw new ArgumentException();
                             }
                             // Perform division
-                                int val = val1 / val2;
-                                opStack.Pop();
-                                valStack.Push(val);
-                            }
+                            int val = val1 / val2;
+                            opStack.Pop();
+                            valStack.Push(val);
+                        }
                         // Take out the ( sign
                         opStack.Pop();
                     }
@@ -200,7 +201,7 @@ namespace FormulaEvaluator
                         {
                             tryInt = variableEvaluator(actualString);
                         }
-                        catch(ArgumentException)
+                        catch (ArgumentException)
                         {
                             throw new ArgumentException();
                         }
@@ -245,8 +246,8 @@ namespace FormulaEvaluator
                     }
                 }
             }
-// Now when the last token has been processed
-// If the operator stack is empty
+            // Now when the last token has been processed
+            // If the operator stack is empty
             if (opStack.Count == 0)
             {
                 if (valStack.Count != 1)
@@ -306,12 +307,12 @@ namespace FormulaEvaluator
         public static Boolean isStringNullOrEmpty(String exp)
         {
             // We cant check null with .Equals because throws an error so we check it first
-            if (exp==null)
+            if (exp == null)
             {
                 return true;
             }
             // Now we are safe so we can check with .Equals
-            if(exp.Equals(" ")||exp.Equals(""))
+            if (exp.Equals(" ") || exp.Equals(""))
             {
                 return true;
             }

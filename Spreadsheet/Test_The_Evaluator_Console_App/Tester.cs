@@ -28,9 +28,6 @@ namespace Test_The_Evaluator_Console_App
         }
         public static int SimpleLookup(string v)
         {
-            // Do anything here. Decide whether or not this delegate 
-            // has a value for v, and return its value, or throw if it doesn't.
-
             if (v == "A7")
                 return 5;
             else if (v == "jfg34^wuf$u")
@@ -40,8 +37,6 @@ namespace Test_The_Evaluator_Console_App
             else
                 throw new ArgumentException();
         }
-
-
         public static string testOneNumber()
         {
             int result = Evaluator.Evaluate("5", SimpleLookup);
@@ -54,8 +49,7 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 5 Actual: " + result;
             }
         }
-
-        public static string testSimpleAddition ()
+        public static string testSimpleAddition()
         {
             int result = Evaluator.Evaluate("5+5", SimpleLookup);
             if (result == 10)
@@ -67,7 +61,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 10 Actual: " + result;
             }
         }
-
         public static string testSimpleSubstraction()
         {
             int result = Evaluator.Evaluate("5-3", SimpleLookup);
@@ -80,7 +73,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
             }
         }
-
         public static string testSimpleMultiplication()
         {
             int result = Evaluator.Evaluate("2*6", SimpleLookup);
@@ -93,7 +85,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 12 Actual: " + result;
             }
         }
-
         public static string testSimpleDivision()
         {
             int result = Evaluator.Evaluate("4/2", SimpleLookup);
@@ -106,9 +97,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
             }
         }
-
-        //
-
         public static string testOneNumberWithParenthesis()
         {
             int result = Evaluator.Evaluate("(5)", SimpleLookup);
@@ -121,7 +109,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 5 Actual: " + result;
             }
         }
-
         public static string testSimpleAdditionWithParenthesis()
         {
             int result = Evaluator.Evaluate("(5+5)", SimpleLookup);
@@ -134,7 +121,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 10 Actual: " + result;
             }
         }
-
         public static string testSimpleSubstractionWithParenthesis()
         {
             int result = Evaluator.Evaluate("(5-3)", SimpleLookup);
@@ -147,7 +133,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
             }
         }
-
         public static string testSimpleMultiplicationWithParenthesis()
         {
             int result = Evaluator.Evaluate("(2*6)", SimpleLookup);
@@ -160,7 +145,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 12 Actual: " + result;
             }
         }
-
         public static string testSimpleDivisionWithParenthesis()
         {
             int result = Evaluator.Evaluate("(4/2)", SimpleLookup);
@@ -173,7 +157,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
             }
         }
-        //
         public static string testSimpleExpression()
         {
             int result = Evaluator.Evaluate("(2 + 3) * 5 + 2", SimpleLookup);
@@ -186,7 +169,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testOneNumber Failed! " + "Expected: 27 Actual: " + result;
             }
         }
-        
         public static string testNull()
         {
             Boolean passed = false;
@@ -194,7 +176,7 @@ namespace Test_The_Evaluator_Console_App
             {
                 Evaluator.Evaluate(null, SimpleLookup);
             }
-            catch(ArgumentException)
+            catch (ArgumentException)
             {
                 passed = true;
             }
@@ -207,8 +189,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testNull Failed! " + "Expected: ArgumentException";
             }
         }
-
-
         public static string testWrongVariable()
         {
             Boolean passed = false;
@@ -229,7 +209,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testWrongVariable Failed! " + "Expected: ArgumentException";
             }
         }
-
         public static string testWithVariables()
         {
             int result = Evaluator.Evaluate("(2 + 3) * A7 + 2 + A1", SimpleLookup);
@@ -242,7 +221,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testWithVariables Failed! " + "Expected: 29 Actual: " + result;
             }
         }
-
         public static string testDivideByZero()
         {
             Boolean passed = false;
@@ -263,7 +241,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testDivideByZero Failed! " + "Expected: ArgumentException";
             }
         }
-
         public static string testDivideByZeroWithParenthesis()
         {
             Boolean passed = false;
@@ -284,7 +261,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testDivideByZeroWithParenthesis Failed! " + "Expected: ArgumentException";
             }
         }
-
         public static string testWeirdExpression()
         {
             Boolean passed = false;
@@ -317,7 +293,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testWeirdVariable Failed! " + "Expected: 10 Actual: " + result;
             }
         }
-
         public static string testJustSymbol()
         {
             Boolean passed = false;
@@ -338,7 +313,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testJustSymbol Failed! " + "Expected: ArgumentException";
             }
         }
-
         public static string testMissingNumber()
         {
             Boolean passed = false;
@@ -359,8 +333,6 @@ namespace Test_The_Evaluator_Console_App
                 return "testMissingNumber Failed! " + "Expected: ArgumentException";
             }
         }
-
-
         //Test 1 number
         //Test 1 variable
         //Test 1 sign

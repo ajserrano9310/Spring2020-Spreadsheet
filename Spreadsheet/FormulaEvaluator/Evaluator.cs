@@ -3,9 +3,23 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 namespace FormulaEvaluator
 {
+    /// <summary>
+    /// Library that evaluates formula expressions using infix expression evaluation
+    /// </summary>
     public static class Evaluator
     {
+        /// <summary>
+        /// Looks for the value of the given variable
+        /// </summary>
+        /// <param name="variable_name">The name of the variable to get the value</param>
+        /// <returns>The integer value of the variable or an exception if it does not exist</returns>
         public delegate int Lookup(String variable_name);
+        /// <summary>
+        /// This method calculates the value of expressions using infix expression evaluation
+        /// </summary>
+        /// <param name="expression">The expression that the user wants the value of</param>
+        /// <param name="variableEvaluator">Function that acts like a dictionary to search for the value of a variable</param>
+        /// <returns></returns>
         public static int Evaluate(String expression, Lookup variableEvaluator)
         {
             // Check if the string is empty or null and if it is throw and exception
@@ -279,6 +293,13 @@ namespace FormulaEvaluator
             }
             return result;
         }
+        /// <summary>
+        /// Check if the element you are looking for is at the top of the stack
+        /// </summary>
+        /// <typeparam name="T">The type of the value</typeparam>
+        /// <param name="stack">The stack to check</param>
+        /// <param name="value">The value to search</param>
+        /// <returns>true if the value is on top and false otherwise</returns>
         public static Boolean hasOnTop<T>(this Stack<T> stack, T value)
         {
             // If the size of the stack is 0 we know is not there and we cant peek because is going to throw an error

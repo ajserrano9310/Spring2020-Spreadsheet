@@ -200,8 +200,8 @@ namespace FormulaEvaluator
                                 throw new ArgumentException();
                             }
                             // Perform division
-                            int val = val1 / val2;
                             opStack.Pop();
+                            int val = val1 / val2;
                             valStack.Push(val);
                         }
                         // Take out the ( sign

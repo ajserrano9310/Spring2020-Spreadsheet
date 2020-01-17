@@ -74,11 +74,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("5+5", SimpleLookup);
             if (result == 10)
             {
-                return "testOneNumber Passed! " + "Expected: 10 Actual: " + result;
+                return "testSimpleAddition Passed! " + "Expected: 10 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 10 Actual: " + result;
+                return "testSimpleAddition Failed! " + "Expected: 10 Actual: " + result;
             }
         }
         /// <summary>
@@ -90,11 +90,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("5-3", SimpleLookup);
             if (result == 2)
             {
-                return "testOneNumber Passed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleSubstraction Passed! " + "Expected: 2 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleSubstraction Failed! " + "Expected: 2 Actual: " + result;
             }
         }
         /// <summary>
@@ -106,11 +106,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("2*6", SimpleLookup);
             if (result == 12)
             {
-                return "testOneNumber Passed! " + "Expected: 12 Actual: " + result;
+                return "testSimpleMultiplication Passed! " + "Expected: 12 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 12 Actual: " + result;
+                return "testSimpleMultiplication Failed! " + "Expected: 12 Actual: " + result;
             }
         }
         /// <summary>
@@ -122,11 +122,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("4/2", SimpleLookup);
             if (result == 2)
             {
-                return "testOneNumber Passed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleDivision Passed! " + "Expected: 2 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleDivision Failed! " + "Expected: 2 Actual: " + result;
             }
         }
         /// <summary>
@@ -138,11 +138,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("(5)", SimpleLookup);
             if (result == 5)
             {
-                return "testOneNumber Passed! " + "Expected: 5 Actual: " + result;
+                return "testOneNumberWithParenthesis Passed! " + "Expected: 5 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 5 Actual: " + result;
+                return "testOneNumberWithParenthesis Failed! " + "Expected: 5 Actual: " + result;
             }
         }
         /// <summary>
@@ -154,11 +154,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("(5+5)", SimpleLookup);
             if (result == 10)
             {
-                return "testOneNumber Passed! " + "Expected: 10 Actual: " + result;
+                return "testSimpleAdditionWithParenthesis Passed! " + "Expected: 10 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 10 Actual: " + result;
+                return "testSimpleAdditionWithParenthesis Failed! " + "Expected: 10 Actual: " + result;
             }
         }
         /// <summary>
@@ -170,11 +170,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("(5-3)", SimpleLookup);
             if (result == 2)
             {
-                return "testOneNumber Passed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleSubstractionWithParenthesis Passed! " + "Expected: 2 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleSubstractionWithParenthesis Failed! " + "Expected: 2 Actual: " + result;
             }
         }
         /// <summary>
@@ -186,11 +186,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("(2*6)", SimpleLookup);
             if (result == 12)
             {
-                return "testOneNumber Passed! " + "Expected: 12 Actual: " + result;
+                return "testSimpleMultiplicationWithParenthesis Passed! " + "Expected: 12 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 12 Actual: " + result;
+                return "testSimpleMultiplicationWithParenthesis Failed! " + "Expected: 12 Actual: " + result;
             }
         }
         /// <summary>
@@ -202,11 +202,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("(4/2)", SimpleLookup);
             if (result == 2)
             {
-                return "testOneNumber Passed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleDivisionWithParenthesis Passed! " + "Expected: 2 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 2 Actual: " + result;
+                return "testSimpleDivisionWithParenthesis Failed! " + "Expected: 2 Actual: " + result;
             }
         }
         /// <summary>
@@ -218,11 +218,11 @@ namespace Test_The_Evaluator_Console_App
             int result = Evaluator.Evaluate("(2 + 3) * 5 + 2", SimpleLookup);
             if (result == 27)
             {
-                return "testOneNumber Passed! " + "Expected: 27 Actual: " + result;
+                return "testSimpleExpression Passed! " + "Expected: 27 Actual: " + result;
             }
             else
             {
-                return "testOneNumber Failed! " + "Expected: 27 Actual: " + result;
+                return "testSimpleExpression Failed! " + "Expected: 27 Actual: " + result;
             }
         }
         /// <summary>

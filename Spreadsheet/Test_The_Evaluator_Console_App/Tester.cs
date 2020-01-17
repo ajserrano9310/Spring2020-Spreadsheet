@@ -5,8 +5,6 @@ namespace Test_The_Evaluator_Console_App
 {
     class Tester
     {
-        private static Evaluator.Lookup a; //borrar
-
         static void Main(string[] args)
         {
             //if (Evaluator.Evaluate("(2 + 3) * 5 + 2", a) != 27) Console.WriteLine("Error");

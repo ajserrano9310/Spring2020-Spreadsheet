@@ -18,9 +18,6 @@ namespace Test_The_Evaluator_Console_App
 
         }
 
-
-
-
         public static int SimpleLookup(string v)
         {
             // Do anything here. Decide whether or not this delegate 
@@ -33,5 +30,19 @@ namespace Test_The_Evaluator_Console_App
             else
                 throw new ArgumentException();
         }
+
+
+
+
+        //Test 1 number
+        //Test 1 variable
+        //Test 1 sign
+        //Test normal expression
+        //Test hard expression
+        //Test expression with delegates
+        //Test expression with delegates not existing
+        //Test null expression
+        //Test empty expression
+
     }
 }

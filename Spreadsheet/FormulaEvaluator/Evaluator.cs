@@ -53,12 +53,12 @@ namespace FormulaEvaluator
                             // If the stack of values has 0 elements we dont have the correct number of elements to perform a division
                             if (valStack.Count == 0)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform division");
                             }
                             // We cant divide by 0
                             if (tryInt == 0)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Cant divide by zero");
                             }
                             // Perform division
                             int val1 = valStack.Pop();
@@ -72,7 +72,7 @@ namespace FormulaEvaluator
                             // If the stack of values has 0 elements we dont have the correct number of elements to perform a multiplication
                             if (valStack.Count == 0)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform multiplication");
                             }
                             // Perform multiplication
                             int val1 = valStack.Pop();
@@ -94,7 +94,7 @@ namespace FormulaEvaluator
                             // We need 2 values for substraction
                             if (valStack.Count < 2)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform substraction");
                             }
                             // Perform substraction
                             int val1 = valStack.Pop();
@@ -109,7 +109,7 @@ namespace FormulaEvaluator
                             // We need 2 values for addition
                             if (valStack.Count < 2)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform addition");
                             }
                             // Perform addition
                             int val1 = valStack.Pop();
@@ -144,7 +144,7 @@ namespace FormulaEvaluator
                             // We need 2 values for addition
                             if (valStack.Count < 2)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform addition");
                             }
                             // Perform addition
                             int val1 = valStack.Pop();
@@ -159,7 +159,7 @@ namespace FormulaEvaluator
                             // We need 2 values for substraction
                             if (valStack.Count < 2)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform substraction");
                             }
                             // Perform substraction
                             int val1 = valStack.Pop();
@@ -174,7 +174,7 @@ namespace FormulaEvaluator
                             // We need 2 values for multiplication
                             if (valStack.Count < 2)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform multiplication");
                             }
                             // Perform multiplication
                             int val1 = valStack.Pop();
@@ -189,7 +189,7 @@ namespace FormulaEvaluator
                             // We need 2 values for division
                             if (valStack.Count < 2)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("Incorrect number of elements to perform division");
                             }
                             // Get the 2 values
                             int val1 = valStack.Pop();
@@ -197,12 +197,16 @@ namespace FormulaEvaluator
                             // Check if the divisor is going to be 0 because we cant do that
                             if (val2 == 0)
                             {
-                                throw new ArgumentException();
+                                throw new ArgumentException("We cant divide by zero");
                             }
                             // Perform division
                             opStack.Pop();
                             int val = val1 / val2;
                             valStack.Push(val);
+                        }
+                        if (!hasOnTop(opStack, "("))
+                        {
+                            throw new ArgumentException("Missing a (");
                         }
                         // Take out the ( sign
                         opStack.Pop();
@@ -323,17 +327,17 @@ namespace FormulaEvaluator
         /// <summary>
         /// Checks if the string is null, empty or a white space
         /// </summary>
-        /// <param name="exp">The string to check</param>
+        /// <param name="expression">The string to check</param>
         /// <returns>true if the string is null, empty or white space and false otherwise</returns>
-        public static Boolean isStringNullOrEmpty(String exp)
+        public static Boolean isStringNullOrEmpty(String expression)
         {
             // We cant check null with .Equals because throws an error so we check it first
-            if (exp == null)
+            if (expression == null)
             {
                 return true;
             }
             // Now we are safe so we can check with .Equals
-            if (exp.Equals(" ") || exp.Equals(""))
+            if (expression.Equals(" ") || expression.Equals(""))
             {
                 return true;
             }

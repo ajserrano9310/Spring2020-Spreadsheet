@@ -31,7 +31,8 @@ namespace Test_The_Evaluator_Console_App
             Console.WriteLine(testDivideByZeroWithParenthesis());
             Console.WriteLine(testJustSymbol());
             Console.WriteLine(testWeirdMultiplication());
-
+            Console.WriteLine(testMissingParenthesis());
+            Console.ReadLine();
         }
         /// <summary>
         /// A dictionary that contains variables and returns their value
@@ -465,16 +466,29 @@ namespace Test_The_Evaluator_Console_App
                 return "testNonIntDivision Failed! " + "Expected: 0 Actual: " + result;
             }
         }
-        //Test 1 number
-        //Test 1 variable
-        //Test 1 sign
-        //Test normal expression
-        //Test hard expression
-        //Test expression with delegates
-        //Test expression with delegates not existing
-        //Test SimpleLookup expression
-        //Test empty expression
-        //Add text to exceptions
-        //You should write at least one test for each operator, one for parentheses, one for order of operation, and then as many more as you can think of. 
+        /// <summary>
+        /// Tests if the FormulaEvaluator works with a missing parenthesis
+        /// </summary>
+        /// <returns>If the program catched the exception successfully or not</returns>
+        public static string testMissingParenthesis()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("4*5)", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testMissingParenthesis Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testMissingParenthesis Failed! " + "Expected: ArgumentException";
+            }
+        }
     }
 }

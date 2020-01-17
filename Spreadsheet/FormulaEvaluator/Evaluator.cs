@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
 namespace FormulaEvaluator
 {
     public static class Evaluator
     {
         public delegate int Lookup(String variable_name);
-
         public static int Evaluate(String expression, Lookup variableEvaluator)
         {
-            if (expression.Equals(null))
+            if (isExpressionNullOrEmpty(expression))
             {
                 throw new ArgumentException();
             }
-            if (expression.Equals(" "))
-            {
-                throw new ArgumentException();
-            }
-            int result = 0;
+            int result;
             string[] substrings = Regex.Split(expression, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
             for(int i = 0; i < substrings.Length; i++)
             {
@@ -26,18 +20,14 @@ namespace FormulaEvaluator
             }
             Stack<string> opStack = new Stack<string>();
             Stack<int> valStack = new Stack<int>();
-            int tryInt = 0;
+            int tryInt;
+            String actualString;
             for (int j = 0; j < substrings.Length; j++)
             {
-                if (substrings[j].Equals(" "))
+                actualString = substrings[j];
+                if (!isExpressionNullOrEmpty(actualString))
                 {
-
-                }
-                else
-                {
-
-
-                    if (int.TryParse(substrings[j], out tryInt))
+                    if (int.TryParse(actualString, out tryInt))
                     {
                         if (opStack.Count > 0)
                         {
@@ -52,7 +42,6 @@ namespace FormulaEvaluator
                                     throw new ArgumentException();
                                 }
                                 int val1 = valStack.Pop();
-                                //Console.WriteLine(temp);
                                 opStack.Pop();
                                 int val = val1 / tryInt;
                                 valStack.Push(val);
@@ -65,29 +54,23 @@ namespace FormulaEvaluator
                                     throw new ArgumentException();
                                 }
                                 int val1 = valStack.Pop();
-                                //Console.WriteLine(temp);
                                 opStack.Pop();
                                 int val = val1 * tryInt;
                                 valStack.Push(val);
                             }
                             else
                             {
-                                int.TryParse(substrings[j], out tryInt);
+                                int.TryParse(actualString, out tryInt);
                                 valStack.Push(tryInt);
                             }
                         }
                         else
                         {
-                            int.TryParse(substrings[j], out tryInt);
+                            int.TryParse(actualString, out tryInt);
                             valStack.Push(tryInt);
                         }
                     }
-
-
-
-
-
-                    else if (substrings[j].Equals("+") || substrings[j].Equals("-"))
+                    else if (actualString.Equals("+") || actualString.Equals("-"))
                     {
                         if (opStack.Count != 0)
                         {
@@ -101,10 +84,8 @@ namespace FormulaEvaluator
                                 int val2 = valStack.Pop();
                                 opStack.Pop();
                                 int val = val2 - val1;
-
                                 valStack.Push(val);
-
-                                opStack.Push(substrings[j]);
+                                opStack.Push(actualString);
                             }
                             else if (opStack.Peek().Equals("+"))
                             {
@@ -117,33 +98,24 @@ namespace FormulaEvaluator
                                 opStack.Pop();
                                 int val = val2 + val1;
                                 valStack.Push(val);
-
                             }
-
-
-
                         }
-
-                        opStack.Push(substrings[j]);
-
+                        opStack.Push(actualString);
                     }
-
-
-                    else if (substrings[j].Equals("*"))
+                    else if (actualString.Equals("*"))
                     {
                         opStack.Push("*");
                     }
-                    else if (substrings[j].Equals("/"))
+                    else if (actualString.Equals("/"))
                     {
                         opStack.Push("/");
                     }
 
-                    else if (substrings[j].Equals("("))
+                    else if (actualString.Equals("("))
                     {
                         opStack.Push("(");
                     }
-
-                    else if (substrings[j].Equals(")"))
+                    else if (actualString.Equals(")"))
                     {
                         if (opStack.Count != 0 && valStack.Count > 1)
                         {
@@ -174,7 +146,6 @@ namespace FormulaEvaluator
                                 valStack.Push(val);
                                 opStack.Pop();
                             }
-
                             else if (opStack.Peek().Equals("/"))
                             {
                                 int val1 = valStack.Pop();
@@ -188,11 +159,49 @@ namespace FormulaEvaluator
                     }
                     else
                     {
-                        int val = variableEvaluator(substrings[j]);
+                        int val123 = variableEvaluator(actualString);
+
+                        if (opStack.Count > 0)
+                        {
+                            if (opStack.Peek().Equals("/"))
+                            {
+                                if (valStack.Count == 0)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                if (val123 == 0)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                int val1 = valStack.Pop();
+                                opStack.Pop();
+                                int val = val1 / val123;
+                                valStack.Push(val);
+                            }
+                            else
+                            if (opStack.Peek().Equals("*"))
+                            {
+                                if (valStack.Count == 0)
+                                {
+                                    throw new ArgumentException();
+                                }
+                                int val1 = valStack.Pop();
+                                opStack.Pop();
+                                int val = val1 * val123;
+                                valStack.Push(val);
+                            }
+                            else
+                            {
+                                valStack.Push(val123);
+                            }
+                        }
+                        else
+                        {
+                            valStack.Push(val123);
+                        }
                     }
                 }
             }
-
             if (opStack.Count == 0)
             {
                 result = valStack.Pop();
@@ -202,7 +211,6 @@ namespace FormulaEvaluator
                 int val1 = valStack.Pop();
                 int val2 = valStack.Pop();
                 String sign = opStack.Pop();
-
                 if (sign.Equals("-"))
                 {
                     result = val2 - val1;
@@ -214,9 +222,7 @@ namespace FormulaEvaluator
             }
             return result;
         }
-
-
-        public static Boolean hasOnTop(this Stack<string> stack, string value)
+        public static Boolean hasOnTop<T>(this Stack<T> stack, T value)
         {
             if (stack.Count == 0)
             {
@@ -235,18 +241,19 @@ namespace FormulaEvaluator
             }
         }
 
-
-
-        //Testing purposes
-
-
-
-
-
-
-
-
-
+        public static Boolean isExpressionNullOrEmpty(String exp)
+        {
+            if(exp.Equals(" "))
+            {
+                return true;
+            }else if (exp.Equals(null))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
-
 }

@@ -336,7 +336,7 @@ namespace FormulaEvaluator
             {
                 return true;
             }
-            // Now we are safe so we can check with .Equals
+            // Now we are safe so we can check with the .Equals function
             if (expression.Equals(" ") || expression.Equals(""))
             {
                 return true;

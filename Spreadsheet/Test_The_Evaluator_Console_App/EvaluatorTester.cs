@@ -34,6 +34,7 @@ namespace Test_The_Evaluator_Console_App
             Console.WriteLine(testWeirdMultiplication());
             Console.WriteLine(testMissingParenthesis());
             Console.WriteLine(testLargeExpression());
+            Console.WriteLine("Press enter to exit the EvaluatorTester");
             Console.ReadLine();
         }
         /// <summary>

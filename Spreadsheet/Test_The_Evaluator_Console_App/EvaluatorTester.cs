@@ -29,6 +29,7 @@ namespace Test_The_Evaluator_Console_App
             Console.WriteLine(testWeirdExpression());
             Console.WriteLine(testWeirdVariable());
             Console.WriteLine(testDivideByZeroWithParenthesis());
+            Console.WriteLine(testDivideByZeroVariable());
             Console.WriteLine(testJustSymbol());
             Console.WriteLine(testWeirdMultiplication());
             Console.WriteLine(testMissingParenthesis());
@@ -488,6 +489,30 @@ namespace Test_The_Evaluator_Console_App
             else
             {
                 return "testMissingParenthesis Failed! " + "Expected: ArgumentException";
+            }
+        }
+        /// <summary>
+        /// Tests if the FormulaEvaluator works if the user tries to divide a variable by zero
+        /// </summary>
+        /// <returns>If the program catched the exception successfully or not</returns>
+        public static string testDivideByZeroVariable()
+        {
+            Boolean passed = false;
+            try
+            {
+                Evaluator.Evaluate("A7/0", SimpleLookup);
+            }
+            catch (ArgumentException)
+            {
+                passed = true;
+            }
+            if (passed)
+            {
+                return "testDivideByZeroVariable Passed! " + "Expected: ArgumentException Actual: ArgumentException";
+            }
+            else
+            {
+                return "testDivideByZeroVariable Failed! " + "Expected: ArgumentException";
             }
         }
     }

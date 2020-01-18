@@ -1,16 +1,21 @@
 Author:     Alejandro Rubio
 Partner:    None
-Date:       [Date of Creation]
+Date:       1/12/2020
 Course:     CS 3500, University of Utah, School of Computing
 Assignment: Assignment 1 - Formula Evaluator
 Copyright:  CS 3500 and Alejandro Rubio - This work may not be copied for use in Academic Coursework.
 
 1. Comments to Evaluators:
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam remaperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
+I included a bunch of test cases to check every possible case.
 
 2. Assignment Specific Topics
-Any additional feedback or write up required by the assignment.
+
+I think the project will take me from 8 to 10 hours.
+
+It took me about 12 hours to finish the project.
+I spent a lot of time debugging because my code was not working and finally it was because I was missing an if-else statement.
+Everything seems to be working now.
 
 3. Consulted Peers:
 
@@ -18,6 +23,6 @@ Alejandro Serrano
 
 4. References:
 
-    1. Title of page - URL
-    2. Title of page - URL
-    3. Title of page - URL
+    1. https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/how-to-convert-a-string-to-a-number
+    2. https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.stack-1?view=netframework-4.8
+    3. https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/try-catch

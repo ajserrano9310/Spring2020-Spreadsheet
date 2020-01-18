@@ -17,7 +17,7 @@ namespace FormulaEvaluator
         /// <summary>
         /// This method calculates the value of expressions using infix expression evaluation
         /// </summary>
-        /// <param name="expression">The expression that the user wants the value of</param>
+        /// <param name="expression">The expression the user wants to know the result of</param>
         /// <param name="variableEvaluator">Function that acts like a dictionary to search for the value of a variable</param>
         /// <returns></returns>
         public static int Evaluate(String expression, Lookup variableEvaluator)
@@ -41,7 +41,7 @@ namespace FormulaEvaluator
                 // Try to erase blank spaces
                 substrings[i] = substrings[i].Trim();
                 actualString = substrings[i];
-                // If it is a blank space we dont process it
+                // If it is a blank space we ignore it
                 if (!isStringNullOrEmpty(actualString))
                 {
                     // Check if its an integer and assign the value to tryInt
@@ -61,9 +61,9 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Cant divide by zero");
                             }
                             // Perform division
-                            int val1 = valStack.Pop();
+                            int poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = val1 / tryInt;
+                            int val = poppedValue / tryInt;
                             valStack.Push(val);
                         }
                         // Case where we need to multiply
@@ -75,9 +75,9 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Incorrect number of elements to perform multiplication");
                             }
                             // Perform multiplication
-                            int val1 = valStack.Pop();
+                            int poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = val1 * tryInt;
+                            int val = poppedValue * tryInt;
                             valStack.Push(val);
                         }
                         else
@@ -237,9 +237,9 @@ namespace FormulaEvaluator
                                 throw new ArgumentException();
                             }
                             // Perform division
-                            int val1 = valStack.Pop();
+                            int poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = val1 / tryInt;
+                            int val = poppedValue / tryInt;
                             valStack.Push(val);
                         }
                         else
@@ -252,9 +252,9 @@ namespace FormulaEvaluator
                                 throw new ArgumentException();
                             }
                             // Perform multiplication
-                            int val1 = valStack.Pop();
+                            int poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = val1 * tryInt;
+                            int val = poppedValue * tryInt;
                             valStack.Push(val);
                         }
                         else

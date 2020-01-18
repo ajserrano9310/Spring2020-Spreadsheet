@@ -168,8 +168,14 @@ namespace FormulaEvaluator
                             opStack.Pop();
                             valStack.Push(val);
                         }
+                        if (!hasOnTop(opStack, "("))
+                        {
+                            throw new ArgumentException("Missing a (");
+                        }
+                        // Take out the ( sign
+                        opStack.Pop();
                         // Case of multiplication with parenthesis
-                        else if (hasOnTop(opStack, "*"))
+                        if (hasOnTop(opStack, "*"))
                         {
                             // We need 2 values for multiplication
                             if (valStack.Count < 2)
@@ -204,12 +210,6 @@ namespace FormulaEvaluator
                             int val = val1 / val2;
                             valStack.Push(val);
                         }
-                        if (!hasOnTop(opStack, "("))
-                        {
-                            throw new ArgumentException("Missing a (");
-                        }
-                        // Take out the ( sign
-                        opStack.Pop();
                     }
                     // Case where its a variable
                     else

@@ -33,6 +33,7 @@ namespace Test_The_Evaluator_Console_App
             Console.WriteLine(testJustSymbol());
             Console.WriteLine(testWeirdMultiplication());
             Console.WriteLine(testMissingParenthesis());
+            Console.WriteLine(testLargeExpression());
             Console.ReadLine();
         }
         /// <summary>
@@ -513,6 +514,22 @@ namespace Test_The_Evaluator_Console_App
             else
             {
                 return "testDivideByZeroVariable Failed! " + "Expected: ArgumentException";
+            }
+        }
+        /// <summary>
+        /// Tests if the FormulaEvaluator works with a large expression
+        /// </summary>
+        /// <returns>If the test failed or passed</returns>
+        public static string testLargeExpression()
+        {
+            int result = Evaluator.Evaluate("(99 / 9) * (12 + 5) - (100 * 2)", SimpleLookup);
+            if (result == -13)
+            {
+                return "testLargeExpression Passed! " + "Expected: -13 Actual: " + result;
+            }
+            else
+            {
+                return "testLargeExpression Failed! " + "Expected: -13 Actual: " + result;
             }
         }
     }

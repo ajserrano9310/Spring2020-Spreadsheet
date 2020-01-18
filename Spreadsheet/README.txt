@@ -26,3 +26,4 @@ Alejandro Serrano
     1. https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/how-to-convert-a-string-to-a-number
     2. https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.stack-1?view=netframework-4.8
     3. https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/try-catch
+    4. https://www.geeksforgeeks.org/c-sharp-trim-method/

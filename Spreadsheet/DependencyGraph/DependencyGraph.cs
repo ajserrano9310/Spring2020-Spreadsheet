@@ -41,12 +41,19 @@ namespace SpreadsheetUtilities
     /// </summary>
     public class DependencyGraph
     {
+        private Dictionary<string, HashSet<string>> dependees;
+        private Dictionary<string, HashSet<string>> dependents;
+        private int numOrderedPairs;
         /// <summary>
         /// Creates an empty DependencyGraph.
         /// </summary>
         public DependencyGraph()
         {
+            dependees = new Dictionary<string, HashSet<string>>();
+            dependents = new Dictionary<string, HashSet<string>>();
+            numOrderedPairs = 0;
         }
+    
 
 
         /// <summary>
@@ -54,7 +61,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int Size
         {
-            get { return 0; }
+            get { return numOrderedPairs; }
         }
 
 
@@ -67,7 +74,12 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int this[string s]
         {
-            get { return 0; }
+            get {
+                if (dependees.ContainsKey(s))
+                {
+                    return dependees[s].Count;
+                }
+                return 0; }
         }
 
 
@@ -76,7 +88,11 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependents(string s)
         {
-            return false;
+            if (dependents[s].Count == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
 
@@ -85,7 +101,11 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependees(string s)
         {
-            return false;
+            if (dependees[s].Count == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
 

@@ -88,11 +88,11 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependents(string s)
         {
-            if (dependents[s].Count == 0)
+            if (dependents.ContainsKey(s))
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
 
@@ -101,11 +101,11 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependees(string s)
         {
-            if (dependees[s].Count == 0)
+            if (dependees.ContainsKey(s))
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
 
@@ -114,7 +114,12 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<string> GetDependents(string s)
         {
-            return null;
+            HashSet<string> test = new HashSet<string>();
+            if (dependents.ContainsKey(s))
+            {
+                test=dependents[s];
+            }
+            return test;
         }
 
         /// <summary>
@@ -122,7 +127,12 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<string> GetDependees(string s)
         {
-            return null;
+            HashSet<string> test = new HashSet<string>();
+            if (dependees.ContainsKey(s))
+            {
+                test = dependees[s];
+            }
+            return test;
         }
 
 
@@ -138,6 +148,14 @@ namespace SpreadsheetUtilities
         /// <param name="t"> t cannot be evaluated until s is</param>        /// 
         public void AddDependency(string s, string t)
         {
+            HashSet<string> actualDependee = new HashSet<string>();
+            actualDependee.Add(s);
+            dependents.Add(t, actualDependee);
+
+            HashSet<string> actualDependent = new HashSet<string>();
+            actualDependent.Add(t);
+            dependents.Add(s, actualDependent);
+            numOrderedPairs++;
         }
 
 

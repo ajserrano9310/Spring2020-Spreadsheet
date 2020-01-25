@@ -133,12 +133,9 @@ namespace SpreadsheetUtilities
         /// <param name="t"> t cannot be evaluated until s is</param>        /// 
         public void AddDependency(string s, string t)
         {
-            if (dependents.ContainsKey(t) && dependees.ContainsKey(s))
-            {
 
-            }
-            else
-            {
+
+            
                 if (!dependents.ContainsKey(t))
                 {
                     HashSet<string> actualDependee = new HashSet<string>();
@@ -160,8 +157,8 @@ namespace SpreadsheetUtilities
                 {
                     dependees[s].Add(t);
                 }
-                pairsSize++;
-            }
+            pairsSize++;
+            
         }
         /// <summary>
         /// Removes the ordered pair (s,t), if it exists
@@ -207,12 +204,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public void ReplaceDependees(string s, IEnumerable<string> newDependees)
         {
-
             IEnumerable<string> actual = GetDependees(s);
-
-
-
-
             foreach(String dependeesOld in actual)
             {
                 RemoveDependency(dependeesOld, s);
@@ -223,6 +215,5 @@ namespace SpreadsheetUtilities
                 AddDependency(dependeesNew, s);
             }
         }
-
     }
 }

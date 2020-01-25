@@ -105,7 +105,7 @@ namespace SpreadsheetUtilities
             HashSet<string> test = new HashSet<string>();
             if (dependees.ContainsKey(s))
             {
-                test=dependees[s];
+                test = new HashSet<string>(dependees[s]);
             }
             return test;
         }
@@ -117,7 +117,7 @@ namespace SpreadsheetUtilities
             HashSet<string> test = new HashSet<string>();
             if (dependents.ContainsKey(s))
             {
-                test = dependents[s];
+                test=new HashSet<string>(dependents[s]);
             }
             return test;
         }
@@ -207,10 +207,13 @@ namespace SpreadsheetUtilities
         /// </summary>
         public void ReplaceDependees(string s, IEnumerable<string> newDependees)
         {
-            HashSet<string> test = (HashSet<string>)GetDependees(s);
+
+            IEnumerable<string> actual = GetDependees(s);
 
 
-            foreach(String dependeesOld in test)
+
+
+            foreach(String dependeesOld in actual)
             {
                 RemoveDependency(dependeesOld, s);
             }

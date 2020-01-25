@@ -3,15 +3,12 @@
 // Version 1.2 - Daniel Kopta 
 //               (Clarified meaning of dependent and dependee.)
 //               (Clarified names in solution/project structure.)
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 namespace SpreadsheetUtilities
 {
-
     /// <summary>
     /// (s1,t1) is an ordered pair of strings
     /// t1 depends on s1; s1 must be evaluated before t1
@@ -43,7 +40,7 @@ namespace SpreadsheetUtilities
     {
         private Dictionary<string, HashSet<string>> dependees;
         private Dictionary<string, HashSet<string>> dependents;
-        private int numOrderedPairs;
+        private int pairsSize;
         /// <summary>
         /// Creates an empty DependencyGraph.
         /// </summary>
@@ -51,20 +48,17 @@ namespace SpreadsheetUtilities
         {
             dependees = new Dictionary<string, HashSet<string>>();
             dependents = new Dictionary<string, HashSet<string>>();
-            numOrderedPairs = 0;
+            pairsSize = 0;
         }
-    
-
-
         /// <summary>
         /// The number of ordered pairs in the DependencyGraph.
         /// </summary>
         public int Size
         {
-            get { return numOrderedPairs; }
+            get { 
+                return pairsSize; 
+            }
         }
-
-
         /// <summary>
         /// The size of dependees(s).
         /// This property is an example of an indexer.  If dg is a DependencyGraph, you would
@@ -75,31 +69,16 @@ namespace SpreadsheetUtilities
         public int this[string s]
         {
             get {
-                if (dependees.ContainsKey(s))
+                if (dependents.ContainsKey(s))
                 {
-                    return dependees[s].Count;
+                    return dependents[s].Count;
                 }
                 return 0; }
         }
-
-
         /// <summary>
         /// Reports whether dependents(s) is non-empty.
         /// </summary>
         public bool HasDependents(string s)
-        {
-            if (dependents.ContainsKey(s))
-            {
-                return true;
-            }
-            return false;
-        }
-
-
-        /// <summary>
-        /// Reports whether dependees(s) is non-empty.
-        /// </summary>
-        public bool HasDependees(string s)
         {
             if (dependees.ContainsKey(s))
             {
@@ -107,35 +86,41 @@ namespace SpreadsheetUtilities
             }
             return false;
         }
-
-
+        /// <summary>
+        /// Reports whether dependees(s) is non-empty.
+        /// </summary>
+        public bool HasDependees(string s)
+        {
+            if (dependents.ContainsKey(s))
+            {
+                return true;
+            }
+            return false;
+        }
         /// <summary>
         /// Enumerates dependents(s).
         /// </summary>
         public IEnumerable<string> GetDependents(string s)
         {
             HashSet<string> test = new HashSet<string>();
-            if (dependents.ContainsKey(s))
+            if (dependees.ContainsKey(s))
             {
-                test=dependents[s];
+                test=dependees[s];
             }
             return test;
         }
-
         /// <summary>
         /// Enumerates dependees(s).
         /// </summary>
         public IEnumerable<string> GetDependees(string s)
         {
             HashSet<string> test = new HashSet<string>();
-            if (dependees.ContainsKey(s))
+            if (dependents.ContainsKey(s))
             {
-                test = dependees[s];
+                test = dependents[s];
             }
             return test;
         }
-
-
         /// <summary>
         /// <para>Adds the ordered pair (s,t), if it doesn't exist</para>
         /// 
@@ -148,17 +133,36 @@ namespace SpreadsheetUtilities
         /// <param name="t"> t cannot be evaluated until s is</param>        /// 
         public void AddDependency(string s, string t)
         {
-            HashSet<string> actualDependee = new HashSet<string>();
-            actualDependee.Add(s);
-            dependents.Add(t, actualDependee);
+            if (dependents.ContainsKey(t) && dependees.ContainsKey(s))
+            {
 
-            HashSet<string> actualDependent = new HashSet<string>();
-            actualDependent.Add(t);
-            dependents.Add(s, actualDependent);
-            numOrderedPairs++;
+            }
+            else
+            {
+                if (!dependents.ContainsKey(t))
+                {
+                    HashSet<string> actualDependee = new HashSet<string>();
+                    actualDependee.Add(s);
+                    dependents.Add(t, actualDependee);
+                }
+                else
+                {
+                    dependents[t].Add(s);
+                }
+                if (!dependees.ContainsKey(s))
+                {
+                    HashSet<string> actualDependent = new HashSet<string>();
+                    actualDependent.Add(t);
+                    dependees.Add(s, actualDependent);
+         
+                }
+                else
+                {
+                    dependees[s].Add(t);
+                }
+                pairsSize++;
+            }
         }
-
-
         /// <summary>
         /// Removes the ordered pair (s,t), if it exists
         /// </summary>
@@ -166,26 +170,56 @@ namespace SpreadsheetUtilities
         /// <param name="t"></param>
         public void RemoveDependency(string s, string t)
         {
+            dependees[s].Remove(t);
+            dependents[t].Remove(s);
+
+            if (dependees[s].Count == 0)
+            {
+                dependees.Remove(s);
+            }
+
+            if (dependents[t].Count == 0)
+            {
+                dependents.Remove(t);
+            }
+            pairsSize--;
         }
-
-
         /// <summary>
         /// Removes all existing ordered pairs of the form (s,r).  Then, for each
         /// t in newDependents, adds the ordered pair (s,t).
         /// </summary>
         public void ReplaceDependents(string s, IEnumerable<string> newDependents)
         {
+            HashSet<string> test = (HashSet<string>)GetDependents(s);
+            foreach (String dependeesOld in test)
+            {
+                RemoveDependency(s, dependeesOld);
+            }
+
+            foreach (String dependeesNew in newDependents)
+            {
+                AddDependency(s, dependeesNew);
+            }
         }
-
-
         /// <summary>
         /// Removes all existing ordered pairs of the form (r,s).  Then, for each 
         /// t in newDependees, adds the ordered pair (t,s).
         /// </summary>
         public void ReplaceDependees(string s, IEnumerable<string> newDependees)
         {
+            HashSet<string> test = (HashSet<string>)GetDependees(s);
+
+
+            foreach(String dependeesOld in test)
+            {
+                RemoveDependency(dependeesOld, s);
+            }
+
+            foreach (String dependeesNew in newDependees)
+            {
+                AddDependency(dependeesNew, s);
+            }
         }
 
     }
-
 }

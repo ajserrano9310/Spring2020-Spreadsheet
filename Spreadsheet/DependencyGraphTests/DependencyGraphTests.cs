@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpreadsheetUtilities;
-
-
 namespace DevelopmentTests
 {
     /// <summary>
@@ -13,7 +11,6 @@ namespace DevelopmentTests
     [TestClass()]
     public class DependencyGraphTest
     {
-
         /// <summary>
         ///Empty graph should contain nothing
         ///</summary>
@@ -23,8 +20,6 @@ namespace DevelopmentTests
             DependencyGraph t = new DependencyGraph();
             Assert.AreEqual(0, t.Size);
         }
-
-
         /// <summary>
         ///Empty graph should contain nothing
         ///</summary>
@@ -37,8 +32,6 @@ namespace DevelopmentTests
             t.RemoveDependency("x", "y");
             Assert.AreEqual(0, t.Size);
         }
-
-
         /// <summary>
         ///Empty graph should contain nothing
         ///</summary>
@@ -57,8 +50,6 @@ namespace DevelopmentTests
             Assert.IsFalse(t.GetDependees("y").GetEnumerator().MoveNext());
             Assert.IsFalse(t.GetDependents("x").GetEnumerator().MoveNext());
         }
-
-
         /// <summary>
         ///Replace on an empty DG shouldn't fail
         ///</summary>
@@ -72,9 +63,6 @@ namespace DevelopmentTests
             t.ReplaceDependents("x", new HashSet<string>());
             t.ReplaceDependees("y", new HashSet<string>());
         }
-
-
-
         ///<summary>
         ///It should be possibe to have more than one DG at a time.
         ///</summary>
@@ -87,10 +75,6 @@ namespace DevelopmentTests
             Assert.AreEqual(1, t1.Size);
             Assert.AreEqual(0, t2.Size);
         }
-
-
-
-
         /// <summary>
         ///Non-empty graph contains something
         ///</summary>
@@ -104,8 +88,6 @@ namespace DevelopmentTests
             t.AddDependency("b", "d");
             Assert.AreEqual(4, t.Size);
         }
-
-
         /// <summary>
         ///Non-empty graph contains something
         ///</summary>
@@ -117,10 +99,8 @@ namespace DevelopmentTests
             t.AddDependency("a", "c");
             t.AddDependency("c", "b");
             t.AddDependency("b", "d");
-
             IEnumerator<string> e = t.GetDependees("a").GetEnumerator();
             Assert.IsFalse(e.MoveNext());
-
             e = t.GetDependees("b").GetEnumerator();
             Assert.IsTrue(e.MoveNext());
             String s1 = e.Current;
@@ -128,21 +108,15 @@ namespace DevelopmentTests
             String s2 = e.Current;
             Assert.IsFalse(e.MoveNext());
             Assert.IsTrue(((s1 == "a") && (s2 == "c")) || ((s1 == "c") && (s2 == "a")));
-
             e = t.GetDependees("c").GetEnumerator();
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual("a", e.Current);
             Assert.IsFalse(e.MoveNext());
-
             e = t.GetDependees("d").GetEnumerator();
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual("b", e.Current);
             Assert.IsFalse(e.MoveNext());
         }
-
-
-
-
         /// <summary>
         ///Non-empty graph contains something
         ///</summary>
@@ -158,10 +132,8 @@ namespace DevelopmentTests
             t.AddDependency("w", "d");
             t.ReplaceDependees("b", new HashSet<string>() { "a", "c" });
             t.ReplaceDependees("d", new HashSet<string>() { "b" });
-
             IEnumerator<string> e = t.GetDependees("a").GetEnumerator();
             Assert.IsFalse(e.MoveNext());
-
             e = t.GetDependees("b").GetEnumerator();
             Assert.IsTrue(e.MoveNext());
             String s1 = e.Current;
@@ -169,20 +141,15 @@ namespace DevelopmentTests
             String s2 = e.Current;
             Assert.IsFalse(e.MoveNext());
             Assert.IsTrue(((s1 == "a") && (s2 == "c")) || ((s1 == "c") && (s2 == "a")));
-
             e = t.GetDependees("c").GetEnumerator();
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual("a", e.Current);
             Assert.IsFalse(e.MoveNext());
-
             e = t.GetDependees("d").GetEnumerator();
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual("b", e.Current);
             Assert.IsFalse(e.MoveNext());
         }
-
-
-
         /// <summary>
         ///Using lots of data
         ///</summary>
@@ -191,7 +158,6 @@ namespace DevelopmentTests
         {
             // Dependency graph
             DependencyGraph t = new DependencyGraph();
-
             // A bunch of strings to use
             const int SIZE = 200;
             string[] letters = new string[SIZE];
@@ -199,7 +165,6 @@ namespace DevelopmentTests
             {
                 letters[i] = ("" + (char)('a' + i));
             }
-
             // The correct answers
             HashSet<string>[] dents = new HashSet<string>[SIZE];
             HashSet<string>[] dees = new HashSet<string>[SIZE];
@@ -208,7 +173,6 @@ namespace DevelopmentTests
                 dents[i] = new HashSet<string>();
                 dees[i] = new HashSet<string>();
             }
-
             // Add a bunch of dependencies
             for (int i = 0; i < SIZE; i++)
             {
@@ -219,7 +183,6 @@ namespace DevelopmentTests
                     dees[j].Add(letters[i]);
                 }
             }
-
             // Remove a bunch of dependencies
             for (int i = 0; i < SIZE; i++)
             {
@@ -230,7 +193,6 @@ namespace DevelopmentTests
                     dees[j].Remove(letters[i]);
                 }
             }
-
             // Add some back
             for (int i = 0; i < SIZE; i++)
             {
@@ -241,7 +203,6 @@ namespace DevelopmentTests
                     dees[j].Add(letters[i]);
                 }
             }
-
             // Remove some more
             for (int i = 0; i < SIZE; i += 2)
             {
@@ -252,7 +213,6 @@ namespace DevelopmentTests
                     dees[j].Remove(letters[i]);
                 }
             }
-
             // Make sure everything is right
             for (int i = 0; i < SIZE; i++)
             {
@@ -260,6 +220,5 @@ namespace DevelopmentTests
                 Assert.IsTrue(dees[i].SetEquals(new HashSet<string>(t.GetDependees(letters[i]))));
             }
         }
-
     }
 }

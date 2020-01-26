@@ -69,6 +69,8 @@ namespace SpreadsheetUtilities
         public int this[string s]
         {
             get {
+                // If it contains the key we can get the size
+                // If it does not contain the key we just return 0
                 if (dependents.ContainsKey(s))
                 {
                     return dependents[s].Count;
@@ -104,11 +106,14 @@ namespace SpreadsheetUtilities
         public IEnumerable<string> GetDependents(string s)
         {
             HashSet<string> test = new HashSet<string>();
+            // If it contains the key we can get the values
             if (dependees.ContainsKey(s))
             {
+                // Iterate trough all the values
                 for (int i = 0; i < dependees[s].Count; i++)
                 {
                     {
+                        // Add them to our hashset
                         test.Add(dependees[s].ElementAt(i));
                     }
                 }
@@ -121,11 +126,14 @@ namespace SpreadsheetUtilities
         public IEnumerable<string> GetDependees(string s)
         {
             HashSet<string> test = new HashSet<string>();
+            // If it contains the key we can get the values
             if (dependents.ContainsKey(s))
             {
+                // Iterate trough all the values
                 for (int i = 0; i < dependents[s].Count; i++)
                 {
                     {
+                        // Add them to our hashset
                         test.Add(dependents[s].ElementAt(i));
                     }
                 }
@@ -144,22 +152,26 @@ namespace SpreadsheetUtilities
         /// <param name="t"> t cannot be evaluated until s is</param>        /// 
         public void AddDependency(string s, string t)
         {
+            // If dependents does not contain key t we have to create a new hashset for those keys
                 if (!dependents.ContainsKey(t))
                 {
                     HashSet<string> actualDependee = new HashSet<string>();
                     actualDependee.Add(s);
                     dependents.Add(t, actualDependee);
                 }
+                // If it contains key t we just add it to the hashset
                 else
                 {
                     dependents[t].Add(s);
                 }
-                if (!dependees.ContainsKey(s))
+            // If dependees does not contain key s we have to create a new hashset for those keys
+            if (!dependees.ContainsKey(s))
                 {
                     HashSet<string> actualDependent = new HashSet<string>();
                     actualDependent.Add(t);
                     dependees.Add(s, actualDependent);
                 }
+            // If it contains key s we just add it to the hashset
                 else
                 {
                     dependees[s].Add(t);
@@ -177,7 +189,7 @@ namespace SpreadsheetUtilities
             // Remove dependency from dependees and dependents
             dependees[s].Remove(t);
             dependents[t].Remove(s);
-            // If the list of dependees or dependents is empty we have to erase it
+            // If the list of dependees or dependents is empty we have to erase it to prevent null checking
             if (dependees[s].Count == 0)
             {
                 dependees.Remove(s);

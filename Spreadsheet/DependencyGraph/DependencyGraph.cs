@@ -69,9 +69,9 @@ namespace SpreadsheetUtilities
         public int this[string s]
         {
             get {
-                if (dependents.ContainsKey(s))
+                if (dependees.ContainsKey(s))
                 {
-                    return dependents[s].Count;
+                    return dependees[s].Count;
                 }
                 return 0; 
             }
@@ -81,7 +81,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependents(string s)
         {
-            if (dependees.ContainsKey(s))
+            if (dependents.ContainsKey(s))
             {
                 return true;
             }
@@ -92,7 +92,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public bool HasDependees(string s)
         {
-            if (dependents.ContainsKey(s))
+            if (dependees.ContainsKey(s))
             {
                 return true;
             }

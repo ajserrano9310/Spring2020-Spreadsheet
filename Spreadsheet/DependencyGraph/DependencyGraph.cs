@@ -73,7 +73,8 @@ namespace SpreadsheetUtilities
                 {
                     return dependents[s].Count;
                 }
-                return 0; }
+                return 0; 
+            }
         }
         /// <summary>
         /// Reports whether dependents(s) is non-empty.
@@ -138,9 +139,6 @@ namespace SpreadsheetUtilities
         /// <param name="t"> t cannot be evaluated until s is</param>        /// 
         public void AddDependency(string s, string t)
         {
-
-
-            
                 if (!dependents.ContainsKey(t))
                 {
                     HashSet<string> actualDependee = new HashSet<string>();
@@ -156,14 +154,12 @@ namespace SpreadsheetUtilities
                     HashSet<string> actualDependent = new HashSet<string>();
                     actualDependent.Add(t);
                     dependees.Add(s, actualDependent);
-         
                 }
                 else
                 {
                     dependees[s].Add(t);
                 }
             pairsSize++;
-            
         }
         /// <summary>
         /// Removes the ordered pair (s,t), if it exists
@@ -174,12 +170,10 @@ namespace SpreadsheetUtilities
         {
             dependees[s].Remove(t);
             dependents[t].Remove(s);
-
             if (dependees[s].Count == 0)
             {
                 dependees.Remove(s);
             }
-
             if (dependents[t].Count == 0)
             {
                 dependents.Remove(t);
@@ -193,15 +187,10 @@ namespace SpreadsheetUtilities
         public void ReplaceDependents(string s, IEnumerable<string> newDependents)
         {
             HashSet<string> actual = (HashSet<string>)GetDependents(s);
-            
-
-
-
             for (int i = 0; i < actual.Count(); i++)
             {
                 RemoveDependency(s,actual.ElementAt(i));
             }
-
             for (int j = 0; j < actual.Count(); j++)
             {
                 AddDependency(s,newDependents.ElementAt(j));
@@ -214,19 +203,14 @@ namespace SpreadsheetUtilities
         public void ReplaceDependees(string s, IEnumerable<string> newDependees)
         {
             IEnumerable<string> actual = GetDependees(s);
-            
-
             for(int i =0; i < actual.Count(); i++)
             {
                 RemoveDependency(actual.ElementAt(i), s);
             }
-
             for (int j = 0; j < actual.Count(); j++)
             {
                 AddDependency(newDependees.ElementAt(j), s);
             }
-
-            
         }
     }
 }

@@ -105,7 +105,12 @@ namespace SpreadsheetUtilities
             HashSet<string> test = new HashSet<string>();
             if (dependees.ContainsKey(s))
             {
-                test = new HashSet<string>(dependees[s]);
+                for (int i = 0; i < dependees[s].Count; i++)
+                {
+                    {
+                        test.Add(dependees[s].ElementAt(i));
+                    }
+                }
             }
             return test;
         }
@@ -187,15 +192,19 @@ namespace SpreadsheetUtilities
         /// </summary>
         public void ReplaceDependents(string s, IEnumerable<string> newDependents)
         {
-            HashSet<string> test = (HashSet<string>)GetDependents(s);
-            foreach (String dependeesOld in test)
+            HashSet<string> actual = (HashSet<string>)GetDependents(s);
+            
+
+
+
+            for (int i = 0; i < actual.Count(); i++)
             {
-                RemoveDependency(s, dependeesOld);
+                RemoveDependency(s,actual.ElementAt(i));
             }
 
-            foreach (String dependeesNew in newDependents)
+            for (int j = 0; j < actual.Count(); j++)
             {
-                AddDependency(s, dependeesNew);
+                AddDependency(s,newDependents.ElementAt(j));
             }
         }
         /// <summary>
@@ -205,15 +214,19 @@ namespace SpreadsheetUtilities
         public void ReplaceDependees(string s, IEnumerable<string> newDependees)
         {
             IEnumerable<string> actual = GetDependees(s);
-            foreach(String dependeesOld in actual)
+            
+
+            for(int i =0; i < actual.Count(); i++)
             {
-                RemoveDependency(dependeesOld, s);
+                RemoveDependency(actual.ElementAt(i), s);
             }
 
-            foreach (String dependeesNew in newDependees)
+            for (int j = 0; j < actual.Count(); j++)
             {
-                AddDependency(dependeesNew, s);
+                AddDependency(newDependees.ElementAt(j), s);
             }
+
+            
         }
     }
 }

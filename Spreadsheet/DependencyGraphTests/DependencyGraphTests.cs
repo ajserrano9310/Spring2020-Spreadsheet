@@ -220,5 +220,62 @@ namespace DevelopmentTests
                 Assert.IsTrue(dees[i].SetEquals(new HashSet<string>(t.GetDependees(letters[i]))));
             }
         }
+        /// <summary>
+        ///Tests the method public int this[string s] which gives the size of dependees 
+        ///</summary>
+        [TestMethod()]
+        public void SizeOfExistingDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("1", "2");
+            Assert.AreEqual(1, t["2"]);
+        }
+        /// <summary>
+        ///Tests the method public int this[string s] which gives the size of dependees 
+        ///</summary>
+        [TestMethod()]
+        public void SizeOfNoExistingDependees()
+        {
+            DependencyGraph t = new DependencyGraph();
+            Assert.AreEqual(0, t["a"]);
+        }
+        /// <summary>
+        ///Tests the method hasDependents
+        ///</summary>
+        [TestMethod()]
+        public void HasDependentsTrue()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("1", "2");
+            Assert.IsTrue(t.HasDependents("1"));
+        }
+        /// <summary>
+        ///Tests the method hasDependents
+        ///</summary>
+        [TestMethod()]
+        public void HasDependentsFalse()
+        {
+            DependencyGraph t = new DependencyGraph();
+            Assert.IsFalse(t.HasDependents("A1"));
+        }
+        /// <summary>
+        ///Tests the method hasDependees
+        ///</summary>
+        [TestMethod()]
+        public void HasDependeesTrue()
+        {
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("1", "2");
+            Assert.IsTrue(t.HasDependees("2"));
+        }
+        /// <summary>
+        ///Tests the method hasDependees
+        ///</summary>
+        [TestMethod()]
+        public void HasDependeesFalse()
+        {
+            DependencyGraph t = new DependencyGraph();
+            Assert.IsFalse(t.HasDependees("A1"));
+        }
     }
 }

@@ -1,29 +1,30 @@
 Author:     Alejandro Rubio
 Partner:    None
-Date:       1/12/2020
+Date:       1/24/2020
 Course:     CS 3500, University of Utah, School of Computing
-Assignment: Assignment 1 - Formula Evaluator
+Assignment: Assignment 2 - Dependency Graph
 Copyright:  CS 3500 and Alejandro Rubio - This work may not be copied for use in Academic Coursework.
 
 1. Comments to Evaluators:
 
-I included a bunch of test cases to check every possible case.
+All the Projects include copies of the READMEs and the Solution README has been updated
 
 2. Assignment Specific Topics
 
-I think the project will take me from 8 to 10 hours.
+I think the project will take me from 10 to 12 hours.
 
-It took me about 12 hours to finish the project.
-I spent a lot of time debugging because my code was not working and finally it was because I was missing an if-else statement.
-Everything seems to be working now.
+It took me about 10 hours to finish the project.
+
+Hours Estimated/Worked         Assignment                       Note
+          8-10    /   12    - Assignment 1 - Formula Evaluator     Spent 2 extra hours debugging code
+         10-12    /   10    - Assignment 2 - Dependency Graph      I tought the assignment was going to be more demanding
 
 3. Consulted Peers:
 
 Alejandro Serrano
+Aaron Morgan
 
 4. References:
 
-    1. https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/how-to-convert-a-string-to-a-number
-    2. https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.stack-1?view=netframework-4.8
-    3. https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/try-catch
-    4. https://www.geeksforgeeks.org/c-sharp-trim-method/
+    1. https://www.geeksforgeeks.org/hashset-in-c-sharp-with-examples/
+    2. https://www.dotnetperls.com/map

@@ -151,8 +151,13 @@ namespace SpreadsheetUtilities
         /// <param name="t"> t cannot be evaluated until s is</param>        /// 
         public void AddDependency(string s, string t)
         {
+            // Increase the number of pairs
+            if (!(dependents.ContainsKey(t) && dependees.ContainsKey(s)))
+            {
+                pairsSize++;
+            }
             // If dependents does not contain key t we have to create a new hashset for those keys
-                if (!dependents.ContainsKey(t))
+            if (!dependents.ContainsKey(t))
                 {
                     HashSet<string> actualDependee = new HashSet<string>();
                     actualDependee.Add(s);
@@ -175,8 +180,6 @@ namespace SpreadsheetUtilities
                 {
                     dependees[s].Add(t);
                 }
-                // Increase the number of pairs
-            pairsSize++;
         }
         /// <summary>
         /// Removes the ordered pair (s,t), if it exists
@@ -185,20 +188,30 @@ namespace SpreadsheetUtilities
         /// <param name="t"></param>
         public void RemoveDependency(string s, string t)
         {
-            // Remove dependency from dependees and dependents
-            dependees[s].Remove(t);
-            dependents[t].Remove(s);
-            // If the list of dependees or dependents is empty we have to erase it to prevent null checking
-            if (dependees[s].Count == 0)
-            {
-                dependees.Remove(s);
-            }
-            if (dependents[t].Count == 0)
-            {
-                dependents.Remove(t);
-            }
             // Decrease the number of pairs
-            pairsSize--;
+            if ((dependents.ContainsKey(t) && dependees.ContainsKey(s)))
+            {
+                pairsSize--;
+                // Remove dependency from dependees and dependents
+                if (dependees[s].Contains(t))
+                {
+                    dependees[s].Remove(t);
+                    // If the list of dependees or dependents is empty we have to erase it to prevent null checking
+                    if (dependees[s].Count == 0)
+                    {
+                        dependees.Remove(s);
+                    }
+                }
+                if (dependents[t].Contains(s))
+                {
+                    dependents[t].Remove(s);
+                    // If the list of dependees or dependents is empty we have to erase it to prevent null checking
+                    if (dependents[t].Count == 0)
+                    {
+                        dependents.Remove(t);
+                    }
+                }
+            }
         }
         /// <summary>
         /// Removes all existing ordered pairs of the form (s,r).  Then, for each

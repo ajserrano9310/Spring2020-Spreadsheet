@@ -296,5 +296,67 @@ namespace DevelopmentTests
             // We know there are no dependees and no dependents so we can test any value
             Assert.IsFalse(t.HasDependees("A1"));
         }
+        /// <summary>
+        ///Tests the size of DependencyGraph
+        ///</summary>
+        [TestMethod()]
+        public void SizeZeroDependencyGraph()
+        {
+            // Create instance of DependencyGraph
+            DependencyGraph t = new DependencyGraph();
+            // We know there are no dependees and no dependents so there are 0 pairs
+            Assert.AreEqual(0,t.Size);
+        }
+        /// <summary>
+        ///Tests the size of DependencyGraph
+        ///</summary>
+        [TestMethod()]
+        public void SizeOneDependencyGraphAdd()
+        {
+            // Create instance of DependencyGraph
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("1", "2");
+            // We know there is only 1 pair
+            Assert.AreEqual(1, t.Size);
+        }
+        /// <summary>
+        ///Tests the size of DependencyGraph
+        ///</summary>
+        [TestMethod()]
+        public void SizeOneRepeatedPairDependencyGraphAdd()
+        {
+            // Create instance of DependencyGraph
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("1", "2");
+            // Try to repeat the pair
+            t.AddDependency("1", "2");
+            // We know there is only 1 pair
+            Assert.AreEqual(1, t.Size);
+        }
+        [TestMethod()]
+        public void SizeOneDependencyGraphRemove()
+        {
+            // Create instance of DependencyGraph
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("1", "2");
+            t.RemoveDependency("1", "2");
+            // We know there are no pairs
+            Assert.AreEqual(0, t.Size);
+        }
+        /// <summary>
+        ///Tests the size of DependencyGraph
+        ///</summary>
+        [TestMethod()]
+        public void SizeOneRepeatedPairDependencyGraphRemove()
+        {
+            // Create instance of DependencyGraph
+            DependencyGraph t = new DependencyGraph();
+            t.AddDependency("1", "2");
+            // Try to remove the pair two times
+            t.RemoveDependency("1", "2");
+            t.RemoveDependency("1", "2");
+            // We know there are no pairs
+            Assert.AreEqual(0, t.Size);
+        }
     }
 }

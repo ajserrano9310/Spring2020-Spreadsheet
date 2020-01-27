@@ -1,4 +1,8 @@
-﻿using FormulaEvaluator;
+﻿// Author: Alejandro Rubio
+// Date: 1/12/2020
+// This file is part of a Library that tests the FormulaEvaluator
+// I pledge that I did this work myself
+using FormulaEvaluator;
 using System;
 namespace Test_The_Evaluator_Console_App
 {

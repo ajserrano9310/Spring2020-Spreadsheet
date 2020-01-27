@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Author: Alejandro Rubio
+// Date: 1/12/2020
+// This file is part of a Library that evaluates formula expressions
+// I pledge that I did this work myself
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 namespace FormulaEvaluator

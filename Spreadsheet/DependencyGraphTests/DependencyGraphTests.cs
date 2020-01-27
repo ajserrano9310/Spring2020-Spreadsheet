@@ -1,3 +1,7 @@
+// Author: Alejandro Rubio
+// Date: 1/24/2020
+// This file is part of a Library that tests the DependencyGraph
+// I pledge that I did this work myself
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -226,8 +230,11 @@ namespace DevelopmentTests
         [TestMethod()]
         public void SizeOfExistingDependees()
         {
+            // Create instance of DependencyGraph
             DependencyGraph t = new DependencyGraph();
+            // Create the dependency we want to test
             t.AddDependency("1", "2");
+            // The method reports the size so we know there is only 1 value
             Assert.AreEqual(1, t["2"]);
         }
         /// <summary>
@@ -236,7 +243,9 @@ namespace DevelopmentTests
         [TestMethod()]
         public void SizeOfNoExistingDependees()
         {
+            // Create instance of DependencyGraph
             DependencyGraph t = new DependencyGraph();
+            // The method reports the size so we know there are no values so we equal that to 0
             Assert.AreEqual(0, t["a"]);
         }
         /// <summary>
@@ -245,8 +254,11 @@ namespace DevelopmentTests
         [TestMethod()]
         public void HasDependentsTrue()
         {
+            // Create instance of DependencyGraph
             DependencyGraph t = new DependencyGraph();
+            // Add the dependency we want to test
             t.AddDependency("1", "2");
+            // Check if the method works because we know it has dependents
             Assert.IsTrue(t.HasDependents("1"));
         }
         /// <summary>
@@ -255,7 +267,9 @@ namespace DevelopmentTests
         [TestMethod()]
         public void HasDependentsFalse()
         {
+            // Create instance of DependencyGraph
             DependencyGraph t = new DependencyGraph();
+            // We know there are no dependees and no dependents so we can test any value
             Assert.IsFalse(t.HasDependents("A1"));
         }
         /// <summary>
@@ -264,8 +278,11 @@ namespace DevelopmentTests
         [TestMethod()]
         public void HasDependeesTrue()
         {
+            // Create instance of DependencyGraph
             DependencyGraph t = new DependencyGraph();
+            // Add the dependency we want to test
             t.AddDependency("1", "2");
+            // Check if the method works because we know it has dependees
             Assert.IsTrue(t.HasDependees("2"));
         }
         /// <summary>
@@ -274,7 +291,9 @@ namespace DevelopmentTests
         [TestMethod()]
         public void HasDependeesFalse()
         {
+            // Create instance of DependencyGraph
             DependencyGraph t = new DependencyGraph();
+            // We know there are no dependees and no dependents so we can test any value
             Assert.IsFalse(t.HasDependees("A1"));
         }
     }

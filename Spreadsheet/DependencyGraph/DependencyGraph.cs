@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Author: Alejandro Rubio
+// Date: 1/24/2020
+// This file is part of a Library that creates a list of dependees and dependents
+// I pledge that I did this work myself
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

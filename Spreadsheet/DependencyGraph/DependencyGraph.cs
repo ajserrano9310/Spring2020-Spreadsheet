@@ -104,7 +104,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<string> GetDependents(string s)
         {
-            HashSet<string> test = new HashSet<string>();
+            HashSet<string> dependentsList = new HashSet<string>();
             // If it contains the key we can get the values
             if (dependees.ContainsKey(s))
             {
@@ -113,18 +113,18 @@ namespace SpreadsheetUtilities
                 {
                     {
                         // Add them to our hashset
-                        test.Add(dependees[s].ElementAt(i));
+                        dependentsList.Add(dependees[s].ElementAt(i));
                     }
                 }
             }
-            return test;
+            return dependentsList;
         }
         /// <summary>
         /// Enumerates dependees(s).
         /// </summary>
         public IEnumerable<string> GetDependees(string s)
         {
-            HashSet<string> test = new HashSet<string>();
+            HashSet<string> dependeesList = new HashSet<string>();
             // If it contains the key we can get the values
             if (dependents.ContainsKey(s))
             {
@@ -133,11 +133,11 @@ namespace SpreadsheetUtilities
                 {
                     {
                         // Add them to our hashset
-                        test.Add(dependents[s].ElementAt(i));
+                        dependeesList.Add(dependents[s].ElementAt(i));
                     }
                 }
             }
-            return test;
+            return dependeesList;
         }
         /// <summary>
         /// <para>Adds the ordered pair (s,t), if it doesn't exist</para>

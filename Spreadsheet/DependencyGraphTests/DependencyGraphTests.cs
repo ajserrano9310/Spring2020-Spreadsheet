@@ -2,10 +2,10 @@
 // Date: 1/24/2020
 // This file is part of a Library that tests the DependencyGraph
 // I pledge that I did this work myself
-using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpreadsheetUtilities;
+using System;
+using System.Collections.Generic;
 namespace DevelopmentTests
 {
     /// <summary>
@@ -305,7 +305,7 @@ namespace DevelopmentTests
             // Create instance of DependencyGraph
             DependencyGraph t = new DependencyGraph();
             // We know there are no dependees and no dependents so there are 0 pairs
-            Assert.AreEqual(0,t.Size);
+            Assert.AreEqual(0, t.Size);
         }
         /// <summary>
         ///Tests the size of DependencyGraph

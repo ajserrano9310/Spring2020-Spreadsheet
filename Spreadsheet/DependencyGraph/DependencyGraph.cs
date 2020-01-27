@@ -2,10 +2,8 @@
 // Date: 1/24/2020
 // This file is part of a Library that creates a list of dependees and dependents
 // I pledge that I did this work myself
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 namespace SpreadsheetUtilities
 {
     /// <summary>
@@ -54,8 +52,9 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int Size
         {
-            get { 
-                return pairsSize; 
+            get
+            {
+                return pairsSize;
             }
         }
         /// <summary>
@@ -67,14 +66,15 @@ namespace SpreadsheetUtilities
         /// </summary>
         public int this[string s]
         {
-            get {
+            get
+            {
                 // If it contains the key we can get the size
                 // If it does not contain the key we just return 0
                 if (dependents.ContainsKey(s))
                 {
                     return dependents[s].Count;
                 }
-                return 0; 
+                return 0;
             }
         }
         /// <summary>
@@ -158,28 +158,28 @@ namespace SpreadsheetUtilities
             }
             // If dependents does not contain key t we have to create a new hashset for those keys
             if (!dependents.ContainsKey(t))
-                {
-                    HashSet<string> actualDependee = new HashSet<string>();
-                    actualDependee.Add(s);
-                    dependents.Add(t, actualDependee);
-                }
-                // If it contains key t we just add it to the hashset
-                else
-                {
-                    dependents[t].Add(s);
-                }
+            {
+                HashSet<string> actualDependee = new HashSet<string>();
+                actualDependee.Add(s);
+                dependents.Add(t, actualDependee);
+            }
+            // If it contains key t we just add it to the hashset
+            else
+            {
+                dependents[t].Add(s);
+            }
             // If dependees does not contain key s we have to create a new hashset for those keys
             if (!dependees.ContainsKey(s))
-                {
-                    HashSet<string> actualDependent = new HashSet<string>();
-                    actualDependent.Add(t);
-                    dependees.Add(s, actualDependent);
-                }
+            {
+                HashSet<string> actualDependent = new HashSet<string>();
+                actualDependent.Add(t);
+                dependees.Add(s, actualDependent);
+            }
             // If it contains key s we just add it to the hashset
-                else
-                {
-                    dependees[s].Add(t);
-                }
+            else
+            {
+                dependees[s].Add(t);
+            }
         }
         /// <summary>
         /// Removes the ordered pair (s,t), if it exists
@@ -224,12 +224,12 @@ namespace SpreadsheetUtilities
             // Remove the old dependents
             for (int i = 0; i < actual.Count(); i++)
             {
-                RemoveDependency(s,actual.ElementAt(i));
+                RemoveDependency(s, actual.ElementAt(i));
             }
             // Add the new dependents
             for (int j = 0; j < actual.Count(); j++)
             {
-                AddDependency(s,newDependents.ElementAt(j));
+                AddDependency(s, newDependents.ElementAt(j));
             }
         }
         /// <summary>
@@ -241,7 +241,7 @@ namespace SpreadsheetUtilities
             // Get the list of dependees
             IEnumerable<string> actual = GetDependees(s);
             // Remove the old dependees
-            for(int i =0; i < actual.Count(); i++)
+            for (int i = 0; i < actual.Count(); i++)
             {
                 RemoveDependency(actual.ElementAt(i), s);
             }

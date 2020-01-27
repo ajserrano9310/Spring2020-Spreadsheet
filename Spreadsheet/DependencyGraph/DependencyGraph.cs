@@ -148,7 +148,7 @@ namespace SpreadsheetUtilities
         ///
         /// </summary>
         /// <param name="s"> s must be evaluated first. T depends on S</param>
-        /// <param name="t"> t cannot be evaluated until s is</param>        /// 
+        /// <param name="t"> t cannot be evaluated until s is</param>
         public void AddDependency(string s, string t)
         {
             // Increase the number of pairs

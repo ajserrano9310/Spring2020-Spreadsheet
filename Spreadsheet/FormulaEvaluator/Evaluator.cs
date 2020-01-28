@@ -227,6 +227,10 @@ namespace FormulaEvaluator
                         {
                             throw new ArgumentException();
                         }
+                        if(!(Regex.IsMatch(actualString,"^[a-z A-Z]+[0-9]")))
+                        {
+                                throw new ArgumentException();
+            }
                         // Case where we have to divide with the variable
                         if (hasOnTop(opStack, "/"))
                         {

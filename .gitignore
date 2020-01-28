@@ -254,3 +254,6 @@ GitHubVS.sln.DotSettings
 # Coverlet Code Coverage and Report Generator files
 coveragereport
 coverage.opencover.xml
+
+# Grading Tests
+FormulaEvaluatorTests

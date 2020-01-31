@@ -76,21 +76,7 @@ namespace SpreadsheetUtilities
             for(int i = 0; i < tokens.Length; i++)
             {
                 tokens[i] = tokens[i].Trim();
-                if (!int.TryParse(tokens[i], out int n))
-                {
-                    if (!tokens[i].Equals("*") && !tokens[i].Equals("/") && !tokens[i].Equals("-") && !tokens[i].Equals("+") && !tokens[i].Equals("(") && !tokens[i].Equals(")")&&!variables.Contains(tokens[i]))
-                    {
-                        variables.Add(tokens[i]);
-                    }
-                    if (tokens[i].Equals("("))
-                    {
-                        p1Counter++;
-                    }
-                    if (tokens[i].Equals(")"))
-                    {
-                        p2Counter++;
-                    }
-                }
+                
                 if (!isValid(tokens[i]))
                 {
                     throw new FormulaFormatException("Invalid formula expression");
@@ -98,6 +84,21 @@ namespace SpreadsheetUtilities
                 else
                 {
                     tokens[i] = normalize(tokens[i]);
+                    if (!int.TryParse(tokens[i], out int n))
+                    {
+                        if (!tokens[i].Equals("*") && !tokens[i].Equals("/") && !tokens[i].Equals("-") && !tokens[i].Equals("+") && !tokens[i].Equals("(") && !tokens[i].Equals(")") && !variables.Contains(tokens[i]))
+                        {
+                            variables.Add(tokens[i]);
+                        }
+                        if (tokens[i].Equals("("))
+                        {
+                            p1Counter++;
+                        }
+                        if (tokens[i].Equals(")"))
+                        {
+                            p2Counter++;
+                        }
+                    }
                 }
             }
             if (p1Counter != p2Counter)

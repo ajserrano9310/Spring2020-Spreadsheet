@@ -113,6 +113,10 @@ namespace SpreadsheetUtilities
                                 {
                                     throw new FormulaFormatException("Invalid formula expression");
                                 }
+                                if (p2Counter > p1Counter)
+                                {
+                                    throw new FormulaFormatException("Invalid formula expression");
+                                }
                             }
                         }else
                             if (isOperator(i))
@@ -234,7 +238,7 @@ namespace SpreadsheetUtilities
                             // We cant divide by 0
                             if (tryDouble == 0)
                             {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            return new FormulaError("Invalid formula expression");
                         }
                             // Perform division
                             double poppedValue = valStack.Pop();
@@ -360,9 +364,9 @@ namespace SpreadsheetUtilities
                         {
                             tryDouble = lookup(actualString);
                         }
-                        catch (ArgumentException)
+                        catch (Exception)
                         {
-                        throw new FormulaFormatException("Invalid formula expression");
+                        return new FormulaError("Invalid formula expression");
                     }
                         // Case where we have to divide with the variable
                         if (hasOnTop(opStack, "/"))
@@ -370,8 +374,8 @@ namespace SpreadsheetUtilities
                             // Check if we are going to divide by 0
                             if (tryDouble == 0)
                             {
-                                throw new ArgumentException();
-                            }
+                            return new FormulaError("Invalid formula expression");
+                        }
                             // Perform division
                             double poppedValue = valStack.Pop();
                             opStack.Pop();

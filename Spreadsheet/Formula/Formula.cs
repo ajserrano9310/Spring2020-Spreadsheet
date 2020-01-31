@@ -66,7 +66,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
-            if (formula == null)
+            if (isStringNullOrEmpty(formula))
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
@@ -590,6 +590,28 @@ namespace SpreadsheetUtilities
         public override int GetHashCode()
         {
             return this.ToString().GetHashCode();
+        }
+        /// <summary>
+        /// Checks if the string is null, empty or a white space
+        /// </summary>
+        /// <param name="expression">The string to check</param>
+        /// <returns>true if the string is null, empty or white space and false otherwise</returns>
+        public static Boolean isStringNullOrEmpty(String expression)
+        {
+            // We cant check null with .Equals because throws an error so we check it first
+            if (expression == null)
+            {
+                return true;
+            }
+            // Now we are safe so we can check with the .Equals function
+            if (expression.Equals(" ") || expression.Equals(""))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

@@ -345,13 +345,13 @@ namespace SpreadsheetUtilities
                             double val1 = valStack.Pop();
                             double val2 = valStack.Pop();
                             // Check if the divisor is going to be 0 because we cant do that
-                            if (val2 == 0)
+                            if (val1 == 0)
                             {
                             return new FormulaError("Invalid formula expression");
                         }
                             // Perform division
                             opStack.Pop();
-                            double val = val1 / val2;
+                            double val = val2 / val1;
                             valStack.Push(val);
                         }
                     }

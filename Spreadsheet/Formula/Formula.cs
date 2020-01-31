@@ -150,6 +150,9 @@ namespace SpreadsheetUtilities
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
+            if (isOperator(tokens.Length)){
+                throw new FormulaFormatException("Invalid formula expression");
+            }
         }
 
         private Boolean isVariable(int i)
@@ -228,8 +231,8 @@ namespace SpreadsheetUtilities
                             // We cant divide by 0
                             if (tryDouble == 0)
                             {
-                                throw new ArgumentException("Cant divide by zero");
-                            }
+                            throw new FormulaFormatException("Invalid formula expression");
+                        }
                             // Perform division
                             double poppedValue = valStack.Pop();
                             opStack.Pop();
@@ -315,8 +318,8 @@ namespace SpreadsheetUtilities
                         }
                         if (!hasOnTop(opStack, "("))
                         {
-                            throw new ArgumentException("Missing a (");
-                        }
+                        throw new FormulaFormatException("Invalid formula expression");
+                    }
                         // Take out the ( sign
                         opStack.Pop();
                         // Case of multiplication with parenthesis
@@ -338,8 +341,8 @@ namespace SpreadsheetUtilities
                             // Check if the divisor is going to be 0 because we cant do that
                             if (val2 == 0)
                             {
-                                throw new ArgumentException("We cant divide by zero");
-                            }
+                            throw new FormulaFormatException("Invalid formula expression");
+                        }
                             // Perform division
                             opStack.Pop();
                             double val = val1 / val2;
@@ -356,8 +359,8 @@ namespace SpreadsheetUtilities
                         }
                         catch (ArgumentException)
                         {
-                            throw new ArgumentException();
-                        }
+                        throw new FormulaFormatException("Invalid formula expression");
+                    }
                         // Case where we have to divide with the variable
                         if (hasOnTop(opStack, "/"))
                         {

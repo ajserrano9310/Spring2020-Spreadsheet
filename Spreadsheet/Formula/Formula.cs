@@ -474,7 +474,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override bool Equals(object obj)
         {
-            if(obj==null||!(obj is Formula))
+            if(ReferenceEquals(obj,null)||!(obj is Formula))
             {
                 return false;
             }
@@ -512,15 +512,15 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator ==(Formula f1, Formula f2)
         {
-            if (f1 == null && f2 != null)
+            if (ReferenceEquals(f1,null) && !ReferenceEquals(f2,null))
             {
                 return false;
             }
-            if (f1 != null && f2 == null)
+            if (!ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
             {
                 return false;
             }
-            if (f1 == null && f2 == null)
+            if (ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
             {
                 return true;
             }
@@ -534,15 +534,15 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator !=(Formula f1, Formula f2)
         {
-            if (f1 == null && f2 != null)
+            if (ReferenceEquals(f1, null) && !ReferenceEquals(f2, null))
             {
                 return true;
             }
-            if (f1 != null && f2 == null)
+            if (!ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
             {
                 return true;
             }
-            if (f1 == null && f2 == null)
+            if (ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
             {
                 return false;
             }

@@ -65,15 +65,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
-            if (formula.Equals(null))
-            {
-                throw new FormulaFormatException("Invalid formula expression");
-            }
-            if (formula.Trim().Equals(""))
-            {
-                throw new FormulaFormatException("Invalid formula expression");
-            }
-            if (formula.Trim().Equals(" "))
+            if (formula==null)
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
@@ -83,14 +75,15 @@ namespace SpreadsheetUtilities
             int p2Counter = 0;
             for(int i = 0; i < tokens.Length; i++)
             {
+                tokens[i] = tokens[i].Trim();
                 if (!int.TryParse(tokens[i], out int n))
                 {
-                    variables.Add(tokens[i].Trim());
-                    if (tokens[i].Trim().Equals("("))
+                    variables.Add(tokens[i]);
+                    if (tokens[i].Equals("("))
                     {
                         p1Counter++;
                     }
-                    if (tokens[i].Trim().Equals(")"))
+                    if (tokens[i].Equals(")"))
                     {
                         p2Counter++;
                     }
@@ -101,7 +94,7 @@ namespace SpreadsheetUtilities
                 }
                 else
                 {
-                    tokens[i] = normalize(tokens[i].Trim());
+                    tokens[i] = normalize(tokens[i]);
                 }
             }
             if (p1Counter != p2Counter)
@@ -322,10 +315,6 @@ namespace SpreadsheetUtilities
                         {
                             throw new ArgumentException();
                         }
-                        if (!(Regex.IsMatch(actualString, "^[a-z A-Z]+[0-9]")))
-                        {
-                            throw new ArgumentException();
-                        }
                         // Case where we have to divide with the variable
                         if (hasOnTop(opStack, "/"))
                         {
@@ -485,7 +474,35 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override bool Equals(object obj)
         {
-            return false;
+            if(obj==null||!(obj is Formula))
+            {
+                return false;
+            }
+            Formula formula = (Formula)obj;
+            if (this.tokens.Length != formula.tokens.Length)
+            {
+                return false;
+            }
+            double number1;
+            double number2;
+            for(int i = 0; i < this.tokens.Length; i++)
+            {
+                if (Double.TryParse(this.tokens[i], out number1) && Double.TryParse(formula.tokens[i], out number2))
+                {
+                    if (!number1.ToString().Equals(number2.ToString()))
+                    {
+                        return false; ;
+                    }
+                }
+                else
+                {
+                    if (!this.tokens[i].Equals(formula.tokens[i]))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -495,7 +512,19 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator ==(Formula f1, Formula f2)
         {
-            return false;
+            if (f1 == null && f2 != null)
+            {
+                return false;
+            }
+            if (f1 != null && f2 == null)
+            {
+                return false;
+            }
+            if (f1 == null && f2 == null)
+            {
+                return true;
+            }
+            return f1.Equals(f2);
         }
 
         /// <summary>
@@ -505,7 +534,19 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator !=(Formula f1, Formula f2)
         {
-            return false;
+            if (f1 == null && f2 != null)
+            {
+                return true;
+            }
+            if (f1 != null && f2 == null)
+            {
+                return true;
+            }
+            if (f1 == null && f2 == null)
+            {
+                return false;
+            }
+            return !f1.Equals(f2);
         }
 
         /// <summary>

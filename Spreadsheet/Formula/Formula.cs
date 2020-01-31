@@ -97,7 +97,7 @@ namespace SpreadsheetUtilities
                             p1Counter++;
                             if (i < tokens.Length-1)
                             {
-                                if (!(isVariable(i+1)||Double.TryParse(tokens[i+1], out double f)|| tokens[i + 1].Equals("(")))
+                                if (!(isVariable(i+1)||isNumber(i+1)|| tokens[i + 1].Equals("(")))
                                 {
                                     throw new FormulaFormatException("Invalid formula expression");
                                 }
@@ -109,7 +109,7 @@ namespace SpreadsheetUtilities
                             p2Counter++;
                             if (i < tokens.Length - 1)
                             {
-                                if (!isOperator(i + 1) || tokens[i + 1].Equals(")"))
+                                if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                                 {
                                     throw new FormulaFormatException("Invalid formula expression");
                                 }
@@ -119,7 +119,24 @@ namespace SpreadsheetUtilities
                         {
                             if (i < tokens.Length - 1)
                             {
-                                if(!(isVariable(i+1)|| Double.TryParse(tokens[i + 1], out double f) || tokens[i+1].Equals("(")))
+                                if(!(isVariable(i+1)|| isNumber(i+1) || tokens[i+1].Equals("(")))
+                                {
+                                    throw new FormulaFormatException("Invalid formula expression");
+                                }
+                            }
+                        }else if (isNumber(i))
+                        {
+                            if (i < tokens.Length - 1)
+                            {
+                                if (!(isOperator(i + 1) || tokens[i].Equals(")")))
+                                {
+                                    throw new FormulaFormatException("Invalid formula expression");
+                                }
+                            }
+                        }else if(isVariable(i)){
+                            if (i < tokens.Length - 1)
+                            {
+                                if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                                 {
                                     throw new FormulaFormatException("Invalid formula expression");
                                 }
@@ -148,6 +165,18 @@ namespace SpreadsheetUtilities
         private Boolean isOperator(int i)
         {
             if (tokens[i].Equals("*") || tokens[i].Equals("/") || tokens[i].Equals("-") || tokens[i].Equals("+") )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private Boolean isNumber(int i)
+        {
+            if (Double.TryParse(tokens[i], out double f))
             {
                 return true;
             }

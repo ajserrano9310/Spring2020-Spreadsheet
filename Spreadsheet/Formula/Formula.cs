@@ -66,6 +66,7 @@ namespace SpreadsheetUtilities
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
             tokens = GetTokens(formula).ToArray();
+            variables = new List<string>();
             for(int i = 0; i < tokens.Length; i++)
             {
                 if (!int.TryParse(tokens[i], out int n))

@@ -119,7 +119,7 @@ namespace SpreadsheetUtilities
                         {
                             if (i < tokens.Length - 1)
                             {
-                                if(!isVariable(i+1)||tokens[i].Equals(")")|| !Double.TryParse(tokens[i + 1], out double f))
+                                if(!(isVariable(i+1)|| Double.TryParse(tokens[i + 1], out double f) || tokens[i+1].Equals("(")))
                                 {
                                     throw new FormulaFormatException("Invalid formula expression");
                                 }

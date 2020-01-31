@@ -85,8 +85,6 @@ namespace SpreadsheetUtilities
                 else
                 {
                     tokens[i] = normalize(tokens[i]);
-                    if (!int.TryParse(tokens[i], out int n))
-                    {
                         if (isVariable(i) && !variables.Contains(tokens[i]))
                         {
                             variables.Add(tokens[i]);
@@ -146,7 +144,7 @@ namespace SpreadsheetUtilities
                                     throw new FormulaFormatException("Invalid formula expression");
                                 }
                             }
-                        }
+                        
                     }
                 }
                 
@@ -349,7 +347,7 @@ namespace SpreadsheetUtilities
                             // Check if the divisor is going to be 0 because we cant do that
                             if (val2 == 0)
                             {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            return new FormulaError("Invalid formula expression");
                         }
                             // Perform division
                             opStack.Pop();

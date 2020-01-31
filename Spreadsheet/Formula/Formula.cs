@@ -85,7 +85,7 @@ namespace SpreadsheetUtilities
                 else
                 {
                     tokens[i] = normalize(tokens[i]);
-                        if (isVariable(i) && !variables.Contains(tokens[i]))
+                        if (isVariable(i) && !variables.Contains(tokens[i])&&!isNumber(i))
                         {
                             variables.Add(tokens[i]);
                         }

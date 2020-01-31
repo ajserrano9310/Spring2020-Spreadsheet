@@ -112,14 +112,10 @@ namespace SpreadsheetUtilities
             Stack<double> valStack = new Stack<double>();
             double tryDouble;
             String actualString;
-            // Convert expression into tokens
-            //////////////////////////////////////////////////////////////FIX LATER/////////////////////////////////////////////////////////
-            string[] substrings = tokens;
-            //////////////////////////////////////////////////////////////FIX LATER/////////////////////////////////////////////////////////
             // Go trough each of the elements (tokens) from the expression
-            for (int i = 0; i < substrings.Length; i++)
+            for (int i = 0; i < tokens.Length; i++)
             {
-                actualString = substrings[i];
+                actualString = tokens[i];
                     // Check if its an integer and assign the value to tryInt
                     if (double.TryParse(actualString, out tryDouble))
                     {
@@ -293,9 +289,7 @@ namespace SpreadsheetUtilities
                         // Check if the variable exists if not throw an exception
                         try
                         {
-                            //////////////////////////////////////////////////////////////FIX LATER/////////////////////////////////////////////////////////
-                            tryDouble = (int)lookup(actualString);
-                            //////////////////////////////////////////////////////////////FIX LATER/////////////////////////////////////////////////////////
+                            tryDouble = lookup(actualString);
                         }
                         catch (ArgumentException)
                         {

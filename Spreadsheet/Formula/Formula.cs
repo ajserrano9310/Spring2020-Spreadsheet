@@ -65,7 +65,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
-            if (formula==null)
+            if (formula == null)
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
@@ -73,10 +73,10 @@ namespace SpreadsheetUtilities
             variables = new List<string>();
             int p1Counter = 0;
             int p2Counter = 0;
-            for(int i = 0; i < tokens.Length; i++)
+            for (int i = 0; i < tokens.Length; i++)
             {
                 tokens[i] = tokens[i].Trim();
-                
+
                 if (!isValid(tokens[i]))
                 {
                     throw new FormulaFormatException("Invalid formula expression");
@@ -86,24 +86,69 @@ namespace SpreadsheetUtilities
                     tokens[i] = normalize(tokens[i]);
                     if (!int.TryParse(tokens[i], out int n))
                     {
-                        if (!tokens[i].Equals("*") && !tokens[i].Equals("/") && !tokens[i].Equals("-") && !tokens[i].Equals("+") && !tokens[i].Equals("(") && !tokens[i].Equals(")") && !variables.Contains(tokens[i]))
+                        if (isVariable(i) && !variables.Contains(tokens[i]))
                         {
                             variables.Add(tokens[i]);
                         }
+
+
+
+
+
+
+
+
                         if (tokens[i].Equals("("))
                         {
                             p1Counter++;
+                            if (i != tokens.Length)
+                            {
+                                if (!(isVariable(i + 1) || Double.TryParse(tokens[i + 1], out double f)) || tokens[i + 1].Equals(")"))
+                                {
+                                    throw new FormulaFormatException("Invalid formula expression");
+                                }
+                            }
                         }
+                        else
                         if (tokens[i].Equals(")"))
                         {
                             p2Counter++;
+                            if (i != tokens.Length)
+                            {
+                                if (!isOperator(i + 1) || tokens[i + 1].Equals(")"))
+                                {
+                                    throw new FormulaFormatException("Invalid formula expression");
+                                }
+                            }
                         }
                     }
                 }
+                if (p1Counter != p2Counter)
+                {
+                    throw new FormulaFormatException("Invalid formula expression");
+                }
             }
-            if (p1Counter != p2Counter)
+        }
+
+        private Boolean isVariable(int i)
+        {
+            if(!tokens[i].Equals("*") && !tokens[i].Equals("/") && !tokens[i].Equals("-") && !tokens[i].Equals("+") && !tokens[i].Equals("(") && !tokens[i].Equals(")")){
+                return true;
+            }else
             {
-                throw new FormulaFormatException("Invalid formula expression");
+                return false;
+            }
+        }
+
+        private Boolean isOperator(int i)
+        {
+            if (tokens[i].Equals("*") || tokens[i].Equals("/") || tokens[i].Equals("-") || tokens[i].Equals("+") )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -400,7 +445,7 @@ namespace SpreadsheetUtilities
         /// <param name="stack">The stack to check</param>
         /// <param name="value">The value to search</param>
         /// <returns>true if the value is on top and false otherwise</returns>
-        public Boolean hasOnTop<T>(Stack<T> stack, T value)
+        private Boolean hasOnTop<T>(Stack<T> stack, T value)
         {
             // If the size of the stack is 0 we know is not there and we cant peek because is going to throw an error
             if (stack.Count == 0)

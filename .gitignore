@@ -256,4 +256,4 @@ coveragereport
 coverage.opencover.xml
 
 # Grading Tests
-FormulaEvaluatorTests
+GradingTests

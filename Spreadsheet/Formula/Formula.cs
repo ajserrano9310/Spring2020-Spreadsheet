@@ -78,8 +78,10 @@ namespace SpreadsheetUtilities
                 tokens[i] = tokens[i].Trim();
                 if (!int.TryParse(tokens[i], out int n))
                 {
-                    if(!tokens[i].Equals("*")&& !tokens[i].Equals("/")&& !tokens[i].Equals("-")&& !tokens[i].Equals("/"))
-                    variables.Add(tokens[i]);
+                    if (!tokens[i].Equals("*") && !tokens[i].Equals("/") && !tokens[i].Equals("-") && !tokens[i].Equals("/"))
+                    {
+                        variables.Add(tokens[i]);
+                    }
                     if (tokens[i].Equals("("))
                     {
                         p1Counter++;

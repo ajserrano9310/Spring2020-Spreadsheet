@@ -123,10 +123,11 @@ namespace SpreadsheetUtilities
                         }
                     }
                 }
-                if (p1Counter != p2Counter)
-                {
-                    throw new FormulaFormatException("Invalid formula expression");
-                }
+                
+            }
+            if (p1Counter != p2Counter)
+            {
+                throw new FormulaFormatException("Invalid formula expression");
             }
         }
 

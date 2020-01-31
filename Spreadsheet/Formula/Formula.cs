@@ -1,23 +1,4 @@
-﻿// Skeleton written by Joe Zachary for CS 3500, September 2013
-// Read the entire skeleton carefully and completely before you
-// do anything else!
-
-// Version 1.1 (9/22/13 11:45 a.m.)
-
-// Change log:
-//  (Version 1.1) Repaired mistake in GetTokens
-//  (Version 1.1) Changed specification of second constructor to
-//                clarify description of how validation works
-
-// (Daniel Kopta) 
-// Version 1.2 (9/10/17) 
-
-// Change log:
-//  (Version 1.2) Changed the definition of equality with regards
-//                to numeric tokens
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,6 +27,7 @@ namespace SpreadsheetUtilities
     public class Formula
     {
         private string[] tokens;
+        private List<string> variables;
         /// <summary>
         /// Creates a Formula from a string that consists of an infix expression written as
         /// described in the class comment.  If the expression is syntactically invalid,
@@ -83,13 +65,13 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
-            if (isStringNullOrEmpty(formula))
-            {
-                throw new FormulaFormatException("Invalid formula expression");
-            }
             tokens = GetTokens(formula).ToArray();
             for(int i = 0; i < tokens.Length; i++)
             {
+                if (!int.TryParse(tokens[i], out int n))
+                {
+                    variables.Add(tokens[i].Trim());
+                }
                 if (!isValid(tokens[i]))
                 {
                     throw new FormulaFormatException("Invalid formula expression");
@@ -98,28 +80,6 @@ namespace SpreadsheetUtilities
                 {
                     tokens[i] = normalize(tokens[i]);
                 }
-            }
-        }
-        /// <summary>
-        /// Checks if the string is null, empty or a white space
-        /// </summary>
-        /// <param name="expression">The string to check</param>
-        /// <returns>true if the string is null, empty or white space and false otherwise</returns>
-        public static Boolean isStringNullOrEmpty(String expression)
-        {
-            // We cant check null with .Equals because throws an error so we check it first
-            if (expression == null)
-            {
-                return true;
-            }
-            // Now we are safe so we can check with the .Equals function
-            if (expression.Equals(" ") || expression.Equals(""))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
@@ -147,10 +107,10 @@ namespace SpreadsheetUtilities
         public object Evaluate(Func<string, double> lookup)
         {
             // Create variables to use later
-            int result;
+            double result;
             Stack<string> opStack = new Stack<string>();
-            Stack<int> valStack = new Stack<int>();
-            int tryInt;
+            Stack<double> valStack = new Stack<double>();
+            double tryDouble;
             String actualString;
             // Convert expression into tokens
             //////////////////////////////////////////////////////////////FIX LATER/////////////////////////////////////////////////////////
@@ -159,14 +119,9 @@ namespace SpreadsheetUtilities
             // Go trough each of the elements (tokens) from the expression
             for (int i = 0; i < substrings.Length; i++)
             {
-                // Try to erase blank spaces
-                substrings[i] = substrings[i].Trim();
                 actualString = substrings[i];
-                // If it is a blank space we ignore it
-                if (!isStringNullOrEmpty(actualString))
-                {
                     // Check if its an integer and assign the value to tryInt
-                    if (int.TryParse(actualString, out tryInt))
+                    if (double.TryParse(actualString, out tryDouble))
                     {
                         // Case where we need to divide
                         if (hasOnTop(opStack, "/"))
@@ -177,14 +132,14 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform division");
                             }
                             // We cant divide by 0
-                            if (tryInt == 0)
+                            if (tryDouble == 0)
                             {
                                 throw new ArgumentException("Cant divide by zero");
                             }
                             // Perform division
-                            int poppedValue = valStack.Pop();
+                            double poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = poppedValue / tryInt;
+                            double val = poppedValue / tryDouble;
                             valStack.Push(val);
                         }
                         // Case where we need to multiply
@@ -196,14 +151,14 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform multiplication");
                             }
                             // Perform multiplication
-                            int poppedValue = valStack.Pop();
+                            double poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = poppedValue * tryInt;
+                            double val = poppedValue * tryDouble;
                             valStack.Push(val);
                         }
                         else
                         {
-                            valStack.Push(tryInt);
+                            valStack.Push(tryDouble);
                         }
                     }
                     // Case of addition and substraction
@@ -218,10 +173,10 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform substraction");
                             }
                             // Perform substraction
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
+                            double val1 = valStack.Pop();
+                            double val2 = valStack.Pop();
                             opStack.Pop();
-                            int val = val2 - val1;
+                            double val = val2 - val1;
                             valStack.Push(val);
                         }
                         // Case of addition
@@ -233,10 +188,10 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform addition");
                             }
                             // Perform addition
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
+                            double val1 = valStack.Pop();
+                            double val2 = valStack.Pop();
                             opStack.Pop();
-                            int val = val2 + val1;
+                            double val = val2 + val1;
                             valStack.Push(val);
                         }
                         opStack.Push(actualString);
@@ -268,9 +223,9 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform addition");
                             }
                             // Perform addition
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val2 + val1;
+                            double val1 = valStack.Pop();
+                            double val2 = valStack.Pop();
+                            double val = val2 + val1;
                             opStack.Pop();
                             valStack.Push(val);
                         }
@@ -283,9 +238,9 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform substraction");
                             }
                             // Perform substraction
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val2 - val1;
+                            double val1 = valStack.Pop();
+                            double val2 = valStack.Pop();
+                            double val = val2 - val1;
                             opStack.Pop();
                             valStack.Push(val);
                         }
@@ -304,9 +259,9 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform multiplication");
                             }
                             // Perform multiplication
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val2 * val1;
+                            double val1 = valStack.Pop();
+                            double val2 = valStack.Pop();
+                            double val = val2 * val1;
                             opStack.Pop();
                             valStack.Push(val);
                         }
@@ -319,8 +274,8 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException("Incorrect number of elements to perform division");
                             }
                             // Get the 2 values
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
+                            double val1 = valStack.Pop();
+                            double val2 = valStack.Pop();
                             // Check if the divisor is going to be 0 because we cant do that
                             if (val2 == 0)
                             {
@@ -328,7 +283,7 @@ namespace SpreadsheetUtilities
                             }
                             // Perform division
                             opStack.Pop();
-                            int val = val1 / val2;
+                            double val = val1 / val2;
                             valStack.Push(val);
                         }
                     }
@@ -339,7 +294,7 @@ namespace SpreadsheetUtilities
                         try
                         {
                             //////////////////////////////////////////////////////////////FIX LATER/////////////////////////////////////////////////////////
-                            tryInt = (int)lookup(actualString);
+                            tryDouble = (int)lookup(actualString);
                             //////////////////////////////////////////////////////////////FIX LATER/////////////////////////////////////////////////////////
                         }
                         catch (ArgumentException)
@@ -359,14 +314,14 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException();
                             }
                             // Check if we are going to divide by 0
-                            if (tryInt == 0)
+                            if (tryDouble == 0)
                             {
                                 throw new ArgumentException();
                             }
                             // Perform division
-                            int poppedValue = valStack.Pop();
+                            double poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = poppedValue / tryInt;
+                            double val = poppedValue / tryDouble;
                             valStack.Push(val);
                         }
                         else
@@ -379,17 +334,17 @@ namespace SpreadsheetUtilities
                                 throw new ArgumentException();
                             }
                             // Perform multiplication
-                            int poppedValue = valStack.Pop();
+                            double poppedValue = valStack.Pop();
                             opStack.Pop();
-                            int val = poppedValue * tryInt;
+                            double val = poppedValue * tryDouble;
                             valStack.Push(val);
                         }
                         else
                         {
-                            valStack.Push(tryInt);
+                            valStack.Push(tryDouble);
                         }
                     }
-                }
+                
             }
             // Now when the last token has been processed
             // If the operator stack is empty
@@ -409,8 +364,8 @@ namespace SpreadsheetUtilities
                 {
                     throw new ArgumentException();
                 }
-                int val1 = valStack.Pop();
-                int val2 = valStack.Pop();
+                double val1 = valStack.Pop();
+                double val2 = valStack.Pop();
                 // Check for the sign to see if its an addition or a substraction
                 String sign = opStack.Pop();
                 if (sign.Equals("-"))
@@ -464,7 +419,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public IEnumerable<String> GetVariables()
         {
-            return null;
+            return variables;
         }
 
         /// <summary>
@@ -479,7 +434,12 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override string ToString()
         {
-            return null;
+            String formula = "";
+            for(int i = 0; i < tokens.Length; i++)
+            {
+                formula = formula + tokens[i];
+            }
+            return formula;
         }
 
         /// <summary>
@@ -534,7 +494,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override int GetHashCode()
         {
-            return 0;
+            return this.GetHashCode();
         }
 
         /// <summary>

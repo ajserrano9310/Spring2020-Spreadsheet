@@ -225,11 +225,6 @@ namespace SpreadsheetUtilities
                         // Case where we need to divide
                         if (hasOnTop(opStack, "/"))
                         {
-                            // If the stack of values has 0 elements we dont have the correct number of elements to perform a division
-                            if (valStack.Count == 0)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform division");
-                            }
                             // We cant divide by 0
                             if (tryDouble == 0)
                             {
@@ -244,11 +239,6 @@ namespace SpreadsheetUtilities
                         // Case where we need to multiply
                         else if (hasOnTop(opStack, "*"))
                         {
-                            // If the stack of values has 0 elements we dont have the correct number of elements to perform a multiplication
-                            if (valStack.Count == 0)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform multiplication");
-                            }
                             // Perform multiplication
                             double poppedValue = valStack.Pop();
                             opStack.Pop();
@@ -266,11 +256,6 @@ namespace SpreadsheetUtilities
                         // Case of substraction
                         if (hasOnTop(opStack, "-"))
                         {
-                            // We need 2 values for substraction
-                            if (valStack.Count < 2)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform substraction");
-                            }
                             // Perform substraction
                             double val1 = valStack.Pop();
                             double val2 = valStack.Pop();
@@ -281,11 +266,6 @@ namespace SpreadsheetUtilities
                         // Case of addition
                         else if (hasOnTop(opStack, "+"))
                         {
-                            // We need 2 values for addition
-                            if (valStack.Count < 2)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform addition");
-                            }
                             // Perform addition
                             double val1 = valStack.Pop();
                             double val2 = valStack.Pop();
@@ -316,11 +296,6 @@ namespace SpreadsheetUtilities
                         // Case of addition with parenthesis
                         if (hasOnTop(opStack, "+"))
                         {
-                            // We need 2 values for addition
-                            if (valStack.Count < 2)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform addition");
-                            }
                             // Perform addition
                             double val1 = valStack.Pop();
                             double val2 = valStack.Pop();
@@ -331,11 +306,6 @@ namespace SpreadsheetUtilities
                         // Case of substraction with parenthesis
                         else if (hasOnTop(opStack, "-"))
                         {
-                            // We need 2 values for substraction
-                            if (valStack.Count < 2)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform substraction");
-                            }
                             // Perform substraction
                             double val1 = valStack.Pop();
                             double val2 = valStack.Pop();
@@ -352,11 +322,6 @@ namespace SpreadsheetUtilities
                         // Case of multiplication with parenthesis
                         if (hasOnTop(opStack, "*"))
                         {
-                            // We need 2 values for multiplication
-                            if (valStack.Count < 2)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform multiplication");
-                            }
                             // Perform multiplication
                             double val1 = valStack.Pop();
                             double val2 = valStack.Pop();
@@ -367,11 +332,6 @@ namespace SpreadsheetUtilities
                         // Case of division with parenthesis
                         else if (hasOnTop(opStack, "/"))
                         {
-                            // We need 2 values for division
-                            if (valStack.Count < 2)
-                            {
-                                throw new ArgumentException("Incorrect number of elements to perform division");
-                            }
                             // Get the 2 values
                             double val1 = valStack.Pop();
                             double val2 = valStack.Pop();
@@ -401,11 +361,6 @@ namespace SpreadsheetUtilities
                         // Case where we have to divide with the variable
                         if (hasOnTop(opStack, "/"))
                         {
-                            // We need another value to perform the division
-                            if (valStack.Count == 0)
-                            {
-                                throw new ArgumentException();
-                            }
                             // Check if we are going to divide by 0
                             if (tryDouble == 0)
                             {
@@ -421,11 +376,6 @@ namespace SpreadsheetUtilities
                             // Case where we have to multiply with the variable
                             if (hasOnTop(opStack, "*"))
                         {
-                            // We need another value to multiply
-                            if (valStack.Count == 0)
-                            {
-                                throw new ArgumentException();
-                            }
                             // Perform multiplication
                             double poppedValue = valStack.Pop();
                             opStack.Pop();
@@ -443,20 +393,11 @@ namespace SpreadsheetUtilities
             // If the operator stack is empty
             if (opStack.Count == 0)
             {
-                if (valStack.Count != 1)
-                {
-                    throw new ArgumentException();
-                }
                 result = valStack.Pop();
             }
             else
             // If the operator stack is not empty
             {
-                // We need 1 operator and two values to obtain the last value
-                if (opStack.Count != 1 || valStack.Count != 2)
-                {
-                    throw new ArgumentException();
-                }
                 double val1 = valStack.Pop();
                 double val2 = valStack.Pop();
                 // Check for the sign to see if its an addition or a substraction

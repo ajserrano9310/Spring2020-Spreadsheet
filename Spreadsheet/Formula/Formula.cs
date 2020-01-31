@@ -1,10 +1,8 @@
-﻿/// ADD HEADER
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-
 namespace SpreadsheetUtilities
 {
     /// <summary>
@@ -41,7 +39,6 @@ namespace SpreadsheetUtilities
             this(formula, s => s, s => true)
         {
         }
-
         /// <summary>
         /// Creates a Formula from a string that consists of an infix expression written as
         /// described in the class comment.  If the expression is syntactically incorrect,
@@ -153,6 +150,10 @@ namespace SpreadsheetUtilities
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
+            if (isOperator(0))
+            {
+                throw new FormulaFormatException("Invalid formula expression");
+            }
             if (tokens.Length != 0) {
                 if (isOperator(tokens.Length - 1))
                 {
@@ -160,7 +161,6 @@ namespace SpreadsheetUtilities
                 }
             }
         }
-
         private Boolean isVariable(int i)
         {
             if(!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")")){
@@ -170,7 +170,6 @@ namespace SpreadsheetUtilities
                 return false;
             }
         }
-
         private Boolean isOperator(int i)
         {
             if (tokens[i].Equals("*") || tokens[i].Equals("/") || tokens[i].Equals("-") || tokens[i].Equals("+") )
@@ -182,7 +181,6 @@ namespace SpreadsheetUtilities
                 return false;
             }
         }
-
         private Boolean isNumber(int i)
         {
             if (Double.TryParse(tokens[i], out double f))
@@ -194,7 +192,6 @@ namespace SpreadsheetUtilities
                 return false;
             }
         }
-
         /// <summary>
         /// Evaluates this Formula, using the lookup delegate to determine the values of
         /// variables.  When a variable symbol v needs to be determined, it should be looked up
@@ -464,7 +461,6 @@ namespace SpreadsheetUtilities
         {
             return variables;
         }
-
         /// <summary>
         /// Returns a string containing no spaces which, if passed to the Formula
         /// constructor, will produce a Formula f such that this.Equals(f).  All of the
@@ -484,7 +480,6 @@ namespace SpreadsheetUtilities
             }
             return formula;
         }
-
         /// <summary>
         /// If obj is null or obj is not a Formula, returns false.  Otherwise, reports
         /// whether or not this Formula and obj are equal.
@@ -537,7 +532,6 @@ namespace SpreadsheetUtilities
             }
             return true;
         }
-
         /// <summary>
         /// Reports whether f1 == f2, using the notion of equality from the Equals method.
         /// Note that if both f1 and f2 are null, this method should return true.  If one is
@@ -559,7 +553,6 @@ namespace SpreadsheetUtilities
             }
             return f1.Equals(f2);
         }
-
         /// <summary>
         /// Reports whether f1 != f2, using the notion of equality from the Equals method.
         /// Note that if both f1 and f2 are null, this method should return false.  If one is
@@ -581,7 +574,6 @@ namespace SpreadsheetUtilities
             }
             return !f1.Equals(f2);
         }
-
         /// <summary>
         /// Returns a hash code for this Formula.  If f1.Equals(f2), then it must be the
         /// case that f1.GetHashCode() == f2.GetHashCode().  Ideally, the probability that two 
@@ -613,7 +605,6 @@ namespace SpreadsheetUtilities
                 return false;
             }
         }
-
         /// <summary>
         /// Given an expression, enumerates the tokens that compose it.  Tokens are left paren;
         /// right paren; one of the four operator symbols; a string consisting of a letter or underscore
@@ -629,11 +620,8 @@ namespace SpreadsheetUtilities
             String varPattern = @"[a-zA-Z_](?: [a-zA-Z_]|\d)*";
             String doublePattern = @"(?: \d+\.\d* | \d*\.\d+ | \d+ ) (?: [eE][\+-]?\d+)?";
             String spacePattern = @"\s+";
-
             // Overall pattern
-            String pattern = String.Format("({0}) | ({1}) | ({2}) | ({3}) | ({4}) | ({5})",
-                                            lpPattern, rpPattern, opPattern, varPattern, doublePattern, spacePattern);
-
+            String pattern = String.Format("({0}) | ({1}) | ({2}) | ({3}) | ({4}) | ({5})",lpPattern, rpPattern, opPattern, varPattern, doublePattern, spacePattern);
             // Enumerate matching tokens that don't consist solely of white space.
             foreach (String s in Regex.Split(formula, pattern, RegexOptions.IgnorePatternWhitespace))
             {
@@ -645,7 +633,6 @@ namespace SpreadsheetUtilities
 
         }
     }
-
     /// <summary>
     /// Used to report syntactic errors in the argument to the Formula constructor.
     /// </summary>
@@ -659,7 +646,6 @@ namespace SpreadsheetUtilities
         {
         }
     }
-
     /// <summary>
     /// Used as a possible return value of the Formula.Evaluate method.
     /// </summary>
@@ -674,11 +660,9 @@ namespace SpreadsheetUtilities
         {
             Reason = reason;
         }
-
         /// <summary>
         ///  The reason why this FormulaError was created.
         /// </summary>
         public string Reason { get; private set; }
     }
 }
-

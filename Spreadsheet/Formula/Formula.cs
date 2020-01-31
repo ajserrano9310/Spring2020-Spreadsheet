@@ -1,5 +1,26 @@
-﻿using System;
+﻿// Skeleton written by Joe Zachary for CS 3500, September 2013
+// Read the entire skeleton carefully and completely before you
+// do anything else!
+
+// Version 1.1 (9/22/13 11:45 a.m.)
+
+// Change log:
+//  (Version 1.1) Repaired mistake in GetTokens
+//  (Version 1.1) Changed specification of second constructor to
+//                clarify description of how validation works
+
+// (Daniel Kopta) 
+// Version 1.2 (9/10/17) 
+
+// Change log:
+//  (Version 1.2) Changed the definition of equality with regards
+//                to numeric tokens
+
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SpreadsheetUtilities
@@ -24,6 +45,7 @@ namespace SpreadsheetUtilities
     /// </summary>
     public class Formula
     {
+        private string[] tokens;
         /// <summary>
         /// Creates a Formula from a string that consists of an infix expression written as
         /// described in the class comment.  If the expression is syntactically invalid,
@@ -61,6 +83,44 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
+            if (isStringNullOrEmpty(formula))
+            {
+                throw new FormulaFormatException("Invalid formula expression");
+            }
+            tokens = GetTokens(formula).ToArray();
+            for(int i = 0; i < tokens.Length; i++)
+            {
+                if (!isValid(tokens[i]))
+                {
+                    throw new FormulaFormatException("Invalid formula expression");
+                }
+                else
+                {
+                    tokens[i] = normalize(tokens[i]);
+                }
+            }
+        }
+        /// <summary>
+        /// Checks if the string is null, empty or a white space
+        /// </summary>
+        /// <param name="expression">The string to check</param>
+        /// <returns>true if the string is null, empty or white space and false otherwise</returns>
+        public static Boolean isStringNullOrEmpty(String expression)
+        {
+            // We cant check null with .Equals because throws an error so we check it first
+            if (expression == null)
+            {
+                return true;
+            }
+            // Now we are safe so we can check with the .Equals function
+            if (expression.Equals(" ") || expression.Equals(""))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

@@ -78,6 +78,7 @@ namespace SpreadsheetUtilities
                 tokens[i] = tokens[i].Trim();
                 if (!int.TryParse(tokens[i], out int n))
                 {
+                    if(!tokens[i].Equals("*")&& !tokens[i].Equals("/")&& !tokens[i].Equals("-")&& !tokens[i].Equals("/"))
                     variables.Add(tokens[i]);
                     if (tokens[i].Equals("("))
                     {
@@ -556,7 +557,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override int GetHashCode()
         {
-            return this.GetHashCode();
+            return this.ToString().GetHashCode();
         }
 
         /// <summary>

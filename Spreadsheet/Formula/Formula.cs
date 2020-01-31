@@ -65,13 +65,35 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
+            if (formula.Equals(null))
+            {
+                throw new FormulaFormatException("Invalid formula expression");
+            }
+            if (formula.Trim().Equals(""))
+            {
+                throw new FormulaFormatException("Invalid formula expression");
+            }
+            if (formula.Trim().Equals(" "))
+            {
+                throw new FormulaFormatException("Invalid formula expression");
+            }
             tokens = GetTokens(formula).ToArray();
             variables = new List<string>();
+            int p1Counter = 0;
+            int p2Counter = 0;
             for(int i = 0; i < tokens.Length; i++)
             {
                 if (!int.TryParse(tokens[i], out int n))
                 {
                     variables.Add(tokens[i].Trim());
+                    if (tokens[i].Trim().Equals("("))
+                    {
+                        p1Counter++;
+                    }
+                    if (tokens[i].Trim().Equals(")"))
+                    {
+                        p2Counter++;
+                    }
                 }
                 if (!isValid(tokens[i]))
                 {
@@ -79,8 +101,12 @@ namespace SpreadsheetUtilities
                 }
                 else
                 {
-                    tokens[i] = normalize(tokens[i]);
+                    tokens[i] = normalize(tokens[i].Trim());
                 }
+            }
+            if (p1Counter != p2Counter)
+            {
+                throw new FormulaFormatException("Invalid formula expression");
             }
         }
 

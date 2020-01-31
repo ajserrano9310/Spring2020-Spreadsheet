@@ -128,7 +128,7 @@ namespace SpreadsheetUtilities
                         {
                             if (i < tokens.Length - 1)
                             {
-                                if (!(isOperator(i + 1) || tokens[i].Equals(")")))
+                                if (!(isOperator(i + 1) || tokens[i+1].Equals(")")))
                                 {
                                     throw new FormulaFormatException("Invalid formula expression");
                                 }
@@ -150,14 +150,17 @@ namespace SpreadsheetUtilities
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
-            if (isOperator(tokens.Length)){
-                throw new FormulaFormatException("Invalid formula expression");
+            if (tokens.Length != 0) {
+                if (isOperator(tokens.Length - 1))
+                {
+                    throw new FormulaFormatException("Invalid formula expression");
+                }
             }
         }
 
         private Boolean isVariable(int i)
         {
-            if(!tokens[i].Equals("*") && !tokens[i].Equals("/") && !tokens[i].Equals("-") && !tokens[i].Equals("+") && !tokens[i].Equals("(") && !tokens[i].Equals(")")){
+            if(!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")")){
                 return true;
             }else
             {

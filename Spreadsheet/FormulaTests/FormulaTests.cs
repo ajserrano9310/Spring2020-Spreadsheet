@@ -209,6 +209,33 @@ namespace FormulaTests
             Assert.IsTrue(f.Evaluate(Lookup) is FormulaError);
         }
         /// <summary>
+        /// Tests if the exception is thrown if a number does not have a valid operation next to it
+        /// </summary>
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression11()
+        {
+            Formula f = new Formula("5(", Normalizer, IsValid);
+        }
+        /// <summary>
+        /// Tests if the exception is thrown if the number of parenthesis does not match
+        /// </summary>
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression12()
+        {
+            Formula f = new Formula("(((((((((((5+2))))))", Normalizer, IsValid);
+        }
+        /// <summary>
+        /// Tests if the exception is thrown if the last token is an operator
+        /// </summary>
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression13()
+        {
+            Formula f = new Formula("5+2*", Normalizer, IsValid);
+        }
+        /// <summary>
         /// Tests an addition between parenthesis
         /// </summary>
         [TestMethod()]
@@ -312,6 +339,129 @@ namespace FormulaTests
         {
             Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
             Assert.AreEqual("10-X1", f1.ToString());
+        }
+        /// <summary>
+        /// Tests the Equals method with null as the object
+        /// </summary>
+        [TestMethod()]
+        public void TestEqualsWithNull()
+        {
+            Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual(false, f1.Equals(null));
+        }
+        /// <summary>
+        /// Tests the Equals method with string as the object
+        /// </summary>
+        [TestMethod()]
+        public void TestEqualsWithString()
+        {
+            Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
+            String s = "Hello";
+            Assert.AreEqual(false, f1.Equals(s));
+        }
+        /// <summary>
+        /// Tests the Equals method with a different formula
+        /// </summary>
+        [TestMethod()]
+        public void TestEqualsWithDifferentFormula()
+        {
+            Formula f1 = new Formula("10 - x1+7", Normalizer, IsValid);
+            Formula f2 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual(false, f1.Equals(f2));
+        }
+        /// <summary>
+        /// Tests the Equals method with an equal formula
+        /// </summary>
+        [TestMethod()]
+        public void TestEqualsWithEqualFormula()
+        {
+            Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
+            Formula f2 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual(true, f1.Equals(f2));
+        }
+        /// <summary>
+        /// Tests the Equals sign method with f1 null
+        /// </summary>
+        [TestMethod()]
+        public void TestEqualsSignF1Null()
+        {
+            Formula f2 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual(false, f2 == null);
+        }
+        /// <summary>
+        /// Tests the Equals sign method with f2 null
+        /// </summary>
+        [TestMethod()]
+        public void TestEqualsSignF2Null()
+        {
+            Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual(false, f1 == null);
+        }
+        /// <summary>
+        /// Tests the Not Equals sign method with f1 null
+        /// </summary>
+        [TestMethod()]
+        public void TestNotEqualsSignF1Null()
+        {
+            Formula f2 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual(true, f2 != null);
+        }
+        /// <summary>
+        /// Tests the Not Equals sign method with f2 null
+        /// </summary>
+        [TestMethod()]
+        public void TestNotEqualsSignF2Null()
+        {
+            Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual(true, f1 != null);
+        }
+        /*
+         * These Formula expressions were taken from the Assignment One - Formula Evaluator Grading Tests and modified for the Evaluate method tests
+         */
+        /// <summary>
+        /// Tests the Evaluate method with a complex formula
+        /// </summary>
+        [TestMethod()]
+        public void TestEvaluateComplex1()
+        {
+            Formula f1 = new Formula("2+3*5+(3+4*8)*5+2", Normalizer, IsValid);
+            Assert.AreEqual(194.0, f1.Evaluate(Lookup));
+        }
+        /// <summary>
+        /// Tests the Evaluate method with a complex formula
+        /// </summary>
+        [TestMethod()]
+        public void TestEvaluateComplex2()
+        {
+            Formula f1 = new Formula("2+3*(3+5)", Normalizer, IsValid);
+            Assert.AreEqual(26.0, f1.Evaluate(Lookup));
+        }
+        /// <summary>
+        /// Tests the Evaluate method with a complex formula
+        /// </summary>
+        [TestMethod()]
+        public void TestEvaluateComplex3()
+        {
+            Formula f1 = new Formula("(1*1)-2/2", Normalizer, IsValid);
+            Assert.AreEqual(0.0, f1.Evaluate(Lookup));
+        }
+        /// <summary>
+        /// Tests the Evaluate method with a complex formula
+        /// </summary>
+        [TestMethod()]
+        public void TestEvaluateComplex4()
+        {
+            Formula f1 = new Formula("2+(3+5*9)", Normalizer, IsValid);
+            Assert.AreEqual(50.0, f1.Evaluate(Lookup));
+        }
+        /// <summary>
+        /// Tests the Evaluate method with a complex formula
+        /// </summary>
+        [TestMethod()]
+        public void TestEvaluateComplex5()
+        {
+            Formula f1 = new Formula("2+(3+5)", Normalizer, IsValid);
+            Assert.AreEqual(10.0, f1.Evaluate(Lookup));
         }
         /// <summary>
         /// Converts the string to uppercase characters

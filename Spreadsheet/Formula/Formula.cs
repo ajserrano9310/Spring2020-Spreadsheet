@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 namespace SpreadsheetUtilities
 {
@@ -74,7 +73,7 @@ namespace SpreadsheetUtilities
             for (int i = 0; i < tokens.Length; i++)
             {
                 tokens[i] = tokens[i].Trim();
-                if (isVariable(i))
+                if (isVariable(i)&&!isNumber(i))
                 {
                     tokens[i] = normalize(tokens[i]);
                     if (!isValid(tokens[i]))
@@ -82,71 +81,72 @@ namespace SpreadsheetUtilities
                     {
                         throw new FormulaFormatException("Invalid formula expression");
                     }
-                    if(!variables.Contains(tokens[i]) && !isNumber(i))
+                    if (!variables.Contains(tokens[i]) && !isNumber(i))
                     {
                         variables.Add(tokens[i]);
                     }
                 }
-
-
-
-                        if (tokens[i].Equals("("))
+                if (tokens[i].Equals("("))
+                {
+                    p1Counter++;
+                    if (i < tokens.Length - 1)
+                    {
+                        if (!(isVariable(i + 1) || isNumber(i + 1) || tokens[i + 1].Equals("(")))
                         {
-                            p1Counter++;
-                            if (i < tokens.Length-1)
-                            {
-                                if (!(isVariable(i+1)||isNumber(i+1)|| tokens[i + 1].Equals("(")))
-                                {
-                                    throw new FormulaFormatException("Invalid formula expression");
-                                }
-                            }
+                            throw new FormulaFormatException("Invalid formula expression");
                         }
-                        else
-                        if (tokens[i].Equals(")"))
-                        {
-                            p2Counter++;
-                            if (i < tokens.Length - 1)
-                            {
-                                if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
-                                {
-                                    throw new FormulaFormatException("Invalid formula expression");
-                                }
-                                if (p2Counter > p1Counter)
-                                {
-                                    throw new FormulaFormatException("Invalid formula expression");
-                                }
-                            }
-                        }else
-                            if (isOperator(i))
-                        {
-                            if (i < tokens.Length - 1)
-                            {
-                                if(!(isVariable(i+1)|| isNumber(i+1) || tokens[i+1].Equals("(")))
-                                {
-                                    throw new FormulaFormatException("Invalid formula expression");
-                                }
-                            }
-                        }else if (isNumber(i))
-                        {
-                            if (i < tokens.Length - 1)
-                            {
-                                if (!(isOperator(i + 1) || tokens[i+1].Equals(")")))
-                                {
-                                    throw new FormulaFormatException("Invalid formula expression");
-                                }
-                            }
-                        }else if(isVariable(i)){
-                            if (i < tokens.Length - 1)
-                            {
-                                if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
-                                {
-                                    throw new FormulaFormatException("Invalid formula expression");
-                                }
-                            }
-                        
-                    
+                    }
                 }
-                
+                else
+                if (tokens[i].Equals(")"))
+                {
+                    p2Counter++;
+                    if (i < tokens.Length - 1)
+                    {
+                        if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
+                        {
+                            throw new FormulaFormatException("Invalid formula expression");
+                        }
+                        if (p2Counter > p1Counter)
+                        {
+                            throw new FormulaFormatException("Invalid formula expression");
+                        }
+                    }
+                }
+                else
+                    if (isOperator(i))
+                {
+                    if (i < tokens.Length - 1)
+                    {
+                        if (!(isVariable(i + 1) || isNumber(i + 1) || tokens[i + 1].Equals("(")))
+                        {
+                            throw new FormulaFormatException("Invalid formula expression");
+                        }
+                    }
+                }
+                else if (isNumber(i))
+                {
+                    if (i < tokens.Length - 1)
+                    {
+                        if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
+                        {
+                            throw new FormulaFormatException("Invalid formula expression");
+                        }
+                    }
+                }
+                else if (isVariable(i))
+                {
+                    if (i < tokens.Length - 1)
+                    {
+                        if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
+                        {
+                            throw new FormulaFormatException("Invalid formula expression");
+                        }
+                    }
+
+
+                }
+
             }
             if (p1Counter != p2Counter)
             {
@@ -156,7 +156,8 @@ namespace SpreadsheetUtilities
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
-            if (tokens.Length != 0) {
+            if (tokens.Length != 0)
+            {
                 if (isOperator(tokens.Length - 1))
                 {
                     throw new FormulaFormatException("Invalid formula expression");
@@ -165,16 +166,18 @@ namespace SpreadsheetUtilities
         }
         private Boolean isVariable(int i)
         {
-            if(!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")")){
+            if (!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")"))
+            {
                 return true;
-            }else
+            }
+            else
             {
                 return false;
             }
         }
         private Boolean isOperator(int i)
         {
-            if (tokens[i].Equals("*") || tokens[i].Equals("/") || tokens[i].Equals("-") || tokens[i].Equals("+") )
+            if (tokens[i].Equals("*") || tokens[i].Equals("/") || tokens[i].Equals("-") || tokens[i].Equals("+"))
             {
                 return true;
             }
@@ -227,175 +230,175 @@ namespace SpreadsheetUtilities
             for (int i = 0; i < tokens.Length; i++)
             {
                 actualString = tokens[i];
-                    // Check if its an integer and assign the value to tryInt
-                    if (double.TryParse(actualString, out tryDouble))
+                // Check if its an integer and assign the value to tryInt
+                if (double.TryParse(actualString, out tryDouble))
+                {
+                    // Case where we need to divide
+                    if (hasOnTop(opStack, "/"))
                     {
-                        // Case where we need to divide
-                        if (hasOnTop(opStack, "/"))
+                        // We cant divide by 0
+                        if (tryDouble == 0)
                         {
-                            // We cant divide by 0
-                            if (tryDouble == 0)
-                            {
                             return new FormulaError("Invalid formula expression");
                         }
-                            // Perform division
-                            double poppedValue = valStack.Pop();
-                            opStack.Pop();
-                            double val = poppedValue / tryDouble;
-                            valStack.Push(val);
-                        }
-                        // Case where we need to multiply
-                        else if (hasOnTop(opStack, "*"))
-                        {
-                            // Perform multiplication
-                            double poppedValue = valStack.Pop();
-                            opStack.Pop();
-                            double val = poppedValue * tryDouble;
-                            valStack.Push(val);
-                        }
-                        else
-                        {
-                            valStack.Push(tryDouble);
-                        }
-                    }
-                    // Case of addition and substraction
-                    else if (actualString.Equals("+") || actualString.Equals("-"))
-                    {
-                        // Case of substraction
-                        if (hasOnTop(opStack, "-"))
-                        {
-                            // Perform substraction
-                            double val1 = valStack.Pop();
-                            double val2 = valStack.Pop();
-                            opStack.Pop();
-                            double val = val2 - val1;
-                            valStack.Push(val);
-                        }
-                        // Case of addition
-                        else if (hasOnTop(opStack, "+"))
-                        {
-                            // Perform addition
-                            double val1 = valStack.Pop();
-                            double val2 = valStack.Pop();
-                            opStack.Pop();
-                            double val = val2 + val1;
-                            valStack.Push(val);
-                        }
-                        opStack.Push(actualString);
-                    }
-                    // Case where the token is a *
-                    else if (actualString.Equals("*"))
-                    {
-                        opStack.Push("*");
-                    }
-                    // Case where the token is a /
-                    else if (actualString.Equals("/"))
-                    {
-                        opStack.Push("/");
-                    }
-                    // Case where the token is a (
-                    else if (actualString.Equals("("))
-                    {
-                        opStack.Push("(");
-                    }
-                    // Case where the token is a )
-                    else if (actualString.Equals(")"))
-                    {
-                        // Case of addition with parenthesis
-                        if (hasOnTop(opStack, "+"))
-                        {
-                            // Perform addition
-                            double val1 = valStack.Pop();
-                            double val2 = valStack.Pop();
-                            double val = val2 + val1;
-                            opStack.Pop();
-                            valStack.Push(val);
-                        }
-                        // Case of substraction with parenthesis
-                        else if (hasOnTop(opStack, "-"))
-                        {
-                            // Perform substraction
-                            double val1 = valStack.Pop();
-                            double val2 = valStack.Pop();
-                            double val = val2 - val1;
-                            opStack.Pop();
-                            valStack.Push(val);
-                        }
-                        if (!hasOnTop(opStack, "("))
-                        {
-                        throw new FormulaFormatException("Invalid formula expression");
-                    }
-                        // Take out the ( sign
+                        // Perform division
+                        double poppedValue = valStack.Pop();
                         opStack.Pop();
-                        // Case of multiplication with parenthesis
-                        if (hasOnTop(opStack, "*"))
-                        {
-                            // Perform multiplication
-                            double val1 = valStack.Pop();
-                            double val2 = valStack.Pop();
-                            double val = val2 * val1;
-                            opStack.Pop();
-                            valStack.Push(val);
-                        }
-                        // Case of division with parenthesis
-                        else if (hasOnTop(opStack, "/"))
-                        {
-                            // Get the 2 values
-                            double val1 = valStack.Pop();
-                            double val2 = valStack.Pop();
-                            // Check if the divisor is going to be 0 because we cant do that
-                            if (val1 == 0)
-                            {
-                            return new FormulaError("Invalid formula expression");
-                        }
-                            // Perform division
-                            opStack.Pop();
-                            double val = val2 / val1;
-                            valStack.Push(val);
-                        }
+                        double val = poppedValue / tryDouble;
+                        valStack.Push(val);
                     }
-                    // Case where its a variable
+                    // Case where we need to multiply
+                    else if (hasOnTop(opStack, "*"))
+                    {
+                        // Perform multiplication
+                        double poppedValue = valStack.Pop();
+                        opStack.Pop();
+                        double val = poppedValue * tryDouble;
+                        valStack.Push(val);
+                    }
                     else
                     {
-                        // Check if the variable exists if not throw an exception
-                        try
-                        {
-                            tryDouble = lookup(actualString);
-                        }
-                        catch (Exception)
-                        {
-                        return new FormulaError("Invalid formula expression");
+                        valStack.Push(tryDouble);
                     }
-                        // Case where we have to divide with the variable
-                        if (hasOnTop(opStack, "/"))
+                }
+                // Case of addition and substraction
+                else if (actualString.Equals("+") || actualString.Equals("-"))
+                {
+                    // Case of substraction
+                    if (hasOnTop(opStack, "-"))
+                    {
+                        // Perform substraction
+                        double val1 = valStack.Pop();
+                        double val2 = valStack.Pop();
+                        opStack.Pop();
+                        double val = val2 - val1;
+                        valStack.Push(val);
+                    }
+                    // Case of addition
+                    else if (hasOnTop(opStack, "+"))
+                    {
+                        // Perform addition
+                        double val1 = valStack.Pop();
+                        double val2 = valStack.Pop();
+                        opStack.Pop();
+                        double val = val2 + val1;
+                        valStack.Push(val);
+                    }
+                    opStack.Push(actualString);
+                }
+                // Case where the token is a *
+                else if (actualString.Equals("*"))
+                {
+                    opStack.Push("*");
+                }
+                // Case where the token is a /
+                else if (actualString.Equals("/"))
+                {
+                    opStack.Push("/");
+                }
+                // Case where the token is a (
+                else if (actualString.Equals("("))
+                {
+                    opStack.Push("(");
+                }
+                // Case where the token is a )
+                else if (actualString.Equals(")"))
+                {
+                    // Case of addition with parenthesis
+                    if (hasOnTop(opStack, "+"))
+                    {
+                        // Perform addition
+                        double val1 = valStack.Pop();
+                        double val2 = valStack.Pop();
+                        double val = val2 + val1;
+                        opStack.Pop();
+                        valStack.Push(val);
+                    }
+                    // Case of substraction with parenthesis
+                    else if (hasOnTop(opStack, "-"))
+                    {
+                        // Perform substraction
+                        double val1 = valStack.Pop();
+                        double val2 = valStack.Pop();
+                        double val = val2 - val1;
+                        opStack.Pop();
+                        valStack.Push(val);
+                    }
+                    if (!hasOnTop(opStack, "("))
+                    {
+                        throw new FormulaFormatException("Invalid formula expression");
+                    }
+                    // Take out the ( sign
+                    opStack.Pop();
+                    // Case of multiplication with parenthesis
+                    if (hasOnTop(opStack, "*"))
+                    {
+                        // Perform multiplication
+                        double val1 = valStack.Pop();
+                        double val2 = valStack.Pop();
+                        double val = val2 * val1;
+                        opStack.Pop();
+                        valStack.Push(val);
+                    }
+                    // Case of division with parenthesis
+                    else if (hasOnTop(opStack, "/"))
+                    {
+                        // Get the 2 values
+                        double val1 = valStack.Pop();
+                        double val2 = valStack.Pop();
+                        // Check if the divisor is going to be 0 because we cant do that
+                        if (val1 == 0)
                         {
-                            // Check if we are going to divide by 0
-                            if (tryDouble == 0)
-                            {
                             return new FormulaError("Invalid formula expression");
                         }
-                            // Perform division
-                            double poppedValue = valStack.Pop();
-                            opStack.Pop();
-                            double val = poppedValue / tryDouble;
-                            valStack.Push(val);
-                        }
-                        else
-                            // Case where we have to multiply with the variable
-                            if (hasOnTop(opStack, "*"))
-                        {
-                            // Perform multiplication
-                            double poppedValue = valStack.Pop();
-                            opStack.Pop();
-                            double val = poppedValue * tryDouble;
-                            valStack.Push(val);
-                        }
-                        else
-                        {
-                            valStack.Push(tryDouble);
-                        }
+                        // Perform division
+                        opStack.Pop();
+                        double val = val2 / val1;
+                        valStack.Push(val);
                     }
-                
+                }
+                // Case where its a variable
+                else
+                {
+                    // Check if the variable exists if not throw an exception
+                    try
+                    {
+                        tryDouble = lookup(actualString);
+                    }
+                    catch (Exception)
+                    {
+                        return new FormulaError("Invalid formula expression");
+                    }
+                    // Case where we have to divide with the variable
+                    if (hasOnTop(opStack, "/"))
+                    {
+                        // Check if we are going to divide by 0
+                        if (tryDouble == 0)
+                        {
+                            return new FormulaError("Invalid formula expression");
+                        }
+                        // Perform division
+                        double poppedValue = valStack.Pop();
+                        opStack.Pop();
+                        double val = poppedValue / tryDouble;
+                        valStack.Push(val);
+                    }
+                    else
+                        // Case where we have to multiply with the variable
+                        if (hasOnTop(opStack, "*"))
+                    {
+                        // Perform multiplication
+                        double poppedValue = valStack.Pop();
+                        opStack.Pop();
+                        double val = poppedValue * tryDouble;
+                        valStack.Push(val);
+                    }
+                    else
+                    {
+                        valStack.Push(tryDouble);
+                    }
+                }
+
             }
             // Now when the last token has been processed
             // If the operator stack is empty
@@ -476,7 +479,7 @@ namespace SpreadsheetUtilities
         public override string ToString()
         {
             String formula = "";
-            for(int i = 0; i < tokens.Length; i++)
+            for (int i = 0; i < tokens.Length; i++)
             {
                 formula = formula + tokens[i];
             }
@@ -504,7 +507,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(obj,null)||!(obj is Formula))
+            if (ReferenceEquals(obj, null) || !(obj is Formula))
             {
                 return false;
             }
@@ -515,7 +518,7 @@ namespace SpreadsheetUtilities
             }
             double number1;
             double number2;
-            for(int i = 0; i < this.tokens.Length; i++)
+            for (int i = 0; i < this.tokens.Length; i++)
             {
                 if (Double.TryParse(this.tokens[i], out number1) && Double.TryParse(formula.tokens[i], out number2))
                 {
@@ -541,7 +544,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator ==(Formula f1, Formula f2)
         {
-            if (ReferenceEquals(f1,null) && !ReferenceEquals(f2,null))
+            if (ReferenceEquals(f1, null) && !ReferenceEquals(f2, null))
             {
                 return false;
             }
@@ -623,7 +626,7 @@ namespace SpreadsheetUtilities
             String doublePattern = @"(?: \d+\.\d* | \d*\.\d+ | \d+ ) (?: [eE][\+-]?\d+)?";
             String spacePattern = @"\s+";
             // Overall pattern
-            String pattern = String.Format("({0}) | ({1}) | ({2}) | ({3}) | ({4}) | ({5})",lpPattern, rpPattern, opPattern, varPattern, doublePattern, spacePattern);
+            String pattern = String.Format("({0}) | ({1}) | ({2}) | ({3}) | ({4}) | ({5})", lpPattern, rpPattern, opPattern, varPattern, doublePattern, spacePattern);
             // Enumerate matching tokens that don't consist solely of white space.
             foreach (String s in Regex.Split(formula, pattern, RegexOptions.IgnorePatternWhitespace))
             {

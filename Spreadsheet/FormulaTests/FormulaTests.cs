@@ -36,11 +36,25 @@ namespace FormulaTests
         [TestMethod]
         public void TestVariablesCounter1()
         {
-            Formula f = new Formula("3x+4x", Normalizer, IsValid);
+            Formula f = new Formula("X1+x1", Normalizer, IsValid);
             List<string> expected = new List<string>();
-            expected.Add("3X");
-            expected.Add("4X");
-            Assert.AreEqual(expected, f.GetVariables());
+            expected.Add("X1");
+            Assert.AreEqual(expected.ToString(), f.GetVariables().ToString());
+        }
+        [TestMethod]
+        public void TestVariablesCounter2()
+        {
+            Formula f = new Formula("F5+F10", Normalizer, IsValid);
+            List<string> expected = new List<string>();
+            expected.Add("F5");
+            expected.Add("F10");
+            Assert.AreEqual(expected.ToString(), f.GetVariables().ToString());
+        }
+        [TestMethod]
+        public void TestExpression1()
+        {
+            Formula f = new Formula("5+10", Normalizer, IsValid);
+            Assert.AreEqual(15.0, f.Evaluate(Lookup));
         }
 
 

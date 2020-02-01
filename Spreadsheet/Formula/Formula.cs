@@ -73,7 +73,7 @@ namespace SpreadsheetUtilities
             for (int i = 0; i < tokens.Length; i++)
             {
                 tokens[i] = tokens[i].Trim();
-                if (isVariable(i)&&!isNumber(i))
+                if (isVariable(i))
                 {
                     tokens[i] = normalize(tokens[i]);
                     if (!isValid(tokens[i]))
@@ -81,7 +81,7 @@ namespace SpreadsheetUtilities
                     {
                         throw new FormulaFormatException("Invalid formula expression");
                     }
-                    if (!variables.Contains(tokens[i]) && !isNumber(i))
+                    if (!variables.Contains(tokens[i]))
                     {
                         variables.Add(tokens[i]);
                     }
@@ -166,7 +166,7 @@ namespace SpreadsheetUtilities
         }
         private Boolean isVariable(int i)
         {
-            if (!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")"))
+            if (!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")")&&!isNumber(i))
             {
                 return true;
             }

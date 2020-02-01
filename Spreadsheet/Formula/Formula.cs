@@ -1,6 +1,10 @@
-﻿// Author: Alejandro Rubio
-// Date: 1/31/2020
-// This file is part of a Library that evaluates formula expressions
+﻿// Author:     Alejandro Rubio
+// Partner:    None
+// Date:       1/31/2020
+// Course:     CS 3500, University of Utah, School of Computing
+// Assignment: Assignment 3 - Formula
+// Copyright:  CS 3500 and Alejandro Rubio - This work may not be copied for use in Academic Coursework.
+// This file is part of a Library that tests the Formula
 // I pledge that I did this work myself
 using System;
 using System.Collections.Generic;
@@ -204,7 +208,7 @@ namespace SpreadsheetUtilities
         private Boolean isVariable(int i)
         {
             // If its not an operator, parenthesis or a number it is a variable
-            if (!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")")&&!isNumber(i))
+            if (!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")") && !isNumber(i))
             {
                 return true;
             }
@@ -270,6 +274,9 @@ namespace SpreadsheetUtilities
         /// </summary>
         public object Evaluate(Func<string, double> lookup)
         {
+            /*
+             * This code was copied and modified from the Assignment 1 - Formula Evaluator created by me
+             */
             // Create variables to use later
             double result;
             Stack<string> opStack = new Stack<string>();
@@ -602,7 +609,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator ==(Formula f1, Formula f2)
         {
-            if ((f1 is null )&& !(f2 is null))
+            if ((f1 is null) && !(f2 is null))
             {
                 return false;
             }
@@ -610,7 +617,7 @@ namespace SpreadsheetUtilities
             {
                 return false;
             }
-            if((f1 is null) && (f2 is null))
+            if ((f1 is null) && (f2 is null))
             {
                 return true;
             }

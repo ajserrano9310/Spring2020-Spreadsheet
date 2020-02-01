@@ -29,3 +29,4 @@ Alejandro Serrano
     1. https://stackoverflow.com/questions/5482844/how-to-compare-types
     2. https://stackoverflow.com/questions/53184991/c-sharp-how-to-check-for-null-value-is-null-or-null-value-can-we-use-i
     3. https://www.geeksforgeeks.org/c-sharp-toupper-method/
+    4. Code from Assignment 1 - Formula Evaluator

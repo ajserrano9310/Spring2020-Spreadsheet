@@ -114,7 +114,7 @@ namespace SpreadsheetUtilities
                         // Check if the next token is correct or not
                         if (!(isVariable(i + 1) || isNumber(i + 1) || tokens[i + 1].Equals("(")))
                         {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            throw new FormulaFormatException("Invalid formula expression. Please check the expression after the (");
                         }
                     }
                 }
@@ -130,12 +130,12 @@ namespace SpreadsheetUtilities
                         // Check if the next token is correct or not
                         if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                         {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            throw new FormulaFormatException("Invalid formula expression. Please check the expression after the )");
                         }
                         // The number of ) parenthesis should not exceed the ( parenthesis because we are going from left to right
                         if (p2Counter > p1Counter)
                         {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            throw new FormulaFormatException("Invalid formula expression. The number of open and closing parenthesis does not match");
                         }
                     }
                 }
@@ -149,7 +149,7 @@ namespace SpreadsheetUtilities
                         // Check if the next token is correct
                         if (!(isVariable(i + 1) || isNumber(i + 1) || tokens[i + 1].Equals("(")))
                         {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            throw new FormulaFormatException("Invalid formula expression. Please check the expression after the operator");
                         }
                     }
                 }
@@ -162,7 +162,7 @@ namespace SpreadsheetUtilities
                         // Check if the next token is correct
                         if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                         {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            throw new FormulaFormatException("Invalid formula expression. Please check the expression after the number");
                         }
                     }
                 }
@@ -175,7 +175,7 @@ namespace SpreadsheetUtilities
                         // Check if the next token is correct
                         if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                         {
-                            throw new FormulaFormatException("Invalid formula expression");
+                            throw new FormulaFormatException("Invalid formula expression. Please check the expression after the variable");
                         }
                     }
                 }
@@ -183,12 +183,12 @@ namespace SpreadsheetUtilities
             // If the number of parenthesis is not equal the formula is wrong
             if (p1Counter != p2Counter)
             {
-                throw new FormulaFormatException("Invalid formula expression");
+                throw new FormulaFormatException("Invalid formula expression. The number of open and closing parenthesis does not match");
             }
             // If the expression starts with an operator the formula is wrong
             if (isOperator(0))
             {
-                throw new FormulaFormatException("Invalid formula expression");
+                throw new FormulaFormatException("Invalid formula expression. The expression cannot start with an operator");
             }
             // Check so we dont get index out of bounds
             if (tokens.Length != 0)
@@ -196,7 +196,7 @@ namespace SpreadsheetUtilities
                 // If the last token is an operator the formula is wrong
                 if (isOperator(tokens.Length - 1))
                 {
-                    throw new FormulaFormatException("Invalid formula expression");
+                    throw new FormulaFormatException("Invalid formula expression. The last element cannot be an operator");
                 }
             }
         }

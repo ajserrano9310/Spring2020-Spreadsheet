@@ -74,18 +74,20 @@ namespace SpreadsheetUtilities
             for (int i = 0; i < tokens.Length; i++)
             {
                 tokens[i] = tokens[i].Trim();
-                tokens[i] = normalize(tokens[i]);
-                if (!isValid(tokens[i]))
+                if (isVariable(i))
+                {
+                    tokens[i] = normalize(tokens[i]);
+                    if (!isValid(tokens[i]))
 
-                {
-                    throw new FormulaFormatException("Invalid formula expression");
+                    {
+                        throw new FormulaFormatException("Invalid formula expression");
+                    }
+                    if(!variables.Contains(tokens[i]) && !isNumber(i))
+                    {
+                        variables.Add(tokens[i]);
+                    }
                 }
-                else
-                {
-                        if (isVariable(i) && !variables.Contains(tokens[i])&&!isNumber(i))
-                        {
-                            variables.Add(tokens[i]);
-                        }
+
 
 
                         if (tokens[i].Equals("("))
@@ -142,7 +144,7 @@ namespace SpreadsheetUtilities
                                 }
                             }
                         
-                    }
+                    
                 }
                 
             }

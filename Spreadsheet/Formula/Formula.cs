@@ -185,6 +185,7 @@ namespace SpreadsheetUtilities
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
+            // Check so we dont get index out of bounds
             if (tokens.Length != 0)
             {
                 // If the last token is an operator the formula is wrong
@@ -272,7 +273,7 @@ namespace SpreadsheetUtilities
                         // We cant divide by 0
                         if (tryDouble == 0)
                         {
-                            return new FormulaError("Invalid formula expression");
+                            return new FormulaError("Cannot divide by 0");
                         }
                         // Perform division
                         double poppedValue = valStack.Pop();
@@ -382,7 +383,7 @@ namespace SpreadsheetUtilities
                         // Check if the divisor is going to be 0 because we cant do that
                         if (val1 == 0)
                         {
-                            return new FormulaError("Invalid formula expression");
+                            return new FormulaError("Cannot divide by 0");
                         }
                         // Perform division
                         opStack.Pop();
@@ -400,7 +401,7 @@ namespace SpreadsheetUtilities
                     }
                     catch (Exception)
                     {
-                        return new FormulaError("Invalid formula expression");
+                        return new FormulaError("Variable not found");
                     }
                     // Case where we have to divide with the variable
                     if (hasOnTop(opStack, "/"))
@@ -408,7 +409,7 @@ namespace SpreadsheetUtilities
                         // Check if we are going to divide by 0
                         if (tryDouble == 0)
                         {
-                            return new FormulaError("Invalid formula expression");
+                            return new FormulaError("Cannot divide by 0");
                         }
                         // Perform division
                         double poppedValue = valStack.Pop();
@@ -542,12 +543,13 @@ namespace SpreadsheetUtilities
         public override bool Equals(object obj)
         {
             // Use ReferenceEquals since we cannot use Equals or != or == to see if its null or not and also check if the object is type Formula
-            if (ReferenceEquals(obj, null) || !(obj is Formula))
+            if (obj is null || !(obj is Formula))
             {
                 return false;
             }
             // Convert the obj to type Formula to be able to compare the lengths
             Formula formula = (Formula)obj;
+            // Check lengths
             if (this.tokens.Length != formula.tokens.Length)
             {
                 return false;
@@ -585,15 +587,15 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator ==(Formula f1, Formula f2)
         {
-            if (ReferenceEquals(f1, null) && !ReferenceEquals(f2, null))
+            if ((f1 is null )&& !(f2 is null))
             {
                 return false;
             }
-            if (!ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
+            if (!(f1 is null) && (f2 is null))
             {
                 return false;
             }
-            if (ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
+            if((f1 is null) && (f2 is null))
             {
                 return true;
             }
@@ -606,15 +608,15 @@ namespace SpreadsheetUtilities
         /// </summary>
         public static bool operator !=(Formula f1, Formula f2)
         {
-            if (ReferenceEquals(f1, null) && !ReferenceEquals(f2, null))
+            if ((f1 is null) && !(f2 is null))
             {
                 return true;
             }
-            if (!ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
+            if (!(f1 is null) && (f2 is null))
             {
                 return true;
             }
-            if (ReferenceEquals(f1, null) && ReferenceEquals(f2, null))
+            if ((f1 is null) && (f2 is null))
             {
                 return false;
             }
@@ -627,6 +629,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override int GetHashCode()
         {
+            // Use the ToString HashCode
             return this.ToString().GetHashCode();
         }
         /// <summary>

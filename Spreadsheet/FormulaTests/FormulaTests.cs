@@ -56,7 +56,42 @@ namespace FormulaTests
             Formula f = new Formula("5+10", Normalizer, IsValid);
             Assert.AreEqual(15.0, f.Evaluate(Lookup));
         }
-
+        [TestMethod]
+        public void TestExpression2()
+        {
+            Formula f = new Formula("(5*2)/(5-0)", Normalizer, IsValid);
+            Assert.AreEqual(2.0, f.Evaluate(Lookup));
+        }
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression1()
+        {
+            Formula f = new Formula("++",Normalizer,IsValid);
+        }
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression2()
+        {
+            Formula f = new Formula("+)", Normalizer, IsValid);
+        }
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression3()
+        {
+            Formula f = new Formula("(-", Normalizer, IsValid);
+        }
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression4()
+        {
+            Formula f = new Formula("()", Normalizer, IsValid);
+        }
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression5()
+        {
+            Formula f = new Formula("(22+2)))))", Normalizer, IsValid);
+        }
 
 
 

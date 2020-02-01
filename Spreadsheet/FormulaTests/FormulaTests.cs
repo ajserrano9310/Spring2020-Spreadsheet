@@ -31,7 +31,7 @@ namespace FormulaTests
         [ExpectedException(typeof(FormulaFormatException))]
         public void TestIsValidFalse()
         {
-            Formula f = new Formula("6x",Normalizer,IsValid);
+            Formula f = new Formula("CS",Normalizer,IsValid);
         }
         [TestMethod]
         public void TestVariablesCounter1()
@@ -61,6 +61,12 @@ namespace FormulaTests
         {
             Formula f = new Formula("(5*2)/(5-0)", Normalizer, IsValid);
             Assert.AreEqual(2.0, f.Evaluate(Lookup));
+        }
+        [TestMethod]
+        public void TestExpression3()
+        {
+            Formula f = new Formula("5");
+            Assert.AreEqual(5.0, f.Evaluate(Lookup));
         }
         [TestMethod(), Timeout(5000)]
         [ExpectedException(typeof(FormulaFormatException))]
@@ -92,9 +98,54 @@ namespace FormulaTests
         {
             Formula f = new Formula("(22+2)))))", Normalizer, IsValid);
         }
-
-
-
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression6()
+        {
+            Formula f = new Formula("(22+2)x", Normalizer, IsValid);
+        }
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression7()
+        {
+            Formula f = new Formula("X1(", Normalizer, IsValid);
+        }
+        [TestMethod(), Timeout(5000)]
+        [ExpectedException(typeof(FormulaFormatException))]
+        public void TestInvalidExpression8()
+        {
+            Formula f = new Formula("+", Normalizer, IsValid);
+        }
+        [TestMethod()]
+        public void TestInvalidExpression9()
+        {
+            Formula f = new Formula("5/0", Normalizer, IsValid);
+            Assert.IsTrue(f.Evaluate(Lookup) is FormulaError);
+        }
+        [TestMethod()]
+        public void TestInvalidExpression10()
+        {
+            Formula f = new Formula("(5-0)/(0+0)", Normalizer, IsValid);
+            Assert.IsTrue(f.Evaluate(Lookup) is FormulaError);
+        }
+        [TestMethod()]
+        public void TestExpression4()
+        {
+            Formula f = new Formula("(5-0)+(0+0)", Normalizer, IsValid);
+            Assert.AreEqual(5.0, f.Evaluate(Lookup));
+        }
+        [TestMethod()]
+        public void TestExpression5()
+        {
+            Formula f = new Formula("(5-0)-(0+0)", Normalizer, IsValid);
+            Assert.AreEqual(5.0, f.Evaluate(Lookup));
+        }
+        [TestMethod()]
+        public void TestExpression6()
+        {
+            Formula f = new Formula("10*X1", Normalizer, IsValid);
+            Assert.AreEqual(10.0, f.Evaluate(Lookup));
+        }
 
 
 
@@ -102,7 +153,7 @@ namespace FormulaTests
 
         private static string Normalizer(string s)
         {
-            return s.ToLower();
+            return s.ToUpper();
         }
 
         private static Boolean IsValid(string s)

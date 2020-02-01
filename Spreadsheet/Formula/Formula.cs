@@ -74,14 +74,14 @@ namespace SpreadsheetUtilities
             for (int i = 0; i < tokens.Length; i++)
             {
                 tokens[i] = tokens[i].Trim();
-
+                tokens[i] = normalize(tokens[i]);
                 if (!isValid(tokens[i]))
+
                 {
                     throw new FormulaFormatException("Invalid formula expression");
                 }
                 else
                 {
-                    tokens[i] = normalize(tokens[i]);
                         if (isVariable(i) && !variables.Contains(tokens[i])&&!isNumber(i))
                         {
                             variables.Add(tokens[i]);

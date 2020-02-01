@@ -24,6 +24,7 @@ namespace SpreadsheetUtilities
     /// </summary>
     public class Formula
     {
+        // Create variables for later use
         private string[] tokens;
         private List<string> variables;
         /// <summary>
@@ -62,17 +63,24 @@ namespace SpreadsheetUtilities
         /// </summary>
         public Formula(String formula, Func<string, string> normalize, Func<string, bool> isValid)
         {
+            // Check if the formula is empty or null
             if (isStringNullOrEmpty(formula))
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
+            // Get the tokens from the formula
             tokens = GetTokens(formula).ToArray();
+            // List for variables
             variables = new List<string>();
+            // Counters for parenthesis
             int p1Counter = 0;
             int p2Counter = 0;
+            // Go trough all the tokens
             for (int i = 0; i < tokens.Length; i++)
             {
+                // Try to erase white spaces
                 tokens[i] = tokens[i].Trim();
+                // If the token its a variable we try to normalize it and check if its valid or not
                 if (isVariable(i))
                 {
                     tokens[i] = normalize(tokens[i]);
@@ -81,63 +89,82 @@ namespace SpreadsheetUtilities
                     {
                         throw new FormulaFormatException("Invalid formula expression");
                     }
+                    // Finally we add it to our variables list if its not there
                     if (!variables.Contains(tokens[i]))
                     {
                         variables.Add(tokens[i]);
                     }
                 }
+                // Case where the token is a (
                 if (tokens[i].Equals("("))
                 {
+                    // Increase the parenthesis counter
                     p1Counter++;
+                    // Make sure we dont go out of bounds
                     if (i < tokens.Length - 1)
                     {
+                        // Check if the next token is correct or not
                         if (!(isVariable(i + 1) || isNumber(i + 1) || tokens[i + 1].Equals("(")))
                         {
                             throw new FormulaFormatException("Invalid formula expression");
                         }
                     }
                 }
+                // Case where the token is a )
                 else
                 if (tokens[i].Equals(")"))
                 {
+                    // Increase the parenthesis counter
                     p2Counter++;
+                    // Make sure we dont go out of bounds
                     if (i < tokens.Length - 1)
                     {
+                        // Check if the next token is correct or not
                         if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                         {
                             throw new FormulaFormatException("Invalid formula expression");
                         }
+                        // The number of ) parenthesis should not exceed the ( parenthesis because we are going from left to right
                         if (p2Counter > p1Counter)
                         {
                             throw new FormulaFormatException("Invalid formula expression");
                         }
                     }
                 }
+                // Case where the token is an operator
                 else
                     if (isOperator(i))
                 {
+                    // Make sure we dont go out of bounds
                     if (i < tokens.Length - 1)
                     {
+                        // Check if the next token is correct
                         if (!(isVariable(i + 1) || isNumber(i + 1) || tokens[i + 1].Equals("(")))
                         {
                             throw new FormulaFormatException("Invalid formula expression");
                         }
                     }
                 }
+                // Case where the token is a number
                 else if (isNumber(i))
                 {
+                    // Make sure we dont go out of bounds
                     if (i < tokens.Length - 1)
                     {
+                        // Check if the next token is correct
                         if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                         {
                             throw new FormulaFormatException("Invalid formula expression");
                         }
                     }
                 }
+                // Case where the token is a number
                 else if (isVariable(i))
                 {
+                    // Make sure we dont go out of bounds
                     if (i < tokens.Length - 1)
                     {
+                        // Check if the next token is correct
                         if (!(isOperator(i + 1) || tokens[i + 1].Equals(")")))
                         {
                             throw new FormulaFormatException("Invalid formula expression");
@@ -148,16 +175,19 @@ namespace SpreadsheetUtilities
                 }
 
             }
+            // If the number of parenthesis is not equal the formula is wrong
             if (p1Counter != p2Counter)
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
+            // If the expression starts with an operator the formula is wrong
             if (isOperator(0))
             {
                 throw new FormulaFormatException("Invalid formula expression");
             }
             if (tokens.Length != 0)
             {
+                // If the last token is an operator the formula is wrong
                 if (isOperator(tokens.Length - 1))
                 {
                     throw new FormulaFormatException("Invalid formula expression");

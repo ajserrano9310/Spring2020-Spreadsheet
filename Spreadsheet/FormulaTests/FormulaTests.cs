@@ -21,6 +21,11 @@ namespace FormulaTests
         {
             Formula f = new Formula(" ");
         }
+        [TestMethod()]
+        public void TestConstructorVariable()
+        {
+            Formula f = new Formula("X3");
+        }
         [TestMethod(), Timeout(5000)]
         [ExpectedException(typeof(FormulaFormatException))]
         public void TestNullFormula()
@@ -145,6 +150,62 @@ namespace FormulaTests
         {
             Formula f = new Formula("10*X1", Normalizer, IsValid);
             Assert.AreEqual(10.0, f.Evaluate(Lookup));
+        }
+        [TestMethod()]
+        public void TestHashCode1()
+        {
+            Formula f1 = new Formula("10*X1", Normalizer, IsValid);
+            Formula f2 = new Formula("10*X1", Normalizer, IsValid);
+            Assert.AreEqual(f1.GetHashCode(),f2.GetHashCode());
+        }
+        [TestMethod()]
+        public void TestHashCode2()
+        {
+            Formula f1 = new Formula("10*x1", Normalizer, IsValid);
+            Formula f2 = new Formula("10*X1", Normalizer, IsValid);
+            Assert.AreEqual(f1.GetHashCode(), f2.GetHashCode());
+        }
+
+        [TestMethod()]
+        public void TestEquals1()
+        {
+            Formula f1 = new Formula("10*x1", Normalizer, IsValid);
+            Formula f2 = new Formula("10*X1", Normalizer, IsValid);
+            Assert.AreEqual(true, f1.Equals(f2));
+        }
+        [TestMethod()]
+        public void TestEquals2()
+        {
+            Formula f1 = new Formula("10-x1", Normalizer, IsValid);
+            Formula f2 = new Formula("10*X1", Normalizer, IsValid);
+            Assert.AreEqual(false, f1.Equals(f2));
+        }
+        [TestMethod()]
+        public void TestEqualsSign1()
+        {
+            Formula f1 = new Formula("10-x1", Normalizer, IsValid);
+            Formula f2 = new Formula("10*X1", Normalizer, IsValid);
+            Assert.AreEqual(false, f1==f2);
+        }
+
+        [TestMethod()]
+        public void TestEqualsSign2()
+        {
+            Formula f1 = new Formula("10-x1", Normalizer, IsValid);
+            Formula f2 = new Formula("10*X1", Normalizer, IsValid);
+            Assert.AreEqual(true, f1 != f2);
+        }
+        [TestMethod()]
+        public void TestFormulaToString1()
+        {
+            Formula f1 = new Formula("10-x1", Normalizer, IsValid);
+            Assert.AreEqual("10-X1", f1.ToString());
+        }
+        [TestMethod()]
+        public void TestFormulaToString2()
+        {
+            Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
+            Assert.AreEqual("10-X1", f1.ToString());
         }
 
 

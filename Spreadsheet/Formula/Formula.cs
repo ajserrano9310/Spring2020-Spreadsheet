@@ -24,7 +24,7 @@ namespace SpreadsheetUtilities
     /// </summary>
     public class Formula
     {
-        // Create variables for later use
+        // Create variables to use later
         private string[] tokens;
         private List<string> variables;
         /// <summary>
@@ -196,6 +196,7 @@ namespace SpreadsheetUtilities
         }
         private Boolean isVariable(int i)
         {
+            // If its not an operator, parenthesis or a number it is a variable
             if (!isOperator(i) && !tokens[i].Equals("(") && !tokens[i].Equals(")")&&!isNumber(i))
             {
                 return true;
@@ -207,6 +208,7 @@ namespace SpreadsheetUtilities
         }
         private Boolean isOperator(int i)
         {
+            // We check the 4 operators that our application allows
             if (tokens[i].Equals("*") || tokens[i].Equals("/") || tokens[i].Equals("-") || tokens[i].Equals("+"))
             {
                 return true;
@@ -218,6 +220,7 @@ namespace SpreadsheetUtilities
         }
         private Boolean isNumber(int i)
         {
+            // We try to parse the string to a number
             if (Double.TryParse(tokens[i], out double f))
             {
                 return true;
@@ -509,6 +512,7 @@ namespace SpreadsheetUtilities
         public override string ToString()
         {
             String formula = "";
+            // Go trough every token and add it to our final result
             for (int i = 0; i < tokens.Length; i++)
             {
                 formula = formula + tokens[i];
@@ -537,10 +541,12 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override bool Equals(object obj)
         {
+            // Use ReferenceEquals since we cannot use Equals or != or == to see if its null or not and also check if the object is type Formula
             if (ReferenceEquals(obj, null) || !(obj is Formula))
             {
                 return false;
             }
+            // Convert the obj to type Formula to be able to compare the lengths
             Formula formula = (Formula)obj;
             if (this.tokens.Length != formula.tokens.Length)
             {
@@ -548,17 +554,22 @@ namespace SpreadsheetUtilities
             }
             double number1;
             double number2;
+            // Go trough every token to check if they are equal
             for (int i = 0; i < this.tokens.Length; i++)
             {
+                // If its and number we have to convert it first to a double and then to a string
                 if (Double.TryParse(this.tokens[i], out number1) && Double.TryParse(formula.tokens[i], out number2))
                 {
+                    // Check if they are equal or not
                     if (!number1.ToString().Equals(number2.ToString()))
                     {
                         return false; ;
                     }
                 }
+                // We just compare the strings
                 else
                 {
+                    // Check if the strings are equal
                     if (!this.tokens[i].Equals(formula.tokens[i]))
                     {
                         return false;

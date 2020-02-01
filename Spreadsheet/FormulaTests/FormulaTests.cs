@@ -26,6 +26,11 @@ namespace FormulaTests
         {
             Formula f = new Formula("X3");
         }
+        [TestMethod()]
+        public void TestConstructorNumber()
+        {
+            Formula f = new Formula("5");
+        }
         [TestMethod(), Timeout(5000)]
         [ExpectedException(typeof(FormulaFormatException))]
         public void TestNullFormula()

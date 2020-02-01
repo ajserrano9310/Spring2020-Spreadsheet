@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Author: Alejandro Rubio
+// Date: 1/31/2020
+// This file is part of a Library that evaluates formula expressions
+// I pledge that I did this work myself
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -170,10 +174,7 @@ namespace SpreadsheetUtilities
                             throw new FormulaFormatException("Invalid formula expression");
                         }
                     }
-
-
                 }
-
             }
             // If the number of parenthesis is not equal the formula is wrong
             if (p1Counter != p2Counter)
@@ -195,6 +196,11 @@ namespace SpreadsheetUtilities
                 }
             }
         }
+        /// <summary>
+        /// Checks if the token at index i is a variable.
+        /// </summary>
+        /// <param name="i">The index</param>
+        /// <returns>true if its a variable and false otherwise</returns>
         private Boolean isVariable(int i)
         {
             // If its not an operator, parenthesis or a number it is a variable
@@ -207,6 +213,11 @@ namespace SpreadsheetUtilities
                 return false;
             }
         }
+        /// <summary>
+        /// Checks if the token at index i is an operator
+        /// </summary>
+        /// <param name="i">The index</param>
+        /// <returns>true if its an operator and false otherwise</returns>
         private Boolean isOperator(int i)
         {
             // We check the 4 operators that our application allows
@@ -219,9 +230,14 @@ namespace SpreadsheetUtilities
                 return false;
             }
         }
+        /// <summary>
+        /// Checks if the token at index i is a number
+        /// </summary>
+        /// <param name="i">The index</param>
+        /// <returns>true if its a number and false otherwise</returns>
         private Boolean isNumber(int i)
         {
-            // We try to parse the string to a number
+            // We try to parse the string to a number to check if its a number
             if (Double.TryParse(tokens[i], out double f))
             {
                 return true;
@@ -432,7 +448,6 @@ namespace SpreadsheetUtilities
                         valStack.Push(tryDouble);
                     }
                 }
-
             }
             // Now when the last token has been processed
             // If the operator stack is empty
@@ -542,7 +557,7 @@ namespace SpreadsheetUtilities
         /// </summary>
         public override bool Equals(object obj)
         {
-            // Use ReferenceEquals since we cannot use Equals or != or == to see if its null or not and also check if the object is type Formula
+            // Check if object is null or if its not Formula
             if (obj is null || !(obj is Formula))
             {
                 return false;

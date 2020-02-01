@@ -1,9 +1,12 @@
+// Author: Alejandro Rubio
+// Date: 1/31/2020
+// This file is part of a Library that tests the Formula
+// I pledge that I did this work myself
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpreadsheetUtilities;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
 namespace FormulaTests
 {
     [TestClass]
@@ -170,7 +173,6 @@ namespace FormulaTests
             Formula f2 = new Formula("10*X1", Normalizer, IsValid);
             Assert.AreEqual(f1.GetHashCode(), f2.GetHashCode());
         }
-
         [TestMethod()]
         public void TestEquals1()
         {
@@ -192,7 +194,6 @@ namespace FormulaTests
             Formula f2 = new Formula("10*X1", Normalizer, IsValid);
             Assert.AreEqual(false, f1==f2);
         }
-
         [TestMethod()]
         public void TestEqualsSign2()
         {
@@ -212,16 +213,10 @@ namespace FormulaTests
             Formula f1 = new Formula("10 - x1", Normalizer, IsValid);
             Assert.AreEqual("10-X1", f1.ToString());
         }
-
-
-
-
-
         private static string Normalizer(string s)
         {
             return s.ToUpper();
         }
-
         private static Boolean IsValid(string s)
         {
             if (!(Regex.IsMatch(s, "^[a-z A-Z]+[0-9]")))
@@ -244,7 +239,6 @@ namespace FormulaTests
             {
                 return 0;
             }
-
             throw new System.ArgumentException();
         }
     }

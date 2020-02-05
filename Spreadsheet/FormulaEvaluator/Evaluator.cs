@@ -65,10 +65,8 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Cant divide by zero");
                             }
                             // Perform division
-                            int poppedValue = valStack.Pop();
-                            opStack.Pop();
-                            int val = poppedValue / tryInt;
-                            valStack.Push(val);
+                            performOperator("/",opStack,valStack,tryInt);
+                            
                         }
                         // Case where we need to multiply
                         else if (hasOnTop(opStack, "*"))
@@ -79,10 +77,7 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Incorrect number of elements to perform multiplication");
                             }
                             // Perform multiplication
-                            int poppedValue = valStack.Pop();
-                            opStack.Pop();
-                            int val = poppedValue * tryInt;
-                            valStack.Push(val);
+                            performOperator("*", opStack, valStack, tryInt);
                         }
                         else
                         {
@@ -101,11 +96,7 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Incorrect number of elements to perform substraction");
                             }
                             // Perform substraction
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            opStack.Pop();
-                            int val = val2 - val1;
-                            valStack.Push(val);
+                            performOperator("-", opStack, valStack, tryInt);
                         }
                         // Case of addition
                         else if (hasOnTop(opStack, "+"))
@@ -116,11 +107,7 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Incorrect number of elements to perform addition");
                             }
                             // Perform addition
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            opStack.Pop();
-                            int val = val2 + val1;
-                            valStack.Push(val);
+                            performOperator("+", opStack, valStack, tryInt);
                         }
                         opStack.Push(actualString);
                     }
@@ -151,11 +138,7 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Incorrect number of elements to perform addition");
                             }
                             // Perform addition
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val2 + val1;
-                            opStack.Pop();
-                            valStack.Push(val);
+                            performOperator("+", opStack, valStack, tryInt);
                         }
                         // Case of substraction with parenthesis
                         else if (hasOnTop(opStack, "-"))
@@ -166,11 +149,7 @@ namespace FormulaEvaluator
                                 throw new ArgumentException("Incorrect number of elements to perform substraction");
                             }
                             // Perform substraction
-                            int val1 = valStack.Pop();
-                            int val2 = valStack.Pop();
-                            int val = val2 - val1;
-                            opStack.Pop();
-                            valStack.Push(val);
+                            performOperator("-", opStack, valStack, tryInt);
                         }
                         if (!hasOnTop(opStack, "("))
                         {
@@ -245,10 +224,7 @@ namespace FormulaEvaluator
                                 throw new ArgumentException();
                             }
                             // Perform division
-                            int poppedValue = valStack.Pop();
-                            opStack.Pop();
-                            int val = poppedValue / tryInt;
-                            valStack.Push(val);
+                            performOperator("/", opStack, valStack, tryInt);
                         }
                         else
                             // Case where we have to multiply with the variable
@@ -352,6 +328,39 @@ namespace FormulaEvaluator
             else
             {
                 return false;
+            }
+        }
+        public static void performOperator(String op, Stack<string> opStack,Stack<int> valStack, int tryInt)
+        {
+            if (op.Equals("+"))
+            {
+                int val1 = valStack.Pop();
+                int val2 = valStack.Pop();
+                opStack.Pop();
+                int val = val2 + val1;
+                valStack.Push(val);
+            }
+            if (op.Equals("-"))
+            {
+                int val1 = valStack.Pop();
+                int val2 = valStack.Pop();
+                opStack.Pop();
+                int val = val2 - val1;
+                valStack.Push(val);
+            }
+            if (op.Equals("*"))
+            {
+                int poppedValue = valStack.Pop();
+                opStack.Pop();
+                int val = poppedValue * tryInt;
+                valStack.Push(val);
+            }
+            if (op.Equals("/"))
+            {
+                int poppedValue = valStack.Pop();
+                opStack.Pop();
+                int val = poppedValue / tryInt;
+                valStack.Push(val);
             }
         }
     }

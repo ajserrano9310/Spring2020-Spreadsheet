@@ -227,7 +227,7 @@ namespace SpreadsheetUtilities
                 RemoveDependency(s, actual.ElementAt(i));
             }
             // Add the new dependents
-            for (int j = 0; j < actual.Count(); j++)
+            for (int j = 0; j < newDependents.Count(); j++)
             {
                 AddDependency(s, newDependents.ElementAt(j));
             }
@@ -246,7 +246,7 @@ namespace SpreadsheetUtilities
                 RemoveDependency(actual.ElementAt(i), s);
             }
             // Add the new dependees
-            for (int j = 0; j < actual.Count(); j++)
+            for (int j = 0; j < newDependees.Count(); j++)
             {
                 AddDependency(newDependees.ElementAt(j), s);
             }

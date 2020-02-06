@@ -538,7 +538,12 @@ namespace SpreadsheetUtilities
             // Go trough every token and add it to our final result
             for (int i = 0; i < tokens.Length; i++)
             {
+                if(Double.TryParse(tokens[i],out double n)){
+                    formula = formula + n;
+            }else
+            {
                 formula = formula + tokens[i];
+            }
             }
             return formula;
         }

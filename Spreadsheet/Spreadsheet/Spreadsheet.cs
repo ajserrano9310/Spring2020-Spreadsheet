@@ -18,17 +18,17 @@ namespace Spreadsheet
             throw new NotImplementedException();
         }
 
-        public override IList<string> SetCellContents(string name, double number)
+        public override ISet<string> SetCellContents(string name, double number)
         {
             throw new NotImplementedException();
         }
 
-        public override IList<string> SetCellContents(string name, string text)
+        public override ISet<string> SetCellContents(string name, string text)
         {
             throw new NotImplementedException();
         }
 
-        public override IList<string> SetCellContents(string name, Formula formula)
+        public override ISet<string> SetCellContents(string name, Formula formula)
         {
             throw new NotImplementedException();
         }
@@ -37,6 +37,10 @@ namespace Spreadsheet
         {
             throw new NotImplementedException();
         }
-    }
+        private class Cell
+        {
 
+        }
+
+    }
 }

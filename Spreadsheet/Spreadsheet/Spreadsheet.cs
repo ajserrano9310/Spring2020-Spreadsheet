@@ -39,7 +39,15 @@ namespace Spreadsheet
         }
         private class Cell
         {
-
+            private Cell content;
+            private Cell getCellContent<T>()
+            {
+                return this.content;
+            }
+            private void setCellContent<T>(<T> content)
+            {
+                theCell.content = content;
+            }
         }
 
     }

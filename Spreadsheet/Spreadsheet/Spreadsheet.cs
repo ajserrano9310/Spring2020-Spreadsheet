@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace Spreadsheet
+namespace SS
 {
     public class Spreadsheet : AbstractSpreadsheet
     {

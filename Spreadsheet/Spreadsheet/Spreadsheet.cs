@@ -37,5 +37,17 @@ namespace Spreadsheet
         {
             throw new NotImplementedException();
         }
+        private class Cell
+        {
+            private Object cellContent;
+            private Object getContent()
+            {
+                return this.cellContent;
+            }
+            public Cell(Object content)
+            {
+                cellContent = content;
+            }
+        }
     }
 }

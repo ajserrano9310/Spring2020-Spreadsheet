@@ -18,6 +18,10 @@ namespace SS
         }
         public override object GetCellContents(string name)
         {
+            if(name is null)
+            {
+                throw new InvalidNameException();
+            }
             if (cells.ContainsKey(name))
             {
                 return cells[name].cellContent;
@@ -106,6 +110,10 @@ namespace SS
 
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
+            if(name is null)
+            {
+                throw new ArgumentNullException();
+            }
             return dependencyGraph.GetDependents(name);
         }
         private class Cell

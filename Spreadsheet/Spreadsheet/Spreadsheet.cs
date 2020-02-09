@@ -120,8 +120,16 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
+            HashSet<string> newDependees;
             dependencyGraph.ReplaceDependees(name, formula.GetVariables());
-            HashSet<string> newDependees = new HashSet<string>(GetCellsToRecalculate(name));
+            try
+            {
+                newDependees = new HashSet<string>(GetCellsToRecalculate(name));
+            }
+            catch (Exception)
+            {
+                throw new CircularException();
+            }
             Cell newFormula = new Cell(formula);
             if (cells.ContainsKey(name))
             {

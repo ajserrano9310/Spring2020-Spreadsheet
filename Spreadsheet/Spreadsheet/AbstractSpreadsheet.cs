@@ -1,5 +1,9 @@
-﻿// Written by Joe Zachary for CS 3500, September 2013
-
+﻿/// <summary> 
+/// AbstractSpreadsheet
+/// 
+/// This file was written by Joe Zachary for CS 3500, September 2013 and used by the student Alejandro Rubio for Assignment Four
+/// This abstract file includes unimplemented methods that the spreadsheet needs in order to link the DependencyGraph and Evaluator
+/// </summary>
 using System;
 using System.Collections.Generic;
 using SpreadsheetUtilities;
@@ -284,12 +288,16 @@ namespace SS
         /// </returns>
         protected IEnumerable<String> GetCellsToRecalculate(ISet<String> names)
         {
+            // Create variables to use later
             LinkedList<String> changed = new LinkedList<String>();
             HashSet<String> visited = new HashSet<String>();
+            // Go trough every cell that needs to be recalculated
             foreach (String name in names)
             {
+                // If we have not changed the cell
                 if (!visited.Contains(name))
                 {
+                    // Recursively get the other cells that need to be recalculated
                     Visit(name, name, visited, changed);
                 }
             }
@@ -315,25 +323,33 @@ namespace SS
         }
 
 
-        /// <summary>
-        /// A helper for the GetCellsToRecalculate method.
-        /// 
-        ///   -- You should fully comment what is going on below using XML tags as appropriate --
-        /// </summary>
+/// <summary>
+/// This method recursively gets all the cells that need to be recalculated and changed.
+/// </summary>
+/// <param name="start">The starting cell</param>
+/// <param name="name">The dependee of the starting cell</param>
+/// <param name="visited">Cells that have already been visited</param>
+/// <param name="changed">Cells that have been changed</param>
         private void Visit(String start, String name, ISet<String> visited, LinkedList<String> changed)
         {
+            // Mark the cell as visited
             visited.Add(name);
+            // Go trough every dependent
             foreach (String n in GetDirectDependents(name))
             {
+                // If the cell is the same as the start cell throw exception because a cell cannot refer to its same cell
                 if (n.Equals(start))
                 {
                     throw new CircularException();
                 }
+                // If a cell has not been visited
                 else if (!visited.Contains(n))
                 {
+                    // Recursively visit the other cells
                     Visit(start, n, visited, changed);
                 }
             }
+            // Add the changed cell
             changed.AddFirst(name);
         }
 

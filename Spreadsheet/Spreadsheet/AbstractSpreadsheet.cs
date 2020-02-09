@@ -139,7 +139,7 @@ namespace SS
         ///      set {A1, B1, C1} is returned.
         ///   </para>
         /// </returns>
-        public abstract IList<String> SetCellContents(String name, double number);
+        public abstract ISet<String> SetCellContents(String name, double number);
 
         /// <summary>
         /// The contents of the named cell becomes the text.  
@@ -166,7 +166,7 @@ namespace SS
         ///     set {A1, B1, C1} is returned.
         ///   </para>
         /// </returns>
-        public abstract IList<String> SetCellContents(String name, String text);
+        public abstract ISet<String> SetCellContents(String name, String text);
 
         /// <summary>
         /// Set the contents of the named cell to the formula.  
@@ -200,7 +200,7 @@ namespace SS
         ///   </para>
         /// 
         /// </returns>
-        public abstract IList<String> SetCellContents(String name, Formula formula);
+        public abstract ISet<String> SetCellContents(String name, Formula formula);
 
 
         /// <summary>

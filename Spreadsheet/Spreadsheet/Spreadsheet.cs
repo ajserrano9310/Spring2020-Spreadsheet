@@ -31,8 +31,9 @@ namespace SS
             return nonEmptyCells;
     }
 
-        public override IList<string> SetCellContents(string name, double number)
+        public override ISet<string> SetCellContents(string name, double number)
         {
+            HashSet<string> test = new HashSet<string>();
             Cell newNumber = new Cell(number);
             if (cells.ContainsKey(name))
             {
@@ -42,13 +43,14 @@ namespace SS
             {
                 cells.Add(name, newNumber);
             }
-            dependencyGraph.ReplaceDependees(name, null);
-            List<string> newDependees = new List<string>(GetCellsToRecalculate(name));
-            return newDependees;
+            dependencyGraph.ReplaceDependees(name, test);
+            test = new HashSet<string>(GetCellsToRecalculate(name));
+            return test;
         }
 
-        public override IList<string> SetCellContents(string name, string text)
+        public override ISet<string> SetCellContents(string name, string text)
         {
+            HashSet<string> test = new HashSet<string>();
             Cell newText = new Cell(text);
             if (cells.ContainsKey(name))
             {
@@ -58,16 +60,16 @@ namespace SS
             {
                 cells.Add(name, newText);
             }
-            dependencyGraph.ReplaceDependees(name, null);
-            List<string> newDependees = new List<string>(GetCellsToRecalculate(name));
-            return newDependees;
+            dependencyGraph.ReplaceDependees(name, test);
+            test = new HashSet<string>(GetCellsToRecalculate(name));
+            return test;
         }
 
-        public override IList<string> SetCellContents(string name, Formula formula)
+        public override ISet<string> SetCellContents(string name, Formula formula)
         {
             dependencyGraph.ReplaceDependees(name, formula.GetVariables());
 
-            List<string> newDependees = new List<string>(GetCellsToRecalculate(name));
+            HashSet<string> newDependees = new HashSet<string>(GetCellsToRecalculate(name));
             Cell newFormula = new Cell(formula);
             if (cells.ContainsKey(name))
             {

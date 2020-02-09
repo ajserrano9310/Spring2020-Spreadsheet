@@ -33,17 +33,51 @@ namespace SS
 
         public override IList<string> SetCellContents(string name, double number)
         {
-            throw new NotImplementedException();
+            Cell newNumber = new Cell(number);
+            if (cells.ContainsKey(name))
+            {
+                cells[name] = newNumber;
+            }
+            else
+            {
+                cells.Add(name, newNumber);
+            }
+            dependencyGraph.ReplaceDependees(name, null);
+            List<string> newDependees = new List<string>(GetCellsToRecalculate(name));
+            return newDependees;
         }
 
         public override IList<string> SetCellContents(string name, string text)
         {
-            throw new NotImplementedException();
+            Cell newText = new Cell(text);
+            if (cells.ContainsKey(name))
+            {
+                cells[name] = newText;
+            }
+            else
+            {
+                cells.Add(name, newText);
+            }
+            dependencyGraph.ReplaceDependees(name, null);
+            List<string> newDependees = new List<string>(GetCellsToRecalculate(name));
+            return newDependees;
         }
 
         public override IList<string> SetCellContents(string name, Formula formula)
         {
-            throw new NotImplementedException();
+            dependencyGraph.ReplaceDependees(name, formula.GetVariables());
+
+            List<string> newDependees = new List<string>(GetCellsToRecalculate(name));
+            Cell newFormula = new Cell(formula);
+            if (cells.ContainsKey(name))
+            {
+                cells[name] = newFormula;
+            }
+            else
+            {
+                cells.Add(name, newFormula);
+            }
+            return newDependees;
         }
 
         protected override IEnumerable<string> GetDirectDependents(string name)

@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SS
 {
@@ -30,11 +31,13 @@ namespace SS
         }
         public override object GetCellContents(string name)
         {
-            if(name is null)
+            if (name is null)
             {
                 throw new InvalidNameException();
+            } else if (!variableValidator(name)){
+                throw new InvalidNameException();
             }
-            if (cells.ContainsKey(name))
+                else if (cells.ContainsKey(name))
             {
                 return cells[name].cellContent;
             }
@@ -54,6 +57,9 @@ namespace SS
         public override ISet<string> SetCellContents(string name, double number)
         {
             if (name is null)
+            {
+                throw new InvalidNameException();
+            } else if (!variableValidator(name))
             {
                 throw new InvalidNameException();
             }
@@ -82,6 +88,10 @@ namespace SS
             {
                 throw new ArgumentNullException();
             }
+            else if (!variableValidator(name))
+            {
+                throw new InvalidNameException();
+            }
             HashSet<string> test = new HashSet<string>();
             Cell newText = new Cell(text);
             if (cells.ContainsKey(name))
@@ -106,6 +116,10 @@ namespace SS
             {
                 throw new ArgumentNullException();
             }
+            else if (!variableValidator(name))
+            {
+                throw new InvalidNameException();
+            }
             dependencyGraph.ReplaceDependees(name, formula.GetVariables());
             HashSet<string> newDependees = new HashSet<string>(GetCellsToRecalculate(name));
             Cell newFormula = new Cell(formula);
@@ -125,6 +139,9 @@ namespace SS
             if(name is null)
             {
                 throw new ArgumentNullException();
+            } else if (!variableValidator(name))
+            {
+                throw new InvalidNameException();
             }
             return dependencyGraph.GetDependents(name);
         }
@@ -139,6 +156,15 @@ namespace SS
             {
                 cellContent = content;
             }
+        }
+        private Boolean variableValidator(string variable)
+        {
+            Regex variableFormat = new Regex("^[_A-Za-z]+[_A-Za-z0-9]");
+            if (variableFormat.IsMatch(variable))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -18,7 +18,11 @@ namespace SS
         }
         public override object GetCellContents(string name)
         {
-            return cells[name].cellContent;
+            if (cells.ContainsKey(name))
+            {
+                return cells[name].cellContent;
+            }
+            return "";
         }
 
         public override IEnumerable<string> GetNamesOfAllNonemptyCells()
@@ -33,6 +37,10 @@ namespace SS
 
         public override ISet<string> SetCellContents(string name, double number)
         {
+            if (name is null)
+            {
+                throw new InvalidNameException();
+            }
             HashSet<string> test = new HashSet<string>();
             Cell newNumber = new Cell(number);
             if (cells.ContainsKey(name))
@@ -50,6 +58,14 @@ namespace SS
 
         public override ISet<string> SetCellContents(string name, string text)
         {
+            if (name is null)
+            {
+                throw new InvalidNameException();
+            }
+            else if (text is null)
+            {
+                throw new ArgumentNullException();
+            }
             HashSet<string> test = new HashSet<string>();
             Cell newText = new Cell(text);
             if (cells.ContainsKey(name))
@@ -67,8 +83,14 @@ namespace SS
 
         public override ISet<string> SetCellContents(string name, Formula formula)
         {
+            if (name is null)
+            {
+                throw new InvalidNameException();
+            }else if(formula is null)
+            {
+                throw new ArgumentNullException();
+            }
             dependencyGraph.ReplaceDependees(name, formula.GetVariables());
-
             HashSet<string> newDependees = new HashSet<string>(GetCellsToRecalculate(name));
             Cell newFormula = new Cell(formula);
             if (cells.ContainsKey(name))

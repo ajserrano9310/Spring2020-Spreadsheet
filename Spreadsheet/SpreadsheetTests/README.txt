@@ -8,6 +8,7 @@ Copyright:  CS 3500 and Alejandro Rubio - This work may not be copied for use in
 1. Comments to Evaluators:
 
 All the Projects include copies of the READMEs and the Solution README has been updated
+Code coverage from tests for the Spreadsheet class is 100%
 
 2. Assignment Specific Topics
 
@@ -27,4 +28,4 @@ Alejandro Serrano
 
 4. References:
 
-No references
+	1. https://stackoverflow.com/questions/494224/how-do-you-determine-if-two-hashsets-are-equal-by-value-not-by-reference

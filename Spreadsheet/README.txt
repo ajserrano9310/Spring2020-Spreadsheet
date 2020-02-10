@@ -8,6 +8,7 @@ Copyright:  CS 3500 and Alejandro Rubio - This work may not be copied for use in
 1. Comments to Evaluators:
 
 All the Projects include copies of the READMEs and the Solution README has been updated
+Code coverage from tests for the Spreadsheet class is 100%
 
 2. Assignment Specific Topics
 
@@ -27,4 +28,10 @@ Alejandro Serrano
 
 4. References:
 
-No references
+	1. https://stackoverflow.com/questions/494224/how-do-you-determine-if-two-hashsets-are-equal-by-value-not-by-reference
+
+5. Examples of Good Software Practice:
+
+Code re-use: My library uses other libraries which some are made by me like the DependencyGraph and others that are external libraries like the method called SetEquals which compares if two sets are equal with respect to their values and not references.
+Testing strategies: My code uses a very good strategy to prove that the code is correct. This is based on a series of tests that test the functionality of each method. In addition, they test extreme cases which can crash the program which would be bad if an user sees that. Also, the test code coverage of the program is 100%.
+DRY: My code uses private methods such as the formatValidator which is responsible for verifying if the parameter that enters as the name of the cell has a valid name or not.

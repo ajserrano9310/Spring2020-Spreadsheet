@@ -25,90 +25,126 @@ namespace SpreadsheetTests
     [TestClass]
     public class SpreadsheetTests
     {
+        /// <summary>
+        /// Test for GetCellContents throwing InvalidNameException when using null as parameter.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod1()
+        public void TestGetCellContentsNull()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.GetCellContents(null);
         }
+        /// <summary>
+        /// Test for GetCellContents throwing InvalidNameException with an invalid cell name.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod2()
+        public void TestInvalidGetCellContents()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.GetCellContents("+A1");
         }
+        /// <summary>
+        /// Test for SetCellContents throwing InvalidNameException with null and a Formula.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod3()
+        public void TestSetCellContentsNullWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula= new Formula("1");
             spreadsheet.SetCellContents(null,formula);
         }
+        /// <summary>
+        /// Test for SetCellContents throwing InvalidNameException with an invalid name and a Formula.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod4()
+        public void TestSetCellContentsInvalidWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula = new Formula("1");
             spreadsheet.SetCellContents("+A2", formula);
         }
+        /// <summary>
+        /// Test for SetCellContents throwing ArgumentNullException with a null Formula.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestMethod5()
+        public void TestSetCellContentsNullFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula = null;
             spreadsheet.SetCellContents("A2", formula);
         }
+        /// <summary>
+        /// Test for SetCellContents throwing ArgumentNullException with null as text.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestMethod6()
+        public void TestSetCellContentsNullContent()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             string content = null;
             spreadsheet.SetCellContents("A3", content);
         }
+        /// <summary>
+        /// Test for SetCellContents throwing CircularException when using and assigning the same cell to a formula.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(CircularException))]
-        public void TestMethod7()
+        public void TestSetCellContentsCircularException()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula = new Formula("A1+A1");
             spreadsheet.SetCellContents("A1", formula);
         }
+        /// <summary>
+        /// Test SetCellContents throwing InvalidNameException with null as input and some text.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod8()
+        public void TestSetCellContentsNullWithText()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents(null, "Hello");
         }
+        /// <summary>
+        /// Tests SetCellContents throwing InvalidNameException with an invalid cell name and some text.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod9()
+        public void TestSetCellContentsInvalidWithText()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("+A1", "Hello");
         }
+        /// <summary>
+        ///Test SetCellContents throwing InvalidNameException with a null and a double. 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod10()
+        public void TestSetCellContentsNullWithDouble()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents(null, 4.2);
         }
+        /// <summary>
+        /// Test SetCellContents throwing InvalidNameException with an invalid cell name and a double. 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod11()
+        public void TestSetCellContentsInvalidWithDouble()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("+A7", 4.7);
         }
+        /// <summary>
+        /// Test SetCellContents with valid values.
+        /// </summary>
         [TestMethod]
-        public void TestMethod12()
+        public void TestValidSetCellContents()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("A7", 4.7);
@@ -116,21 +152,30 @@ namespace SpreadsheetTests
             result.Add("A7");
             Assert.IsTrue(spreadsheet.SetCellContents("A7",123.0).SetEquals(result));
         }
+        /// <summary>
+        /// Test GetCellContents with valid values.
+        /// </summary>
         [TestMethod]
-        public void TestMethod13()
+        public void TestValidGetCellContents()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("A8", 5.7);
             Assert.AreEqual(spreadsheet.GetCellContents("A8"), 5.7);
         }
+        /// <summary>
+        /// Tests GetCellContents with a cell that does not exist.
+        /// </summary>
         [TestMethod]
-        public void TestMethod14()
+        public void TestEmptyGetCellContents()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Assert.AreEqual(spreadsheet.GetCellContents("A8"), "");
         }
+        /// <summary>
+        /// Tests GetNameOfAllNonemptyCells with two valid Cells.
+        /// </summary>
         [TestMethod]
-        public void TestMethod15()
+        public void TestGetNamesOfAllNonemptyCells()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("F1", "Hello");
@@ -140,30 +185,42 @@ namespace SpreadsheetTests
             result.Add("F2");
             Assert.IsTrue(spreadsheet.GetNamesOfAllNonemptyCells().SequenceEqual(result));
         }
+        /// <summary>
+        /// Tests GetCellContents with replaced values
+        /// </summary>
         [TestMethod]
-        public void TestMethod16()
+        public void TestReplacedGetCellContents()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("F1", "Hello");
             spreadsheet.SetCellContents("F1", "World");
             Assert.IsTrue(spreadsheet.GetCellContents("F1").Equals("World"));
         }
+        /// <summary>
+        /// Tests SetCellContents throwing InvalidNameException with null and a text.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod17()
+        public void TestSetCellContentsNullWithText2()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents(null, "Hello");
         }
+        /// <summary>
+        /// Tests SetCellContents throwing InvalidNameException with an invalid cell name and some text.
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestMethod18()
+        public void TestSetCellContentsInvalidWithText2()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("$A3", "World");
         }
+        /// <summary>
+        /// Test SetCellContents with a formula that uses another cell
+        /// </summary>
         [TestMethod]
-        public void TestMethod19()
+        public void TestSetCellContentsWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("F1", 5.0);
@@ -171,18 +228,23 @@ namespace SpreadsheetTests
             result.Add("F2");
             Assert.IsTrue(spreadsheet.SetCellContents("F2", new Formula("F1+5")).SetEquals(result));
         }
+        /// <summary>
+        /// Test SetCellContents with replaced Formula
+        /// </summary>
         [TestMethod]
-        public void TestMethod20()
+        public void TestSetCellContentsWithReplacedCell()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             spreadsheet.SetCellContents("F1", new Formula("1+1"));
-            spreadsheet.SetCellContents("F1", new Formula("2+2"));
             HashSet<string> result = new HashSet<string>();
             result.Add("F1");
             Assert.IsTrue(spreadsheet.SetCellContents("F1", new Formula("2+2")).SetEquals(result));
         }
+        /// <summary>
+        /// Test SetCellContents where it has to recalculate previous values
+        /// </summary>
         [TestMethod]
-        public void TestMethod21()
+        public void TestMultipleSetCellContentsWithRecalculate()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula1 = new Formula("A1+A2");

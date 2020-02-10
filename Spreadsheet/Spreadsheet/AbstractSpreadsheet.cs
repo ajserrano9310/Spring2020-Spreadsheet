@@ -1,4 +1,5 @@
-﻿/// <summary> 
+﻿using SpreadsheetUtilities;
+/// <summary> 
 /// AbstractSpreadsheet
 /// 
 /// This file was written by Joe Zachary for CS 3500, September 2013 and used by the student Alejandro Rubio for Assignment Four
@@ -6,7 +7,6 @@
 /// </summary>
 using System;
 using System.Collections.Generic;
-using SpreadsheetUtilities;
 
 namespace SS
 {
@@ -323,13 +323,13 @@ namespace SS
         }
 
 
-/// <summary>
-/// This method recursively gets all the cells that need to be recalculated and changed.
-/// </summary>
-/// <param name="start">The starting cell</param>
-/// <param name="name">The dependee of the starting cell</param>
-/// <param name="visited">Cells that have already been visited</param>
-/// <param name="changed">Cells that have been changed</param>
+        /// <summary>
+        /// This method recursively gets all the cells that need to be recalculated and changed.
+        /// </summary>
+        /// <param name="start">The starting cell</param>
+        /// <param name="name">The dependee of the starting cell</param>
+        /// <param name="visited">Cells that have already been visited</param>
+        /// <param name="changed">Cells that have been changed</param>
         private void Visit(String start, String name, ISet<String> visited, LinkedList<String> changed)
         {
             // Mark the cell as visited

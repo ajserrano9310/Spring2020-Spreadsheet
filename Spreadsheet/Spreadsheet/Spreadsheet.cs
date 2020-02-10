@@ -11,10 +11,8 @@
 /// This file creates a Spreadsheet cell using the Formula and DependencyGraph Library.
 /// </summary>
 using SpreadsheetUtilities;
-using SS;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
 namespace SS
@@ -41,11 +39,13 @@ namespace SS
             {
                 throw new InvalidNameException();
                 // name needs to have a valid format
-            } else if (!formatValidator(name)){
+            }
+            else if (!formatValidator(name))
+            {
                 throw new InvalidNameException();
             }
             // If the cell exists and has content, return the content
-                else if (cells.ContainsKey(name))
+            else if (cells.ContainsKey(name))
             {
                 return cells[name].cellContent;
             }
@@ -57,14 +57,14 @@ namespace SS
             // Create list to store non empty cells
             List<string> nonEmptyCells = new List<string>();
             // Go trough each key
-            for(int i = 0; i < cells.Count; i++)
+            for (int i = 0; i < cells.Count; i++)
             {
                 // Get the key and add it to our list
                 nonEmptyCells.Add(cells.ElementAt(i).Key);
             }
             // Return the list with non empty cells
             return nonEmptyCells;
-    }
+        }
         public override ISet<string> SetCellContents(string name, double number)
         {
             // name cant be null
@@ -72,7 +72,8 @@ namespace SS
             {
                 throw new InvalidNameException();
                 // name needs to have a valid format
-            } else if (!formatValidator(name))
+            }
+            else if (!formatValidator(name))
             {
                 throw new InvalidNameException();
             }
@@ -142,7 +143,8 @@ namespace SS
             {
                 throw new InvalidNameException();
                 // formula cant be null
-            }else if(formula is null)
+            }
+            else if (formula is null)
             {
                 throw new ArgumentNullException();
             }

@@ -16,7 +16,6 @@ using SS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 namespace SpreadsheetTests
 {
     /// <summary>
@@ -53,8 +52,8 @@ namespace SpreadsheetTests
         public void TestSetCellContentsNullWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            Formula formula= new Formula("1");
-            spreadsheet.SetCellContents(null,formula);
+            Formula formula = new Formula("1");
+            spreadsheet.SetCellContents(null, formula);
         }
         /// <summary>
         /// Test for SetCellContents throwing InvalidNameException with an invalid name and a Formula.
@@ -150,7 +149,7 @@ namespace SpreadsheetTests
             spreadsheet.SetCellContents("A7", 4.7);
             HashSet<string> result = new HashSet<string>();
             result.Add("A7");
-            Assert.IsTrue(spreadsheet.SetCellContents("A7",123.0).SetEquals(result));
+            Assert.IsTrue(spreadsheet.SetCellContents("A7", 123.0).SetEquals(result));
         }
         /// <summary>
         /// Test GetCellContents with valid values.

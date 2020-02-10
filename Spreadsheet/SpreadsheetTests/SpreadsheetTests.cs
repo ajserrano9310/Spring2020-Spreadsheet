@@ -17,12 +17,25 @@ using System.Collections.Generic;
 using System.Text;
 namespace SpreadsheetTests
 {
+    /// <summary>
+    /// Class to test the functionality of the Spreadsheet class made from the AbstractSpreadsheet.
+    /// </summary>
     [TestClass]
     public class SpreadsheetTests
     {
         [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
         public void TestMethod1()
         {
+            AbstractSpreadsheet spreadsheet = new Spreadsheet();
+            spreadsheet.GetCellContents(null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void TestMethod2()
+        {
+            AbstractSpreadsheet spreadsheet = new Spreadsheet();
+            spreadsheet.GetCellContents("+A1");
         }
     }
 }

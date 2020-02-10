@@ -182,16 +182,7 @@ namespace SS
         }
         protected override IEnumerable<string> GetDirectDependents(string name)
         {
-            // name cant be null
-            if(name is null)
-            {
-                throw new ArgumentNullException();
-                // name needs to have a valid format
-            } else if (!formatValidator(name))
-            {
-                throw new InvalidNameException();
-            }
-            // Finally return the list of dependents from name
+            // Just return the list of dependents from name
             return dependencyGraph.GetDependents(name);
         }
         /// <summary>

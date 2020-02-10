@@ -181,5 +181,21 @@ namespace SpreadsheetTests
             result.Add("F1");
             Assert.IsTrue(spreadsheet.SetCellContents("F1", new Formula("2+2")).SetEquals(result));
         }
+        [TestMethod]
+        public void TestMethod21()
+        {
+            AbstractSpreadsheet spreadsheet = new Spreadsheet();
+            Formula formula1 = new Formula("A1+A2");
+            Formula formula2 = new Formula("B1+3");
+            spreadsheet.SetCellContents("A1", 5.0);
+            spreadsheet.SetCellContents("A2", 6.0);
+            spreadsheet.SetCellContents("B1", formula1);
+            spreadsheet.SetCellContents("C1", formula2);
+            HashSet<string> result = new HashSet<string>();
+            result.Add("A1");
+            result.Add("B1");
+            result.Add("C1");
+            Assert.IsTrue(spreadsheet.SetCellContents("A1", 4.0).SetEquals(result));
+        }
     }
 }

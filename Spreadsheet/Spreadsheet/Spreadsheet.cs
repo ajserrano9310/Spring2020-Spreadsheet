@@ -114,16 +114,6 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
-            // name cant be null
-            if (name is null)
-            {
-                throw new InvalidNameException();
-                // name needs to have a valid format
-            }
-            else if (!formatValidator(name))
-            {
-                throw new InvalidNameException();
-            }
             // Create HashSet for later
             HashSet<string> cellsToRecalculate = new HashSet<string>();
             // Create cell with the number

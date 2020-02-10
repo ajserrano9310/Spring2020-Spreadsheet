@@ -187,7 +187,7 @@ namespace SS
             {
                 cells.Add(name, newFormula);
             }
-            // Return the list with new dependees
+            // Return the hashset with new dependees
             return newDependees;
         }
         protected override IEnumerable<string> GetDirectDependents(string name)

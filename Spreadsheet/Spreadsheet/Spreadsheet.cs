@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml;
 //test erase
 namespace SS
 {
@@ -27,7 +28,22 @@ namespace SS
         // Create variable to initialize later
         private DependencyGraph dependencyGraph;
         private Dictionary<string, Cell> cells;
-        public Spreadsheet()
+
+        public override bool Changed { get => throw new NotImplementedException(); protected set => throw new NotImplementedException(); }
+
+        public Spreadsheet() : base(f => true, f =>f, "")
+        {
+            // Initialize all variables
+            dependencyGraph = new DependencyGraph();
+            cells = new Dictionary<string, Cell>();
+        }
+        public Spreadsheet(Func<string,bool> isValid, Func<string,string> normalize, string version) : base(isValid, normalize, version)
+        {
+            // Initialize all variables
+            dependencyGraph = new DependencyGraph();
+            cells = new Dictionary<string, Cell>();
+        }
+        public Spreadsheet(string pathToFile, Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
         {
             // Initialize all variables
             dependencyGraph = new DependencyGraph();
@@ -216,6 +232,34 @@ namespace SS
                 return true;
             }
             return false;
+        }
+
+        public override IList<string> SetContentsOfCell(string name, string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetSavedVersion(string filename)
+        {
+            XmlReader reader = XmlReader.Create(filename);
+            while (reader.Read())
+            {
+                if (reader.Name.Equals("spreadsheet"))
+                {
+                    return reader["version"];
+                }
+            }
+            return "";
+        }
+
+        public override void Save(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object GetCellValue(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

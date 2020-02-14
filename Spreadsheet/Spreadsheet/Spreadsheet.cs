@@ -28,26 +28,34 @@ namespace SS
         // Create variable to initialize later
         private DependencyGraph dependencyGraph;
         private Dictionary<string, Cell> cells;
+        private bool changed;
 
-        public override bool Changed { get => throw new NotImplementedException(); protected set => throw new NotImplementedException(); }
+        public override bool Changed { get { return changed; } protected set { changed = value; } }
 
-        public Spreadsheet() : base(f => true, f =>f, "")
+        public Spreadsheet() : base(f => true, f =>f, "default")
         {
             // Initialize all variables
             dependencyGraph = new DependencyGraph();
             cells = new Dictionary<string, Cell>();
+            changed = false;
         }
         public Spreadsheet(Func<string,bool> isValid, Func<string,string> normalize, string version) : base(isValid, normalize, version)
         {
             // Initialize all variables
             dependencyGraph = new DependencyGraph();
             cells = new Dictionary<string, Cell>();
+            changed = false;
         }
         public Spreadsheet(string pathToFile, Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
         {
             // Initialize all variables
             dependencyGraph = new DependencyGraph();
             cells = new Dictionary<string, Cell>();
+            changed = false;
+            if (!GetSavedVersion(pathToFile).Equals(version))
+            {
+                throw new SpreadsheetReadWriteException("The version of the file does not match.");
+            }
         }
         public override object GetCellContents(string name)
         {
@@ -82,7 +90,7 @@ namespace SS
             // Return the list with non empty cells
             return nonEmptyCells;
         }
-        public override ISet<string> SetCellContents(string name, double number)
+        protected override IList<string> SetCellContents(string name, double number)
         {
             // name cant be null
             if (name is null)
@@ -94,8 +102,8 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
-            // Create HashSet for later
-            HashSet<string> cellsToRecalculate = new HashSet<string>();
+            // Create List for later
+            List<string> cellsToRecalculate = new List<string>();
             // Create cell with the number
             Cell newNumber = new Cell(number);
             // If it exists we just replace it
@@ -111,11 +119,11 @@ namespace SS
             // We have to replace cells linked to that cell
             dependencyGraph.ReplaceDependees(name, cellsToRecalculate);
             // We also have to recalculate them
-            cellsToRecalculate = new HashSet<string>(GetCellsToRecalculate(name));
+            cellsToRecalculate = new List<string>(GetCellsToRecalculate(name));
             // Finally we return that list
             return cellsToRecalculate;
         }
-        public override ISet<string> SetCellContents(string name, string text)
+        protected override IList<string> SetCellContents(string name, string text)
         {
             // name cant be null
             if (name is null)
@@ -132,8 +140,8 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
-            // Create HashSet for later
-            HashSet<string> cellsToRecalculate = new HashSet<string>();
+            // Create List for later
+            List<string> cellsToRecalculate = new List<string>();
             // Create cell with the number
             Cell newText = new Cell(text);
             // If it exists we just replace it
@@ -149,11 +157,11 @@ namespace SS
             // We have to replace cells linked to that cell
             dependencyGraph.ReplaceDependees(name, cellsToRecalculate);
             // We also have to recalculate them
-            cellsToRecalculate = new HashSet<string>(GetCellsToRecalculate(name));
+            cellsToRecalculate = new List<string>(GetCellsToRecalculate(name));
             // Finally we return that list
             return cellsToRecalculate;
         }
-        public override ISet<string> SetCellContents(string name, Formula formula)
+        protected override IList<string> SetCellContents(string name, Formula formula)
         {
             // name cant be null
             if (name is null)
@@ -170,14 +178,14 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
-            // Create HashSet for later
-            HashSet<string> newDependees;
+            // Create List for later
+            List<string> newDependees;
             // Call Replace dependees with formula variables
             dependencyGraph.ReplaceDependees(name, formula.GetVariables());
             // Try to recalculate cells
             try
             {
-                newDependees = new HashSet<string>(GetCellsToRecalculate(name));
+                newDependees = new List<string>(GetCellsToRecalculate(name));
             }
             // Throw exception if it finds a CircularException
             catch (Exception)
@@ -196,7 +204,7 @@ namespace SS
             {
                 cells.Add(name, newFormula);
             }
-            // Return the hashset with new dependees
+            // Return the List with new dependees
             return newDependees;
         }
         protected override IEnumerable<string> GetDirectDependents(string name)
@@ -241,12 +249,18 @@ namespace SS
 
         public override string GetSavedVersion(string filename)
         {
-            XmlReader reader = XmlReader.Create(filename);
-            while (reader.Read())
+            using (XmlReader reader = XmlReader.Create(filename))
             {
-                if (reader.Name.Equals("spreadsheet"))
+                while (reader.Read())
                 {
-                    return reader["version"];
+                    if (reader.IsStartElement())
+                    {
+                        switch (reader.Name)
+                        {
+                            case "spreadsheet":
+                                return reader["version"];
+                        }
+                    }
                 }
             }
             return "";

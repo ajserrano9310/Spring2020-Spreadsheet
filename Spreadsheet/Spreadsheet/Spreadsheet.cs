@@ -1,7 +1,7 @@
 ﻿/// <summary> 
 /// Author:    Alejandro Rubio
 /// Partner:   None
-/// Date:      2/9/2020
+/// Date:      2/14/2020
 /// Course:    CS 3500, University of Utah, School of Computing 
 /// Copyright: CS 3500 and Alejandro Rubio - This work may not be copied for use in Academic Coursework. 
 /// 
@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
-//test erase
 namespace SS
 {
     /// <summary>
@@ -268,12 +267,61 @@ namespace SS
 
         public override void Save(string filename)
         {
-            throw new NotImplementedException();
-        }
+            if (filename is null)
+            {
+                throw new SpreadsheetReadWriteException("The name of the file cannot be null");
+            } else if (filename.Equals(""))
+            {
+                throw new SpreadsheetReadWriteException("The name of the file cannot be empty");
+            }
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.IndentChars = "  ";
+                using (XmlWriter writer = XmlWriter.Create(filename, settings))
+                {
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("spreadsheet");
+                    writer.WriteAttributeString("version", null, Version);
+
+                    foreach (string cell in cells.Keys)
+                    {
+                        writer.WriteStartElement("cell");
+                        writer.WriteElementString("name", cell);
+                        string cellString;
+                        if (cells[cell].cellContent is Formula)
+                        {
+                            cellString = "=" + cells[cell].cellContent;
+                        }
+                        else
+                        {
+                            cellString = cells[cell].cellContent.ToString();
+                        }
+                        writer.WriteElementString("contents", cellString);
+                        writer.WriteEndElement();
+                    }
+
+                    writer.WriteEndElement(); // Ends the States block
+                    writer.WriteEndDocument();
+
+               
+            }
+            }
+
 
         public override object GetCellValue(string name)
         {
-            throw new NotImplementedException();
+            Cell cell;
+            if (name is null)
+            {
+                throw new InvalidNameException();
+            }else if (!formatValidator(name))
+            {
+                throw new InvalidNameException();
+            }else if(cells.TryGetValue(name, out cell))
+            {
+                return cell.cellContent;
+            }
+            return "";
         }
     }
 }

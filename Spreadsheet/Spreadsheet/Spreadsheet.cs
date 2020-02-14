@@ -31,14 +31,14 @@ namespace SS
 
         public override bool Changed { get { return changed; } protected set { changed = value; } }
 
-        public Spreadsheet() : base(f => true, f =>f, "default")
+        public Spreadsheet() : base(f => true, f => f, "default")
         {
             // Initialize all variables
             dependencyGraph = new DependencyGraph();
             cells = new Dictionary<string, Cell>();
             changed = false;
         }
-        public Spreadsheet(Func<string,bool> isValid, Func<string,string> normalize, string version) : base(isValid, normalize, version)
+        public Spreadsheet(Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
         {
             // Initialize all variables
             dependencyGraph = new DependencyGraph();
@@ -192,7 +192,7 @@ namespace SS
                 throw new CircularException();
             }
             // Create a cell with the formula
-            Cell newFormula = new Cell(formula);
+            Cell newFormula = new Cell(formula, lookup);
             // If the cell already exists just replace the content
             if (cells.ContainsKey(name))
             {
@@ -220,19 +220,35 @@ namespace SS
             /// Stores the content of the Cell
             /// </summary>
             public Object cellContent;
+            public Object cellValue;
+            public Boolean isFormula;
             /// <summary>
             /// Constructor for Cell with some content as data
             /// </summary>
             /// <param name="content">The value of the Cell</param>
-            public Cell(Object content)
+            public Cell(double content)
             {
                 cellContent = content;
+                cellValue = cellContent;
+                isFormula = false;
+            }
+            public Cell(string content)
+            {
+                cellContent = content;
+                cellValue = cellContent;
+                isFormula = false;
+            }
+            public Cell(Formula content, Func<string, double> lookup)
+            {
+                cellContent = content;
+                isFormula = true;
+                cellValue = content.Evaluate(lookup);
             }
         }
         private Boolean formatValidator(string name)
         {
             // Create Regex with desired format to check
-            Regex nameFormat = new Regex("^[_A-Za-z]+[_A-Za-z0-9]");
+            Regex nameFormat = new Regex("^[A-Za-z]+[A-Za-z0-9]");
             // Check if name has the Regex format
             if (nameFormat.IsMatch(name))
             {
@@ -247,24 +263,50 @@ namespace SS
             if (content is null)
             {
                 throw new ArgumentNullException();
-            }else if(name is null)
+            }
+            else if (name is null)
             {
                 throw new ArgumentNullException();
-            }else if (!formatValidator(name))
+            }
+            else if (!formatValidator(name))
             {
                 throw new InvalidNameException();
             }
-            if(Double.TryParse(content,out double number))
-            {
-                cellsToRecalculate = new List<string>(SetCellContents(name, number));
-            }else if (content[0].Equals("="))
-            {
-                cellsToRecalculate = new List<string>(SetCellContents(name, new Formula(content.Substring(0, content.Length - 1),Normalize,IsValid)));
-            }
-            else
+            if (content.Length == 0)
             {
                 cellsToRecalculate = new List<string>(SetCellContents(name, content));
             }
+            else
+            {
+                if (Double.TryParse(content, out double number))
+                {
+                    cellsToRecalculate = new List<string>(SetCellContents(name, number));
+                }
+                else if (content[0].Equals('='))
+                {
+                    cellsToRecalculate = new List<string>(SetCellContents(name, new Formula(content.Substring(0, content.Length), Normalize, IsValid)));
+                }
+                else
+                {
+                    cellsToRecalculate = new List<string>(SetCellContents(name, content));
+                }
+            }
+
+            foreach (string s in cellsToRecalculate)
+            {
+                Cell cellVal;
+                if (cells.TryGetValue(s, out cellVal))
+                {
+                    if (cellVal.isFormula)
+                    {
+                        Formula f = (Formula)cellVal.cellContent;
+                        cellVal.cellValue = f.Evaluate(lookup);
+                    }
+                }
+            }
+
+
+            changed = true;
 
             return cellsToRecalculate;
 
@@ -273,21 +315,28 @@ namespace SS
 
         public override string GetSavedVersion(string filename)
         {
-            using (XmlReader reader = XmlReader.Create(filename))
+            try
             {
-                while (reader.Read())
+                using (XmlReader reader = XmlReader.Create(filename))
                 {
-                    if (reader.IsStartElement())
+                    while (reader.Read())
                     {
-                        switch (reader.Name)
+                        if (reader.IsStartElement())
                         {
-                            case "spreadsheet":
-                                return reader["version"];
+                            switch (reader.Name)
+                            {
+                                case "spreadsheet":
+                                    return reader["version"];
+                            }
                         }
                     }
                 }
             }
-            return "";
+            catch (Exception e)
+            {
+                throw new SpreadsheetReadWriteException(e.ToString());
+            }
+            throw new SpreadsheetReadWriteException("Version not found");
         }
 
         public override void Save(string filename)
@@ -295,10 +344,13 @@ namespace SS
             if (filename is null)
             {
                 throw new SpreadsheetReadWriteException("The name of the file cannot be null");
-            } else if (filename.Equals(""))
+            }
+            else if (filename.Equals(""))
             {
                 throw new SpreadsheetReadWriteException("The name of the file cannot be empty");
             }
+            try
+            {
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
                 settings.IndentChars = "  ";
@@ -328,9 +380,15 @@ namespace SS
                     writer.WriteEndElement(); // Ends the States block
                     writer.WriteEndDocument();
 
-               
+
+                }
             }
+            catch (Exception e)
+            {
+                throw new SpreadsheetReadWriteException(e.ToString());
             }
+            changed = false;
+        }
 
 
         public override object GetCellValue(string name)
@@ -339,14 +397,28 @@ namespace SS
             if (name is null)
             {
                 throw new InvalidNameException();
-            }else if (!formatValidator(name))
+            }
+            else if (!formatValidator(name))
             {
                 throw new InvalidNameException();
-            }else if(cells.TryGetValue(name, out cell))
+            }
+            else if (cells.TryGetValue(name, out cell))
             {
-                return cell.cellContent;
+                return cell.cellValue;
             }
             return "";
+        }
+        private double lookup(string s)
+        {
+            Cell cell;
+            if (cells.TryGetValue(s, out cell))
+            {
+                if (cell.cellValue is double)
+                {
+                    return (double)cell.cellValue;
+                }
+            }
+            throw new ArgumentException();
         }
     }
 }

@@ -84,7 +84,7 @@ namespace SpreadsheetUtilities
             int p1Counter = 0;
             int p2Counter = 0;
             // Go trough all the tokens
-            for (int i = 0; i < tokens.Length; i++)
+            for (int i = 1; i < tokens.Length; i++)
             {
                 // Try to erase white spaces
                 tokens[i] = tokens[i].Trim();
@@ -284,7 +284,7 @@ namespace SpreadsheetUtilities
             double tryDouble;
             String actualString;
             // Go trough each of the elements (tokens) from the expression
-            for (int i = 0; i < tokens.Length; i++)
+            for (int i = 1; i < tokens.Length; i++)
             {
                 actualString = tokens[i];
                 // Check if its an integer and assign the value to tryInt
@@ -538,12 +538,14 @@ namespace SpreadsheetUtilities
             // Go trough every token and add it to our final result
             for (int i = 0; i < tokens.Length; i++)
             {
-                if(Double.TryParse(tokens[i],out double n)){
+                if (Double.TryParse(tokens[i], out double n))
+                {
                     formula = formula + n;
-            }else
-            {
-                formula = formula + tokens[i];
-            }
+                }
+                else
+                {
+                    formula = formula + tokens[i];
+                }
             }
             return formula;
         }

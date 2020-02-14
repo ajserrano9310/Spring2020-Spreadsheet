@@ -243,7 +243,32 @@ namespace SS
 
         public override IList<string> SetContentsOfCell(string name, string content)
         {
-            throw new NotImplementedException();
+            List<string> cellsToRecalculate = new List<string>();
+            if (content is null)
+            {
+                throw new ArgumentNullException();
+            }else if(name is null)
+            {
+                throw new ArgumentNullException();
+            }else if (!formatValidator(name))
+            {
+                throw new InvalidNameException();
+            }
+            if(Double.TryParse(content,out double number))
+            {
+                cellsToRecalculate = new List<string>(SetCellContents(name, number));
+            }else if (content[0].Equals("="))
+            {
+                cellsToRecalculate = new List<string>(SetCellContents(name, new Formula(content.Substring(0, content.Length - 1),Normalize,IsValid)));
+            }
+            else
+            {
+                cellsToRecalculate = new List<string>(SetCellContents(name, content));
+            }
+
+            return cellsToRecalculate;
+
+
         }
 
         public override string GetSavedVersion(string filename)

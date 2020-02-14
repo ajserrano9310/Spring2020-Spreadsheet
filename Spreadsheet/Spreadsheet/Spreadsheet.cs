@@ -1,4 +1,5 @@
-﻿/// <summary> 
+﻿/// <summary>
+/// Assignment: Assignment Five - Spreadsheet Model
 /// Author:    Alejandro Rubio
 /// Partner:   None
 /// Date:      2/14/2020
@@ -266,7 +267,7 @@ namespace SS
             }
             else if (name is null)
             {
-                throw new ArgumentNullException();
+                throw new InvalidNameException();
             }
             else if (!formatValidator(name))
             {
@@ -284,7 +285,7 @@ namespace SS
                 }
                 else if (content[0].Equals('='))
                 {
-                    cellsToRecalculate = new List<string>(SetCellContents(name, new Formula(content.Substring(0, content.Length), Normalize, IsValid)));
+                    cellsToRecalculate = new List<string>(SetCellContents(name, new Formula(content.Substring(1, content.Length-1), Normalize, IsValid)));
                 }
                 else
                 {
@@ -365,8 +366,16 @@ namespace SS
                         writer.WriteStartElement("cell");
                         writer.WriteElementString("name", cell);
 
-                            string cellString = cells[cell].cellContent.ToString();
-                        
+                        string cellString;
+                        if (cells[cell].cellContent is Formula)
+                        {
+                            cellString = "=" + cells[cell].cellContent;
+                        }
+                        else
+                        {
+                            cellString = cells[cell].cellContent.ToString();
+                        }
+
                         writer.WriteElementString("contents", cellString);
                         writer.WriteEndElement();
                     }
@@ -383,8 +392,6 @@ namespace SS
             }
             changed = false;
         }
-
-
         public override object GetCellValue(string name)
         {
             Cell cell;

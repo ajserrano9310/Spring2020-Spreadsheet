@@ -364,15 +364,9 @@ namespace SS
                     {
                         writer.WriteStartElement("cell");
                         writer.WriteElementString("name", cell);
-                        string cellString;
-                        if (cells[cell].cellContent is Formula)
-                        {
-                            cellString = "=" + cells[cell].cellContent;
-                        }
-                        else
-                        {
-                            cellString = cells[cell].cellContent.ToString();
-                        }
+
+                            string cellString = cells[cell].cellContent.ToString();
+                        
                         writer.WriteElementString("contents", cellString);
                         writer.WriteEndElement();
                     }

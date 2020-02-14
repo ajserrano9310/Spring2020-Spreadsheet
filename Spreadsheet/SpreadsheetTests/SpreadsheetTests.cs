@@ -45,111 +45,111 @@ namespace SpreadsheetTests
             spreadsheet.GetCellContents("+A1");
         }
         /// <summary>
-        /// Test for SetCellContents throwing InvalidNameException with null and a Formula.
+        /// Test for SetContentsOfCell throwing InvalidNameException with null and a Formula.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsNullWithFormula()
+        public void TestSetContentsOfCellNullWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula = new Formula("1");
-            spreadsheet.SetCellContents(null, formula);
+            spreadsheet.SetContentsOfCell(null, "=1");
         }
         /// <summary>
-        /// Test for SetCellContents throwing InvalidNameException with an invalid name and a Formula.
+        /// Test for SetContentsOfCell throwing InvalidNameException with an invalid name and a Formula.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsInvalidWithFormula()
+        public void TestSetContentsOfCellInvalidWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula = new Formula("1");
-            spreadsheet.SetCellContents("+A2", formula);
+            spreadsheet.SetContentsOfCell("+A2", "=1");
         }
         /// <summary>
-        /// Test for SetCellContents throwing ArgumentNullException with a null Formula.
+        /// Test for SetContentsOfCell throwing ArgumentNullException with a null Formula.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSetCellContentsNullFormula()
+        public void TestSetContentsOfCellNullFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula = null;
-            spreadsheet.SetCellContents("A2", formula);
+            spreadsheet.SetContentsOfCell("A2", null);
         }
         /// <summary>
-        /// Test for SetCellContents throwing ArgumentNullException with null as text.
+        /// Test for SetContentsOfCell throwing ArgumentNullException with null as text.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSetCellContentsNullContent()
+        public void TestSetContentsOfCellNullContent()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             string content = null;
-            spreadsheet.SetCellContents("A3", content);
+            spreadsheet.SetContentsOfCell("A3", content);
         }
         /// <summary>
-        /// Test for SetCellContents throwing CircularException when using and assigning the same cell to a formula.
+        /// Test for SetContentsOfCell throwing CircularException when using and assigning the same cell to a formula.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(CircularException))]
-        public void TestSetCellContentsCircularException()
+        public void TestSetContentsOfCellCircularException()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula = new Formula("A1+A1");
-            spreadsheet.SetCellContents("A1", formula);
+            spreadsheet.SetContentsOfCell("A1", "=A1+A1");
         }
         /// <summary>
-        /// Test SetCellContents throwing InvalidNameException with null as input and some text.
+        /// Test SetContentsOfCell throwing InvalidNameException with null as input and some text.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsNullWithText()
+        public void TestSetContentsOfCellNullWithText()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents(null, "Hello");
+            spreadsheet.SetContentsOfCell(null, "Hello");
         }
         /// <summary>
-        /// Tests SetCellContents throwing InvalidNameException with an invalid cell name and some text.
+        /// Tests SetContentsOfCell throwing InvalidNameException with an invalid cell name and some text.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsInvalidWithText()
+        public void TestSetContentsOfCellInvalidWithText()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("+A1", "Hello");
+            spreadsheet.SetContentsOfCell("+A1", "Hello");
         }
         /// <summary>
-        ///Test SetCellContents throwing InvalidNameException with a null and a double. 
+        ///Test SetContentsOfCell throwing InvalidNameException with a null and a double. 
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsNullWithDouble()
+        public void TestSetContentsOfCellNullWithDouble()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents(null, 4.2);
+            spreadsheet.SetContentsOfCell(null, "4.2");
         }
         /// <summary>
-        /// Test SetCellContents throwing InvalidNameException with an invalid cell name and a double. 
+        /// Test SetContentsOfCell throwing InvalidNameException with an invalid cell name and a double. 
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsInvalidWithDouble()
+        public void TestSetContentsOfCellInvalidWithDouble()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("+A7", 4.7);
+            spreadsheet.SetContentsOfCell("+A7", "4.7");
         }
         /// <summary>
-        /// Test SetCellContents with valid values.
+        /// Test SetContentsOfCell with valid values.
         /// </summary>
         [TestMethod]
-        public void TestValidSetCellContents()
+        public void TestValidSetContentsOfCell()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("A7", 4.7);
-            HashSet<string> result = new HashSet<string>();
+            spreadsheet.SetContentsOfCell("A7", "4.7");
+            List<string> result = new List<string>();
             result.Add("A7");
-            Assert.IsTrue(spreadsheet.SetCellContents("A7", 123.0).SetEquals(result));
+            Assert.IsTrue(spreadsheet.SetContentsOfCell("A7", "123.0").SequenceEqual(result));
         }
         /// <summary>
         /// Test GetCellContents with valid values.
@@ -158,7 +158,7 @@ namespace SpreadsheetTests
         public void TestValidGetCellContents()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("A8", 5.7);
+            spreadsheet.SetContentsOfCell("A8", "5.7");
             Assert.AreEqual(spreadsheet.GetCellContents("A8"), 5.7);
         }
         /// <summary>
@@ -177,8 +177,8 @@ namespace SpreadsheetTests
         public void TestGetNamesOfAllNonemptyCells()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("F1", "Hello");
-            spreadsheet.SetCellContents("F2", "World");
+            spreadsheet.SetContentsOfCell("F1", "Hello");
+            spreadsheet.SetContentsOfCell("F2", "World");
             List<string> result = new List<string>();
             result.Add("F1");
             result.Add("F2");
@@ -191,72 +191,80 @@ namespace SpreadsheetTests
         public void TestReplacedGetCellContents()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("F1", "Hello");
-            spreadsheet.SetCellContents("F1", "World");
+            spreadsheet.SetContentsOfCell("F1", "Hello");
+            spreadsheet.SetContentsOfCell("F1", "World");
             Assert.IsTrue(spreadsheet.GetCellContents("F1").Equals("World"));
         }
         /// <summary>
-        /// Tests SetCellContents throwing InvalidNameException with null and a text.
+        /// Tests SetContentsOfCell throwing InvalidNameException with null and a text.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsNullWithText2()
+        public void TestSetContentsOfCellNullWithText2()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents(null, "Hello");
+            spreadsheet.SetContentsOfCell(null, "Hello");
         }
         /// <summary>
-        /// Tests SetCellContents throwing InvalidNameException with an invalid cell name and some text.
+        /// Tests SetContentsOfCell throwing InvalidNameException with an invalid cell name and some text.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void TestSetCellContentsInvalidWithText2()
+        public void TestSetContentsOfCellInvalidWithText2()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("$A3", "World");
+            spreadsheet.SetContentsOfCell("$A3", "World");
         }
         /// <summary>
-        /// Test SetCellContents with a formula that uses another cell
+        /// Test SetContentsOfCell with a formula that uses another cell
         /// </summary>
         [TestMethod]
-        public void TestSetCellContentsWithFormula()
+        public void TestSetContentsOfCellWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("F1", 5.0);
-            HashSet<string> result = new HashSet<string>();
+            spreadsheet.SetContentsOfCell("F1", "5.0");
+            List<string> result = new List<string>();
             result.Add("F2");
-            Assert.IsTrue(spreadsheet.SetCellContents("F2", new Formula("F1+5")).SetEquals(result));
+            Assert.IsTrue(spreadsheet.SetContentsOfCell("F2", "=F1+5").SequenceEqual(result));
         }
         /// <summary>
-        /// Test SetCellContents with replaced Formula
+        /// Test SetContentsOfCell with replaced Formula
         /// </summary>
         [TestMethod]
-        public void TestSetCellContentsWithReplacedCell()
+        public void TestSetContentsOfCellWithReplacedCell()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            spreadsheet.SetCellContents("F1", new Formula("1+1"));
-            HashSet<string> result = new HashSet<string>();
+            spreadsheet.SetContentsOfCell("F1", "=1+1");
+            List<string> result = new List<string>();
             result.Add("F1");
-            Assert.IsTrue(spreadsheet.SetCellContents("F1", new Formula("2+2")).SetEquals(result));
+            Assert.IsTrue(spreadsheet.SetContentsOfCell("F1", "=2+2").SequenceEqual(result));
         }
         /// <summary>
-        /// Test SetCellContents where it has to recalculate previous values
+        /// Test SetContentsOfCell where it has to recalculate previous values
         /// </summary>
         [TestMethod]
-        public void TestMultipleSetCellContentsWithRecalculate()
+        public void TestMultipleSetContentsOfCellWithRecalculate()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
             Formula formula1 = new Formula("A1+A2");
             Formula formula2 = new Formula("B1+3");
-            spreadsheet.SetCellContents("A1", 5.0);
-            spreadsheet.SetCellContents("A2", 6.0);
-            spreadsheet.SetCellContents("B1", formula1);
-            spreadsheet.SetCellContents("C1", formula2);
-            HashSet<string> result = new HashSet<string>();
+            spreadsheet.SetContentsOfCell("A1", "5.0");
+            spreadsheet.SetContentsOfCell("A2", "6.0");
+            spreadsheet.SetContentsOfCell("B1", "=A1+A2");
+            spreadsheet.SetContentsOfCell("C1", "=B1+3");
+            List<string> result = new List<string>();
             result.Add("A1");
             result.Add("B1");
             result.Add("C1");
-            Assert.IsTrue(spreadsheet.SetCellContents("A1", 4.0).SetEquals(result));
+            Assert.IsTrue(spreadsheet.SetContentsOfCell("A1", "4.0").SequenceEqual(result));
         }
-    }
+
+        [TestMethod]
+        public void Test1()
+        {
+            AbstractSpreadsheet ss = new Spreadsheet(s => true, s => s, "1.0");
+            ss.Save("Test1.txt");
+            Assert.AreEqual("1.0", new Spreadsheet().GetSavedVersion("Test1.txt"));
+        }
+        }
 }

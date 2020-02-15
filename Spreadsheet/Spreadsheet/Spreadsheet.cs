@@ -92,16 +92,6 @@ namespace SS
         }
         protected override IList<string> SetCellContents(string name, double number)
         {
-            // name cant be null
-            if (name is null)
-            {
-                throw new InvalidNameException();
-                // name needs to have a valid format
-            }
-            else if (!formatValidator(name))
-            {
-                throw new InvalidNameException();
-            }
             // Create List for later
             List<string> cellsToRecalculate = new List<string>();
             // Create cell with the number
@@ -125,21 +115,6 @@ namespace SS
         }
         protected override IList<string> SetCellContents(string name, string text)
         {
-            // name cant be null
-            if (name is null)
-            {
-                throw new InvalidNameException();
-            }
-            // text cant be null
-            else if (text is null)
-            {
-                throw new ArgumentNullException();
-            }
-            // name needs to have a valid format
-            else if (!formatValidator(name))
-            {
-                throw new InvalidNameException();
-            }
             // Create List for later
             List<string> cellsToRecalculate = new List<string>();
             // Create cell with the number
@@ -163,21 +138,6 @@ namespace SS
         }
         protected override IList<string> SetCellContents(string name, Formula formula)
         {
-            // name cant be null
-            if (name is null)
-            {
-                throw new InvalidNameException();
-                // formula cant be null
-            }
-            else if (formula is null)
-            {
-                throw new ArgumentNullException();
-            }
-            // name needs to have a valid format
-            else if (!formatValidator(name))
-            {
-                throw new InvalidNameException();
-            }
             // Create List for later
             List<string> newDependees;
             // Call Replace dependees with formula variables
@@ -224,7 +184,7 @@ namespace SS
             public Object cellValue;
             public Boolean isFormula;
             /// <summary>
-            /// Constructor for Cell with some content as data
+            /// Constructor for Cell with a number as data
             /// </summary>
             /// <param name="content">The value of the Cell</param>
             public Cell(double content)
@@ -233,12 +193,21 @@ namespace SS
                 cellValue = cellContent;
                 isFormula = false;
             }
+            /// <summary>
+            /// Constructor for Cell with a string as data
+            /// </summary>
+            /// <param name="content">The value of the Cell</param>
             public Cell(string content)
             {
                 cellContent = content;
                 cellValue = cellContent;
                 isFormula = false;
             }
+            /// <summary>
+            /// Constructor for Cell with some content as data
+            /// </summary>
+            /// <param name="content">The value of the Cell</param>
+            /// <param name="lookup">Dictionary to get values</param>
             public Cell(Formula content, Func<string, double> lookup)
             {
                 cellContent = content;
@@ -246,10 +215,15 @@ namespace SS
                 cellValue = content.Evaluate(lookup);
             }
         }
+        /// <summary>
+        /// Checks if the format matches the string
+        /// </summary>
+        /// <param name="name">the content to check</param>
+        /// <returns>true if it matches the format and false otherwise</returns>
         private Boolean formatValidator(string name)
         {
             // Create Regex with desired format to check
-            Regex nameFormat = new Regex("^[A-Za-z]+[A-Za-z0-9]");
+            Regex nameFormat = new Regex("^[A-Za-z]+[0-9]");
             // Check if name has the Regex format
             if (nameFormat.IsMatch(name))
             {
@@ -273,45 +247,47 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
+            // Case where the content is empty
             if (content.Length == 0)
             {
                 cellsToRecalculate = new List<string>(SetCellContents(name, content));
             }
             else
             {
+                // Case where the content is a number
                 if (Double.TryParse(content, out double number))
                 {
                     cellsToRecalculate = new List<string>(SetCellContents(name, number));
                 }
+                // Case where the content is a formula
                 else if (content[0].Equals('='))
                 {
                     cellsToRecalculate = new List<string>(SetCellContents(name, new Formula(content.Substring(1, content.Length-1), Normalize, IsValid)));
                 }
+                // Case where the content is text
                 else
                 {
                     cellsToRecalculate = new List<string>(SetCellContents(name, content));
                 }
             }
-
+            // Recalculate every Formula
             foreach (string s in cellsToRecalculate)
             {
                 Cell cellVal;
                 if (cells.TryGetValue(s, out cellVal))
                 {
+                    // If its a Formula recalculate the value
                     if (cellVal.isFormula)
                     {
                         Formula f = (Formula)cellVal.cellContent;
+                        // Call evaluate to get new value
                         cellVal.cellValue = f.Evaluate(lookup);
                     }
                 }
             }
-
-
+            // Set changed to tru
             changed = true;
-
             return cellsToRecalculate;
-
-
         }
 
         public override string GetSavedVersion(string filename)
@@ -352,15 +328,17 @@ namespace SS
             }
             try
             {
+                // XmlWriter settings
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
                 settings.IndentChars = "  ";
                 using (XmlWriter writer = XmlWriter.Create(filename, settings))
                 {
+                    // Start adding the content
                     writer.WriteStartDocument();
                     writer.WriteStartElement("spreadsheet");
                     writer.WriteAttributeString("version", null, Version);
-
+                    // Add every cell
                     foreach (string cell in cells.Keys)
                     {
                         writer.WriteStartElement("cell");
@@ -380,16 +358,15 @@ namespace SS
                         writer.WriteEndElement();
                     }
 
-                    writer.WriteEndElement(); // Ends the States block
+                    writer.WriteEndElement();
                     writer.WriteEndDocument();
-
-
                 }
             }
             catch (Exception e)
             {
                 throw new SpreadsheetReadWriteException(e.ToString());
             }
+            // Set changed to false
             changed = false;
         }
         public override object GetCellValue(string name)
@@ -403,22 +380,22 @@ namespace SS
             {
                 throw new InvalidNameException();
             }
+            // Try to get the value and return it
             else if (cells.TryGetValue(name, out cell))
             {
                 return cell.cellValue;
             }
             return "";
         }
+        /// <summary>
+        /// Private method to try and get the value from the cells dictionary
+        /// </summary>
+        /// <param name="s">the name of the cell to search</param>
+        /// <returns>the value of the cell</returns>
         private double lookup(string s)
         {
-            Cell cell;
-            if (cells.TryGetValue(s, out cell))
-            {
-                if (cell.cellValue is double)
-                {
-                    return (double)cell.cellValue;
-                }
-            }
+            // Try to get the value
+            return (double)(GetCellValue(s));
             throw new ArgumentException();
         }
     }

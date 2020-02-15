@@ -2,7 +2,7 @@
 /// Assignment: Assignment Five - Spreadsheet Model
 /// Author:    Alejandro Rubio
 /// Partner:   None
-/// Date:      2/9/2020
+/// Date:      2/14/2020
 /// Course:    CS 3500, University of Utah, School of Computing 
 /// Copyright: CS 3500 and Alejandro Rubio - This work may not be copied for use in Academic Coursework. 
 /// 
@@ -266,5 +266,65 @@ namespace SpreadsheetTests
             ss.Save("Test1.txt");
             Assert.AreEqual("1.0", new Spreadsheet().GetSavedVersion("Test1.txt"));
         }
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Test2()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "hello");
+            s1.Save("save4.txt");
+            AbstractSpreadsheet s2 = new Spreadsheet("save4.txt",s => true, s => s, "hello2");
+            Assert.IsTrue(s1.Changed);
         }
+        [TestMethod]
+        public void Test3()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "hello");
+            Assert.IsFalse(s1.Changed);
+            s1.SetContentsOfCell("A1", "");
+        }
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Test4()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "hello");
+            s1.GetSavedVersion("asjdjasds.txt");
+        }
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Test6()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
+            s1.Save(null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(SpreadsheetReadWriteException))]
+        public void Test7()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
+            s1.Save("");
+        }
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Test8()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
+            s1.GetCellValue(null);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(InvalidNameException))]
+        public void Test9()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
+            s1.GetCellValue("0834509430");
+        }
+        [TestMethod]
+        public void Test10()
+        {
+            AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
+            s1.SetContentsOfCell("A1", "Hello");
+            s1.SetContentsOfCell("A2", "5.0");
+            s1.SetContentsOfCell("A3", "=A2");
+            s1.Save("A1Hello.txt");
+        }
+    }
 }

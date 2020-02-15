@@ -293,7 +293,7 @@ namespace SS
                     }
                 }
             }
-            // Set changed to tru
+            // Set changed to true
             changed = true;
             return cellsToRecalculate;
         }

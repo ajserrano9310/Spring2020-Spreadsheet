@@ -25,13 +25,14 @@ namespace SS
     /// </summary>
     public class Spreadsheet : AbstractSpreadsheet
     {
-        // Create variable to initialize later
+        // Create variables to initialize later
         private DependencyGraph dependencyGraph;
         private Dictionary<string, Cell> cells;
         private bool changed;
-
         public override bool Changed { get { return changed; } protected set { changed = value; } }
-
+        /// <summary>
+        /// Constructor for a default Spreadsheet
+        /// </summary>
         public Spreadsheet() : base(f => true, f => f, "default")
         {
             // Initialize all variables
@@ -39,6 +40,9 @@ namespace SS
             cells = new Dictionary<string, Cell>();
             changed = false;
         }
+        /// <summary>
+        /// Constructor for a Spreadsheet constructor with isValid, normalize and version
+        /// </summary>
         public Spreadsheet(Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
         {
             // Initialize all variables
@@ -46,12 +50,16 @@ namespace SS
             cells = new Dictionary<string, Cell>();
             changed = false;
         }
+        /// <summary>
+        /// Constructor for a Spreadsheet constructor with pathToFile, isValid, normalize and version
+        /// </summary>
         public Spreadsheet(string pathToFile, Func<string, bool> isValid, Func<string, string> normalize, string version) : base(isValid, normalize, version)
         {
             // Initialize all variables
             dependencyGraph = new DependencyGraph();
             cells = new Dictionary<string, Cell>();
             changed = false;
+            // If the version does not match throw an error
             if (!GetSavedVersion(pathToFile).Equals(version))
             {
                 throw new SpreadsheetReadWriteException("The version of the file does not match.");

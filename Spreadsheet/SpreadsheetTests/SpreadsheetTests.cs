@@ -53,7 +53,6 @@ namespace SpreadsheetTests
         public void TestSetContentsOfCellNullWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            Formula formula = new Formula("1");
             spreadsheet.SetContentsOfCell(null, "=1");
         }
         /// <summary>
@@ -64,7 +63,6 @@ namespace SpreadsheetTests
         public void TestSetContentsOfCellInvalidWithFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            Formula formula = new Formula("1");
             spreadsheet.SetContentsOfCell("+A2", "=1");
         }
         /// <summary>
@@ -75,7 +73,6 @@ namespace SpreadsheetTests
         public void TestSetContentsOfCellNullFormula()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            Formula formula = null;
             spreadsheet.SetContentsOfCell("A2", null);
         }
         /// <summary>
@@ -97,7 +94,6 @@ namespace SpreadsheetTests
         public void TestSetContentsOfCellCircularException()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            Formula formula = new Formula("A1+A1");
             spreadsheet.SetContentsOfCell("A1", "=A1+A1");
         }
         /// <summary>
@@ -247,8 +243,6 @@ namespace SpreadsheetTests
         public void TestMultipleSetContentsOfCellWithRecalculate()
         {
             AbstractSpreadsheet spreadsheet = new Spreadsheet();
-            Formula formula1 = new Formula("A1+A2");
-            Formula formula2 = new Formula("B1+3");
             spreadsheet.SetContentsOfCell("A1", "5.0");
             spreadsheet.SetContentsOfCell("A2", "6.0");
             spreadsheet.SetContentsOfCell("B1", "=A1+A2");
@@ -259,66 +253,93 @@ namespace SpreadsheetTests
             result.Add("C1");
             Assert.IsTrue(spreadsheet.SetContentsOfCell("A1", "4.0").SequenceEqual(result));
         }
+        /// <summary>
+        /// Test where we try to save the content to a file and check if the version matches
+        /// </summary>
         [TestMethod]
-        public void Test1()
+        public void TestSaveAndGetSavedVersion()
         {
             AbstractSpreadsheet ss = new Spreadsheet(s => true, s => s, "1.0");
             ss.Save("Test1.txt");
             Assert.AreEqual("1.0", new Spreadsheet().GetSavedVersion("Test1.txt"));
         }
+        /// <summary>
+        /// Test where we try to create a spreadsheet with a different version from the same file
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
-        public void Test2()
+        public void TestSaveDifferentVersion()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "hello");
             s1.Save("save4.txt");
+            Assert.IsFalse(s1.Changed);
             AbstractSpreadsheet s2 = new Spreadsheet("save4.txt",s => true, s => s, "hello2");
-            Assert.IsTrue(s1.Changed);
         }
+        /// <summary>
+        /// Test where we check if the boolean named changed is false and we set contents of a cell with an empty string
+        /// </summary>
         [TestMethod]
-        public void Test3()
+        public void TestSetContentsOfCellEmptyString()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "hello");
             Assert.IsFalse(s1.Changed);
             s1.SetContentsOfCell("A1", "");
         }
+        /// <summary>
+        /// Test where we try to get the saved version of a file that does not exist
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
-        public void Test4()
+        public void TestInvalidFileFetSavedVersion()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "hello");
             s1.GetSavedVersion("asjdjasds.txt");
         }
+        /// <summary>
+        /// Test where we try to save a file with null as a name
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
-        public void Test6()
+        public void TestSaveNullFileName ()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
             s1.Save(null);
         }
+        /// <summary>
+        /// Test where we try to save a file with an empty name
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(SpreadsheetReadWriteException))]
-        public void Test7()
+        public void TestSaveEmptyFileName()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
             s1.Save("");
         }
+        /// <summary>
+        /// Test where we try to the get value of a null cell
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Test8()
+        public void TestNullGetCellValue()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
             s1.GetCellValue(null);
         }
+        /// <summary>
+        /// Test where we try to get the value of a cell that does not exist
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidNameException))]
-        public void Test9()
+        public void TestInvalidGetCellValue()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
             s1.GetCellValue("0834509430");
         }
+        /// <summary>
+        /// Test where we try to save a json file with a formula
+        /// </summary>
         [TestMethod]
-        public void Test10()
+        public void TestSaveWithFormula()
         {
             AbstractSpreadsheet s1 = new Spreadsheet(s => true, s => s, "");
             s1.SetContentsOfCell("A1", "Hello");

@@ -59,6 +59,7 @@ namespace SS
             dependencyGraph = new DependencyGraph();
             cells = new Dictionary<string, Cell>();
             changed = false;
+            // Create Normalizer and IsValid
             this.Normalize = normalize;
             this.IsValid = isValid;
             // If the version does not match throw an error

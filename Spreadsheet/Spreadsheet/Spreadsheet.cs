@@ -59,6 +59,8 @@ namespace SS
             dependencyGraph = new DependencyGraph();
             cells = new Dictionary<string, Cell>();
             changed = false;
+            this.Normalize = normalize;
+            this.IsValid = isValid;
             // If the version does not match throw an error
             if (!GetSavedVersion(pathToFile).Equals(version))
             {
@@ -78,9 +80,9 @@ namespace SS
                 throw new InvalidNameException();
             }
             // If the cell exists and has content, return the content
-            else if (cells.ContainsKey(name))
+            else if (cells.ContainsKey(this.Normalize(name)))
             {
-                return cells[name].cellContent;
+                return cells[this.Normalize(name)].cellContent;
             }
             // Otherwise return an empty string
             return "";
@@ -104,6 +106,7 @@ namespace SS
             List<string> cellsToRecalculate = new List<string>();
             // Create cell with the number
             Cell newNumber = new Cell(number);
+            name = Normalize(name);
             // If it exists we just replace it
             if (cells.ContainsKey(name))
             {
@@ -123,6 +126,7 @@ namespace SS
         }
         protected override IList<string> SetCellContents(string name, string text)
         {
+            name = Normalize(name);
             // Create List for later
             List<string> cellsToRecalculate = new List<string>();
             // Create cell with the number
@@ -242,6 +246,7 @@ namespace SS
 
         public override IList<string> SetContentsOfCell(string name, string content)
         {
+            name = Normalize(name);
             List<string> cellsToRecalculate = new List<string>();
             if (content is null)
             {
@@ -252,6 +257,9 @@ namespace SS
                 throw new InvalidNameException();
             }
             else if (!formatValidator(name))
+            {
+                throw new InvalidNameException();
+            }else if (!IsValid(name))
             {
                 throw new InvalidNameException();
             }

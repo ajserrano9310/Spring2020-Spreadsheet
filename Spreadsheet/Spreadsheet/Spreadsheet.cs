@@ -66,6 +66,7 @@ namespace SS
             {
                 throw new SpreadsheetReadWriteException("The version of the file does not match.");
             }
+            GenerateSpreadsheetFromFile(pathToFile);
         }
         public override object GetCellContents(string name)
         {
@@ -413,6 +414,42 @@ namespace SS
             // Try to get the value
             return (double)(GetCellValue(s));
             throw new ArgumentException();
+        }
+        /// <summary>
+        /// Generates a spreadsheet based on the filename
+        /// </summary>
+        /// <param name="filename"> name of file</param>
+        private void GenerateSpreadsheetFromFile(string filename)
+        {
+            try
+            {
+                using (XmlReader reader = XmlReader.Create(filename))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.IsStartElement())
+                        {
+                            switch (reader.Name)
+                            {
+                                case "name":
+                                    reader.Read();
+                                    string s1 = reader.Value;
+                                    reader.ReadToFollowing("contents");
+                                    reader.Read();
+                                    string s2 = reader.Value;
+                                    SetContentsOfCell(s1, s2);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw new SpreadsheetReadWriteException("Invalid File");
+            }
+
+            this.Changed = true;
         }
     }
 }

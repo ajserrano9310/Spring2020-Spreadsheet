@@ -27,6 +27,9 @@ namespace CS3500_Spreadsheet_GUI_Example
 {
     public partial class SimpleSpreadsheetGUI : Form
     {
+
+        private int X;
+        private int Y;
         public SimpleSpreadsheetGUI()
         {
             this.grid_widget      = new SpreadsheetGridWidget();
@@ -36,7 +39,7 @@ namespace CS3500_Spreadsheet_GUI_Example
 
             // Add event handler and select a start cell
             grid_widget.SelectionChanged += DisplaySelection;
-            grid_widget.SetSelection(2, 3, false);
+            grid_widget.SetSelection(0, 0, false);
 
 
         }
@@ -55,10 +58,17 @@ namespace CS3500_Spreadsheet_GUI_Example
             ss.GetValue(col, row, out value);
             if (value == "")
             {
-                ss.SetValue(col, row, DateTime.Now.ToLocalTime().ToString("T"));
-                ss.GetValue(col, row, out value);
-                MessageBox.Show("Selection: column " + col + " row " + row + " value " + value);
+                //ss.SetValue(col, row, DateTime.Now.ToLocalTime().ToString("T"));
+                //ss.GetValue(col, row, out value);
+                //MessageBox.Show("Selection: column " + col + " row " + row + " value " + value);
             }
+
+            X = col;
+            Y = row;
+
+            sample_textbox.Text = value;
+
+
         }
 
         // Deals with the New menu
@@ -113,7 +123,7 @@ namespace CS3500_Spreadsheet_GUI_Example
         {
             TextBox box = sender as TextBox;
 
-            grid_widget.SetValue(2, 2, box.Text);
+            grid_widget.SetValue(X, Y, box.Text);
 
         }
     }

@@ -37,6 +37,7 @@ namespace CS3500_Spreadsheet_GUI_Example
         private Spreadsheet s;
         public SimpleSpreadsheetGUI()
         {
+            // allows to use the keybinding
             this.KeyPreview = true;
             this.grid_widget = new SpreadsheetGridWidget();
 

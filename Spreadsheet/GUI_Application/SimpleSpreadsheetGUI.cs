@@ -65,12 +65,6 @@ namespace CS3500_Spreadsheet_GUI_Example
             string value;
             ss.GetSelection(out col, out row);
             ss.GetValue(col, row, out value);
-            if (value == "")
-            {
-                //ss.SetValue(col, row, DateTime.Now.ToLocalTime().ToString("T"));
-                //ss.GetValue(col, row, out value);
-                //MessageBox.Show("Selection: column " + col + " row " + row + " value " + value);
-            }
 
             X = col;
             Y = row;
@@ -138,13 +132,6 @@ namespace CS3500_Spreadsheet_GUI_Example
             box = sender as TextBox;
 
             grid_widget.SetValue(X, Y, box.Text);
-            //if (box.Text.Length != 0)
-            //{
-            //    if (!box.Text[0].Equals("="))
-            //    {
-            //        s.SetContentsOfCell(lookup(X) + Y, box.Text);
-            //    }
-            //}
 
         }
         private string lookup(int num)

@@ -176,6 +176,7 @@ namespace CS3500_Spreadsheet_GUI_Example
             this.MainMenuStrip = this.menuStrip;
             this.Name = "SimpleSpreadsheetGUI";
             this.Text = "Sample GUI - Copy/Modify/Profit";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grid_widget_KeyDown);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.MainControlArea.ResumeLayout(false);

@@ -86,7 +86,19 @@ namespace CS3500_Spreadsheet_GUI_Example
         // Deals with the Close menu
         private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Close();
+            string message = "Do you want to save?";
+            var result = MessageBox.Show(message, "Closing Spreadsheet",
+                                 MessageBoxButtons.YesNo);
+            if(result == DialogResult.No)
+            {
+                Close();    
+            }
+            else
+            {
+                s.Save("spreadsheat.xml");
+                Close();
+            }
+           
         }
 
         /// <summary>

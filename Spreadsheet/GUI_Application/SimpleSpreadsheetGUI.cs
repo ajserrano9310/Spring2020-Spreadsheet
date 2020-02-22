@@ -112,7 +112,7 @@ namespace CS3500_Spreadsheet_GUI_Example
             {
                 int newY = Y + 1;
                 String cell = lookup(X) + newY;
-                s.SetContentsOfCell(cell, box.Text);
+                s.SetContentsOfCell(cell, box.Text.ToUpper());
                 grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
             }
         }
@@ -173,6 +173,11 @@ namespace CS3500_Spreadsheet_GUI_Example
             {
                 this.grid_widget.SetSelection(X, Y - 1);
             }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            s.Save("spreadsheet.xml");
         }
 
     }

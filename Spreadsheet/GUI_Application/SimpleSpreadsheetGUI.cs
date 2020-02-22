@@ -30,7 +30,6 @@ namespace CS3500_Spreadsheet_GUI_Example
 {
     public partial class SimpleSpreadsheetGUI : Form
     {
-        // merge commit
 
         private int X;
         private int Y;

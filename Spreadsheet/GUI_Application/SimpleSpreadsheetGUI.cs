@@ -19,6 +19,7 @@
 /// </summary>
 
 using SpreadsheetGrid_Framework;
+using System.Collections.Generic;
 using SpreadsheetUtilities;
 using SS;
 using System;
@@ -35,6 +36,7 @@ namespace CS3500_Spreadsheet_GUI_Example
         private int Y;
         private TextBox box;
         private Spreadsheet s;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         public SimpleSpreadsheetGUI()
         {
             // allows to use the keybinding
@@ -47,7 +49,7 @@ namespace CS3500_Spreadsheet_GUI_Example
             // Add event handler and select a start cell
             grid_widget.SelectionChanged += DisplaySelection;
             grid_widget.SetSelection(0, 0, false);
-
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             s = new Spreadsheet();
 
 
@@ -70,8 +72,18 @@ namespace CS3500_Spreadsheet_GUI_Example
             X = col;
             Y = row;
 
-            sample_textbox.Text = value;
 
+            int newY = Y + 1;
+            String cell = lookup(X) + newY;
+
+            if (s.GetCellContents(cell) is Formula)
+            {
+                sample_textbox.Text = "=" + s.GetCellContents(cell).ToString();
+            }
+            else
+            {
+                sample_textbox.Text = s.GetCellContents(cell).ToString();
+            }
 
         }
 
@@ -100,7 +112,7 @@ namespace CS3500_Spreadsheet_GUI_Example
             {
                 int newY = Y + 1;
                 String cell = lookup(X) + newY;
-                s.SetContentsOfCell(cell, box.Text);
+                s.SetContentsOfCell(cell, box.Text.ToUpper());
                 grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
             }
         }
@@ -131,7 +143,6 @@ namespace CS3500_Spreadsheet_GUI_Example
         private void sample_textbox_TextChanged(object sender, EventArgs e)
         {
             box = sender as TextBox;
-
             grid_widget.SetValue(X, Y, box.Text);
 
         }
@@ -140,6 +151,11 @@ namespace CS3500_Spreadsheet_GUI_Example
             num = num + 65;
             char numChar = (char)num;
             return numChar.ToString();
+        }
+        private int lookupVarToCord(char letter)
+        {
+            int index = char.ToUpper(letter) - 65;
+            return index;
         }
 
         private void grid_widget_KeyDown(object sender, KeyEventArgs e)
@@ -160,6 +176,24 @@ namespace CS3500_Spreadsheet_GUI_Example
             if (e.KeyCode == Keys.W)
             {
                 this.grid_widget.SetSelection(X, Y - 1);
+            }
+        }
+
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.ShowDialog();
+            string filepath = openFileDialog1.FileName;
+            if (filepath.Length != 0)
+            {
+                s = new Spreadsheet(filepath, f => true, f => f, "default");
+                List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
+                foreach (string name in nonEmptyCells)
+                {
+                    string numS = name.Substring(1, name.Length - 1);
+                    int.TryParse(numS, out int a);
+                    grid_widget.SetValue(lookupVarToCord(name[0]), a - 1, s.GetCellValue(name).ToString());
+                }
             }
         }
 

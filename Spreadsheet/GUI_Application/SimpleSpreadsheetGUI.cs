@@ -37,6 +37,7 @@ namespace CS3500_Spreadsheet_GUI_Example
         private TextBox box;
         private Spreadsheet s;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         public SimpleSpreadsheetGUI()
         {
             // allows to use the keybinding
@@ -214,11 +215,24 @@ namespace CS3500_Spreadsheet_GUI_Example
         {
             try
             {
-                s.Save("spreadsheet.xml");
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.ShowDialog();
+                string filepath = saveFileDialog1.FileName;
+                if (filepath.Length != 0)
+                {
+                    s.Save(filepath);
+                }
             }
-            catch (SpreadsheetReadWriteException)
+            catch (Exception f)
             {
-                MessageBox.Show("Task failed succesfully");
+                string message = "Do you want to retry?";
+                string title = "Error saving file";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result = MessageBox.Show(message, title, buttons, MessageBoxIcon.Error);
+                if (result == DialogResult.Yes)
+                {
+                    saveToolStripMenuItem_Click(null, null);
+                }
             }
             
         }

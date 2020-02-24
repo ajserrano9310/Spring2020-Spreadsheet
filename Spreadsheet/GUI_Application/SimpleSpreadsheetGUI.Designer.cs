@@ -222,6 +222,7 @@ namespace CS3500_Spreadsheet_GUI_Example
         private CheckBox sample_checkbox;
         private TextBox sample_textbox;
         private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem loadToolStripMenuItem;
     }
 }
 

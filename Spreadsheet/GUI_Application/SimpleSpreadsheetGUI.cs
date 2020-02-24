@@ -85,6 +85,8 @@ namespace CS3500_Spreadsheet_GUI_Example
                 sample_textbox.Text = s.GetCellContents(cell).ToString();
             }
 
+
+
         }
 
         // Deals with the New menu
@@ -122,6 +124,7 @@ namespace CS3500_Spreadsheet_GUI_Example
                     grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
                 }
             }
+            recalculateText();
         }
 
         /// <summary>
@@ -188,18 +191,48 @@ namespace CS3500_Spreadsheet_GUI_Example
 
         private void button1_Click(object sender, System.EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.ShowDialog();
-            string filepath = openFileDialog1.FileName;
-            if (filepath.Length != 0)
+            try
             {
-                s = new Spreadsheet(filepath, f => true, f => f, "default");
-                List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
-                foreach (string name in nonEmptyCells)
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                openFileDialog1.ShowDialog();
+                string filepath = openFileDialog1.FileName;
+                if (filepath.Length != 0)
                 {
-                    string numS = name.Substring(1, name.Length - 1);
+                    s = new Spreadsheet(filepath, f => true, f => f, "default");
+                    List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
+                    foreach (string name in nonEmptyCells)
+                    {
+                        string numS = name.Substring(1, name.Length - 1);
+                        int.TryParse(numS, out int a);
+                        grid_widget.SetValue(lookupVarToCord(name[0]), a - 1, s.GetCellValue(name).ToString());
+                    }
+                }
+            }catch(Exception f)
+            {
+                string message = "Do you want to retry?";
+                string title = "Error loading file";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result = MessageBox.Show(message, title, buttons, MessageBoxIcon.Error);
+                if (result == DialogResult.Yes)
+                {
+                    button1_Click(null, null);
+                }
+
+            }
+        }
+
+
+        private void recalculateText()
+        {
+            List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
+            foreach (string cell in nonEmptyCells)
+            {
+                if (s.GetCellContents(cell) is Formula)
+                {
+                    string numS = cell.Substring(1, cell.Length - 1);
                     int.TryParse(numS, out int a);
-                    grid_widget.SetValue(lookupVarToCord(name[0]), a - 1, s.GetCellValue(name).ToString());
+                    grid_widget.SetValue(lookupVarToCord(cell[0]), a - 1, s.GetCellValue(cell).ToString());
+                    
                 }
             }
         }

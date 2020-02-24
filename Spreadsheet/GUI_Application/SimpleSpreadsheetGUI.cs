@@ -95,8 +95,17 @@ namespace CS3500_Spreadsheet_GUI_Example
             }
             else
             {
-                s.Save("spreadsheat.xml");
-                Close();
+                try
+                {
+                    s.Save("spreadsheat.exe");
+                    Close();
+                }
+                catch (SpreadsheetReadWriteException)
+                {
+                    MessageBox.Show("Task failed succesfully");
+                }
+                
+                
             }
            
         }
@@ -177,7 +186,15 @@ namespace CS3500_Spreadsheet_GUI_Example
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            s.Save("spreadsheet.xml");
+            try
+            {
+                s.Save("spreadsheet.xml");
+            }
+            catch (SpreadsheetReadWriteException)
+            {
+                MessageBox.Show("Task failed succesfully");
+            }
+            
         }
 
     }

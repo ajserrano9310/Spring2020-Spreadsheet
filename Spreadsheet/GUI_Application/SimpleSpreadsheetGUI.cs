@@ -40,7 +40,7 @@ namespace CS3500_Spreadsheet_GUI_Example
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         public SimpleSpreadsheetGUI()
         {
-            // allows to use the keybinding
+            // Allows to use the keybinding
             this.KeyPreview = true;
             this.grid_widget = new SpreadsheetGridWidget();
 

@@ -61,6 +61,7 @@ namespace CS3500_Spreadsheet_GUI_Example
             this.MainControlArea.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             // 
             // menuStrip
             // 
@@ -72,11 +73,19 @@ namespace CS3500_Spreadsheet_GUI_Example
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.button1_Click);
+            // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.closeToolStripMenuItem,
+            this.loadToolStripMenuItem,
                 this.saveToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);

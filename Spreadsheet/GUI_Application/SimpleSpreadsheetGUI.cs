@@ -78,7 +78,7 @@ namespace CS3500_Spreadsheet_GUI_Example
 
             if (s.GetCellContents(cell) is Formula)
             {
-                sample_textbox.Text = "=" + s.GetCellContents(cell).ToString();
+                    sample_textbox.Text = "=" + s.GetCellContents(cell).ToString();
             }
             else
             {
@@ -113,7 +113,14 @@ namespace CS3500_Spreadsheet_GUI_Example
                 int newY = Y + 1;
                 String cell = lookup(X) + newY;
                 s.SetContentsOfCell(cell, box.Text.ToUpper());
-                grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
+                if (s.GetCellValue(cell) is FormulaError)
+                {
+                    grid_widget.SetValue(X, Y, "Error");
+                }
+                else
+                {
+                    grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
+                }
             }
         }
 

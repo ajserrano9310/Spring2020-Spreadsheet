@@ -178,18 +178,37 @@ namespace CS3500_Spreadsheet_GUI_Example
             grid_widget.SetValue(X, Y, box.Text);
 
         }
+        /// <summary>
+        /// lookup to change the value of the coordinate
+        /// to a cell name
+        /// </summary>
+        /// <param name="num">X coordinate</param>
+        /// <returns>cell name</returns>
         private string lookup(int num)
         {
             num = num + 65;
             char numChar = (char)num;
             return numChar.ToString();
         }
+
+        /// <summary>
+        /// Changes the letter to the respective X coordinate
+        /// value. 
+        /// </summary>
+        /// <param name="letter">first letter of cell name</param>
+        /// <returns>X coordinate</returns>
         private int lookupVarToCord(char letter)
         {
             int index = char.ToUpper(letter) - 65;
             return index;
         }
-
+        /// <summary>
+        /// Key bindings for WASD and enter
+        /// WASD moves up, down, left or right
+        /// enter goes to the cell underneath
+        /// </summary>
+        /// <param name="sender">not used</param>
+        /// <param name="e">key pressed</param>
         private void grid_widget_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.S)
@@ -288,6 +307,9 @@ namespace CS3500_Spreadsheet_GUI_Example
                 this.grid_widget.SetSelection(X, Y + 1);
             }
         }
+        /// <summary>
+        /// Recalculates the values of the cells
+        /// </summary>
         private void recalculateText()
         {
             List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());

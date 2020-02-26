@@ -18,7 +18,7 @@
 ///  
 /// </summary>
 
-using SpreadsheetGrid_Framework;
+using SpreadsheetGrid_Core;
 using System.Collections.Generic;
 using SpreadsheetUtilities;
 using SS;
@@ -27,7 +27,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 
-namespace CS3500_Spreadsheet_GUI_Example
+namespace SpreadsheetGrid_Core
 {
     public partial class SimpleSpreadsheetGUI : Form
     {

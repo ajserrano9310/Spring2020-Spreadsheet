@@ -1,4 +1,4 @@
-﻿namespace SpreadsheetGrid_Framework
+﻿namespace SpreadsheetGrid_Core
 {
     partial class DrawingPanel
     {

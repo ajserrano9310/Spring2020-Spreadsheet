@@ -21,7 +21,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace CS3500_Spreadsheet_GUI_Example
+namespace SpreadsheetGrid_Core
 {
 
     class Spreadsheet_Window : ApplicationContext

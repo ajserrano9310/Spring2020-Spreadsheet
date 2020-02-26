@@ -30,7 +30,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 
-namespace SpreadsheetGrid_Framework
+namespace SpreadsheetGrid_Core
 {
     /// <summary>
     /// The type of delegate used to register for SelectionChanged events

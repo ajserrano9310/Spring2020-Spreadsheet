@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SpreadsheetGrid_Framework
+namespace SpreadsheetGrid_Core
 {
     /// <summary>
     /// The panel where the spreadsheet grid is drawn.  It keeps track of the

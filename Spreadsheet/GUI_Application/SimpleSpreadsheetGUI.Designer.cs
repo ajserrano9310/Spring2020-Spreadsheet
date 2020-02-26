@@ -12,11 +12,11 @@
 ///  
 /// </summary>
 
-using SpreadsheetGrid_Framework;
+using SpreadsheetGrid_Core;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace CS3500_Spreadsheet_GUI_Example
+namespace SpreadsheetGrid_Core
 {
     partial class SimpleSpreadsheetGUI
     {
@@ -51,7 +51,7 @@ namespace CS3500_Spreadsheet_GUI_Example
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainControlArea = new System.Windows.Forms.FlowLayoutPanel();
-            this.grid_widget = new SpreadsheetGrid_Framework.SpreadsheetGridWidget();
+            this.grid_widget = new SpreadsheetGrid_Core.SpreadsheetGridWidget();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sample_button = new System.Windows.Forms.Button();

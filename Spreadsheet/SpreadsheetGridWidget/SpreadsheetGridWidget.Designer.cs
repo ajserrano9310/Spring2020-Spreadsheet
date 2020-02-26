@@ -19,7 +19,7 @@ using System.Windows.Forms;
 ///     See SpreadsheetGridWidget.cs for more information.
 /// 
 /// </summary>
-namespace SpreadsheetGrid_Framework
+namespace SpreadsheetGrid_Core
 {
     partial class SpreadsheetGridWidget
     {
@@ -51,7 +51,7 @@ namespace SpreadsheetGrid_Framework
         {
             this.hScroll = new System.Windows.Forms.HScrollBar();
             this.vScroll = new System.Windows.Forms.VScrollBar();
-            this.drawingPanel = new SpreadsheetGrid_Framework.DrawingPanel(  );
+            this.drawingPanel = new DrawingPanel(  );
             this.SuspendLayout();
             // 
             // hScrollBar1

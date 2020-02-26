@@ -209,6 +209,8 @@ namespace CS3500_Spreadsheet_GUI_Example
             {
                 this.grid_widget.SetSelection(X, Y - 1);
             }
+            if (e.KeyCode == Keys.Enter)
+                this.grid_widget.SetSelection(X, Y + 1);
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -269,7 +271,23 @@ namespace CS3500_Spreadsheet_GUI_Example
             }
         }
 
+        private void sample_textbox_Enter(object sender, EventArgs e)
+        {
+            this.KeyPreview = false;
+        }
 
+        private void sample_textbox_Leave(object sender, EventArgs e)
+        {
+            this.KeyPreview = true;
+        }
+
+        private void sample_textbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.grid_widget.SetSelection(X, Y + 1);
+            }
+        }
         private void recalculateText()
         {
             List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());

@@ -177,6 +177,9 @@ namespace CS3500_Spreadsheet_GUI_Example
             this.sample_textbox.Size = new System.Drawing.Size(100, 20);
             this.sample_textbox.TabIndex = 2;
             this.sample_textbox.TextChanged += new System.EventHandler(this.sample_textbox_TextChanged);
+            this.sample_textbox.Enter += new System.EventHandler(this.sample_textbox_Enter);
+            this.sample_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sample_textbox_KeyDown);
+            this.sample_textbox.Leave += new System.EventHandler(this.sample_textbox_Leave);
             // 
             // SimpleSpreadsheetGUI
             // 

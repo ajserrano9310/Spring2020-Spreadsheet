@@ -144,15 +144,18 @@ namespace SpreadsheetGrid_Core
             {
                 int newY = Y + 1;
                 String cell = lookup(X) + newY;
-                s.SetContentsOfCell(cell, box.Text);
-                if (s.GetCellValue(cell) is FormulaError)
+             
+                try
                 {
-                    grid_widget.SetValue(X, Y, "Error");
+                    s.SetContentsOfCell(cell, box.Text);
                 }
-                else
+                catch (FormulaFormatException)
                 {
-                    grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
+                    MessageBox.Show("The format of the formula is not correct");
                 }
+
+                grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
+                
             }
             recalculateText();
         }

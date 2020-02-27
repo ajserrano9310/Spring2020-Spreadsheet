@@ -62,6 +62,8 @@ namespace SpreadsheetGrid_Core
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cellTextBox = new System.Windows.Forms.TextBox();
+            this.valTextBox = new System.Windows.Forms.TextBox();
             // 
             // menuStrip
             // 
@@ -121,6 +123,8 @@ namespace SpreadsheetGrid_Core
             this.MainControlArea.Name = "MainControlArea";
             this.MainControlArea.Size = new System.Drawing.Size(578, 100);
             this.MainControlArea.TabIndex = 4;
+            this.MainControlArea.Controls.Add(this.cellTextBox);
+            this.MainControlArea.Controls.Add(this.valTextBox);
             // 
             // grid_widget
             // 
@@ -181,6 +185,20 @@ namespace SpreadsheetGrid_Core
             this.sample_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sample_textbox_KeyDown);
             this.sample_textbox.Leave += new System.EventHandler(this.sample_textbox_Leave);
             // 
+            // cellTextBox
+            // 
+            this.cellTextBox.Location = new System.Drawing.Point(400, 3);
+            this.cellTextBox.Name = "cellTextBox";
+            this.cellTextBox.Size = new System.Drawing.Size(100, 26);
+            this.cellTextBox.TabIndex = 3;
+            // 
+            // valTextBox
+            // 
+            this.valTextBox.Location = new System.Drawing.Point(506, 3);
+            this.valTextBox.Name = "valTextBox";
+            this.valTextBox.Size = new System.Drawing.Size(100, 26);
+            this.valTextBox.TabIndex = 4;
+            // 
             // SimpleSpreadsheetGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -226,6 +244,8 @@ namespace SpreadsheetGrid_Core
         private TextBox sample_textbox;
         private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripMenuItem loadToolStripMenuItem;
+        private TextBox cellTextBox;
+        private TextBox valTextBox;
     }
 }
 

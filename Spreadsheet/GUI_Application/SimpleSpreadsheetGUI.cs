@@ -81,11 +81,11 @@ namespace SpreadsheetGrid_Core
 
             if (s.GetCellContents(cell) is Formula)
             {
-                    sample_textbox.Text = "=" + s.GetCellContents(cell).ToString();
+                    evaluate_textbox.Text = "=" + s.GetCellContents(cell).ToString();
             }
             else
             {
-                sample_textbox.Text = s.GetCellContents(cell).ToString();
+                evaluate_textbox.Text = s.GetCellContents(cell).ToString();
             }
 
             cellTextBox.Text = cell;

@@ -54,14 +54,17 @@ namespace SpreadsheetGrid_Core
             this.grid_widget = new SpreadsheetGrid_Core.SpreadsheetGridWidget();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sample_button = new System.Windows.Forms.Button();
-            this.sample_checkbox = new System.Windows.Forms.CheckBox();
-            this.sample_textbox = new System.Windows.Forms.TextBox();
+
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.evaluate_button = new System.Windows.Forms.Button();
+            this.evaluate_textbox = new System.Windows.Forms.TextBox();
             this.menuStrip.SuspendLayout();
             this.MainControlArea.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cellTextBox = new System.Windows.Forms.TextBox();
+            this.valTextBox = new System.Windows.Forms.TextBox();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
             // 
@@ -121,10 +124,9 @@ namespace SpreadsheetGrid_Core
             // 
             this.MainControlArea.AutoSize = true;
             this.MainControlArea.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.MainControlArea.BackColor = System.Drawing.Color.Coral;
-            this.MainControlArea.Controls.Add(this.sample_button);
-            this.MainControlArea.Controls.Add(this.sample_checkbox);
-            this.MainControlArea.Controls.Add(this.sample_textbox);
+            this.MainControlArea.BackColor = System.Drawing.Color.GhostWhite;
+            this.MainControlArea.Controls.Add(this.evaluate_button);
+            this.MainControlArea.Controls.Add(this.evaluate_textbox);
             this.MainControlArea.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.MainControlArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainControlArea.Location = new System.Drawing.Point(3, 3);
@@ -132,11 +134,13 @@ namespace SpreadsheetGrid_Core
             this.MainControlArea.Name = "MainControlArea";
             this.MainControlArea.Size = new System.Drawing.Size(578, 100);
             this.MainControlArea.TabIndex = 4;
+            this.MainControlArea.Controls.Add(this.cellTextBox);
+            this.MainControlArea.Controls.Add(this.valTextBox);
             // 
             // grid_widget
             // 
             this.grid_widget.AutoSize = true;
-            this.grid_widget.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.grid_widget.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.grid_widget.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid_widget.Location = new System.Drawing.Point(3, 103);
             this.grid_widget.MaximumSize = new System.Drawing.Size(2100, 2000);
@@ -160,37 +164,40 @@ namespace SpreadsheetGrid_Core
             this.tableLayoutPanel1.Size = new System.Drawing.Size(584, 337);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
-            // sample_button
+            // evaluate_button
             // 
-            this.sample_button.Location = new System.Drawing.Point(3, 3);
-            this.sample_button.Name = "sample_button";
-            this.sample_button.Size = new System.Drawing.Size(75, 23);
-            this.sample_button.TabIndex = 0;
-            this.sample_button.Text = "button1";
-            this.sample_button.UseVisualStyleBackColor = true;
-            this.sample_button.Click += new System.EventHandler(this.sample_button_Click);
+            this.evaluate_button.Location = new System.Drawing.Point(168, 6);
+            this.evaluate_button.Name = "evaluate_button";
+            this.evaluate_button.Size = new System.Drawing.Size(75, 23);
+            this.evaluate_button.TabIndex = 0;
+            this.evaluate_button.Text = "Evaluate";
+            this.evaluate_button.UseVisualStyleBackColor = true;
+            this.evaluate_button.Click += new System.EventHandler(this.sample_button_Click);
             // 
-            // sample_checkbox
+            // evaluate_textbox
             // 
-            this.sample_checkbox.AutoSize = true;
-            this.sample_checkbox.Location = new System.Drawing.Point(84, 3);
-            this.sample_checkbox.Name = "sample_checkbox";
-            this.sample_checkbox.Size = new System.Drawing.Size(80, 17);
-            this.sample_checkbox.TabIndex = 1;
-            this.sample_checkbox.Text = "checkBox1";
-            this.sample_checkbox.UseVisualStyleBackColor = true;
-            this.sample_checkbox.CheckedChanged += new System.EventHandler(this.sample_checkbox_CheckedChanged);
+            this.evaluate_textbox.Location = new System.Drawing.Point(6, 6);
+            this.evaluate_textbox.Name = "evaluate_textbox";
+            this.evaluate_textbox.Size = new System.Drawing.Size(100, 20);
+            this.evaluate_textbox.TabIndex = 2;
+            this.evaluate_textbox.TextChanged += new System.EventHandler(this.sample_textbox_TextChanged);
+            this.evaluate_textbox.Enter += new System.EventHandler(this.sample_textbox_Enter);
+            this.evaluate_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sample_textbox_KeyDown);
+            this.evaluate_textbox.Leave += new System.EventHandler(this.sample_textbox_Leave);
             // 
-            // sample_textbox
+            // cellTextBox
             // 
-            this.sample_textbox.Location = new System.Drawing.Point(170, 3);
-            this.sample_textbox.Name = "sample_textbox";
-            this.sample_textbox.Size = new System.Drawing.Size(100, 20);
-            this.sample_textbox.TabIndex = 2;
-            this.sample_textbox.TextChanged += new System.EventHandler(this.sample_textbox_TextChanged);
-            this.sample_textbox.Enter += new System.EventHandler(this.sample_textbox_Enter);
-            this.sample_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sample_textbox_KeyDown);
-            this.sample_textbox.Leave += new System.EventHandler(this.sample_textbox_Leave);
+            this.cellTextBox.Location = new System.Drawing.Point(400, 3);
+            this.cellTextBox.Name = "cellTextBox";
+            this.cellTextBox.Size = new System.Drawing.Size(100, 26);
+            this.cellTextBox.TabIndex = 3;
+            // 
+            // valTextBox
+            // 
+            this.valTextBox.Location = new System.Drawing.Point(506, 3);
+            this.valTextBox.Name = "valTextBox";
+            this.valTextBox.Size = new System.Drawing.Size(100, 26);
+            this.valTextBox.TabIndex = 4;
             // 
             // SimpleSpreadsheetGUI
             // 
@@ -232,12 +239,13 @@ namespace SpreadsheetGrid_Core
 
         private FlowLayoutPanel MainControlArea;
         private TableLayoutPanel tableLayoutPanel1;
-        private Button sample_button;
-        private CheckBox sample_checkbox;
-        private TextBox sample_textbox;
+        private Button evaluate_button;
+        private TextBox evaluate_textbox;
         private ToolStripMenuItem saveAsToolStripMenuItem;
-        private ToolStripMenuItem loadToolStripMenuItem;
         private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem loadToolStripMenuItem;
+        private TextBox cellTextBox;
+        private TextBox valTextBox;
     }
 }
 

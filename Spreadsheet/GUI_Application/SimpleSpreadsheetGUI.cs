@@ -52,6 +52,7 @@ namespace SpreadsheetGrid_Core
             grid_widget.SelectionChanged += DisplaySelection;
             grid_widget.SetSelection(0, 0, false);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             s = new Spreadsheet();
 
 
@@ -237,12 +238,13 @@ namespace SpreadsheetGrid_Core
             try
             {
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.Filter = "sprd files (*.sprd)|*.sprd|All files (*.*)|*.*";
                 saveFileDialog1.ShowDialog();
                 string filepath = saveFileDialog1.FileName;
                 if (filepath.Length != 0)
                 {
-                    s.Save(filepath);
                     FilePath = filepath;
+                    s.Save(FilePath);
                     saveToolStripMenuItem.Enabled = true;
                 }
             }
@@ -269,6 +271,7 @@ namespace SpreadsheetGrid_Core
             try
             {
                 OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                openFileDialog1.Filter = "sprd files (*.sprd)|*.sprd|All files (*.*)|*.*";
                 openFileDialog1.ShowDialog();
                 string filepath = openFileDialog1.FileName;
                 if (filepath.Length != 0)

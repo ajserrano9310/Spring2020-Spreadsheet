@@ -25,7 +25,7 @@ using SS;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-
+using System.ComponentModel;
 
 namespace SpreadsheetGrid_Core
 {
@@ -39,8 +39,12 @@ namespace SpreadsheetGrid_Core
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private string FilePath;
+        private Stack<string> cellName;
+        private Stack<string> cellContent;
         public SimpleSpreadsheetGUI()
         {
+            cellName = new Stack<string>();
+            cellContent = new Stack<string>();
             // allows to use the keybinding
             this.KeyPreview = true;
            
@@ -65,9 +69,15 @@ namespace SpreadsheetGrid_Core
         /// </summary>
         /// <param name="ss"></param>
         private void DisplaySelection(SpreadsheetGridWidget ss)
-        {   
-
-            sample_button_Click(null, null);
+        {
+            ss.GetValue(X, Y, out string val);
+            
+                if (!val.Equals("")){
+                    
+                        sample_button_Click(null, null);
+                    
+                }
+            
             int row, col;
 
             string value;
@@ -142,19 +152,28 @@ namespace SpreadsheetGrid_Core
         {
             if (!(box is null))
             {
+
                 int newY = Y + 1;
                 String cell = lookup(X) + newY;
-                s.SetContentsOfCell(cell, box.Text);
-                if (s.GetCellValue(cell) is FormulaError)
-                {
-                    grid_widget.SetValue(X, Y, "Error");
-                }
-                else
-                {
-                    grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
-                }
+
+                grid_widget.GetValue(X, Y, out string val);
+
+                    cellContent.Push(s.GetCellContents(cell).ToString());
+
+                    s.SetContentsOfCell(cell, box.Text);
+                    cellName.Push(cell);
+                    undo_Button.Enabled = true;
+                    if (s.GetCellValue(cell) is FormulaError)
+                    {
+                        grid_widget.SetValue(X, Y, "Error");
+                    }
+                    else
+                    {
+                        grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
+                    }
+
+                bg_worker.RunWorkerAsync();
             }
-            recalculateText();
         }
 
         /// <summary>
@@ -284,6 +303,7 @@ namespace SpreadsheetGrid_Core
                 {
                     s = new Spreadsheet(filepath, f => true, f => f.ToUpper(), "six");
                     List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
+                    ClearCells();
                     foreach (string name in nonEmptyCells)
                     {
                         string numS = name.Substring(1, name.Length - 1);
@@ -341,7 +361,38 @@ namespace SpreadsheetGrid_Core
             }
         }
 
-        
+        private void undo_Button_Click(object sender, EventArgs e)
+        {
+            string content = cellContent.Pop();
+            string name = cellName.Pop();
+            s.SetContentsOfCell(name, content);
+            string numS = name.Substring(1, name.Length - 1);
+            int.TryParse(numS, out int a);
+            grid_widget.SetValue(lookupVarToCord(name[0]), a - 1, content);
+            
+
+            if (cellContent.Count == 0)
+            {
+                undo_Button.Enabled = false;
+            }
+            bg_worker.RunWorkerAsync();
+        }
+        private void bgw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            recalculateText();
+        }
+        private void ClearCells()
+        {
+            for(int i = 0; i < 27; i++)
+            {
+                for(int j = 0; j < 100; j++)
+                {
+                    grid_widget.SetValue(i, j, "");
+                }
+            }
+        }
+
+
 
     }
 }

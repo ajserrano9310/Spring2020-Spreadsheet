@@ -125,8 +125,8 @@ namespace SpreadsheetGrid_Core
             this.MainControlArea.AutoSize = true;
             this.MainControlArea.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.MainControlArea.BackColor = System.Drawing.Color.GhostWhite;
-            this.MainControlArea.Controls.Add(this.evaluate_button);
             this.MainControlArea.Controls.Add(this.evaluate_textbox);
+            this.MainControlArea.Controls.Add(this.evaluate_button);
             this.MainControlArea.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.MainControlArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainControlArea.Location = new System.Drawing.Point(3, 3);

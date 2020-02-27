@@ -53,7 +53,7 @@ namespace SpreadsheetGrid_Core
             this.MainControlArea = new System.Windows.Forms.FlowLayoutPanel();
             this.grid_widget = new SpreadsheetGrid_Core.SpreadsheetGridWidget();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sample_button = new System.Windows.Forms.Button();
             this.sample_checkbox = new System.Windows.Forms.CheckBox();
             this.sample_textbox = new System.Windows.Forms.TextBox();
@@ -62,6 +62,8 @@ namespace SpreadsheetGrid_Core
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+
             // 
             // menuStrip
             // 
@@ -84,12 +86,21 @@ namespace SpreadsheetGrid_Core
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
-            this.closeToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.saveToolStripMenuItem,
             this.loadToolStripMenuItem,
-                this.saveToolStripMenuItem});
+            this.closeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Enabled = false;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.save_Click);
             // 
             // newToolStripMenuItem
             // 
@@ -201,12 +212,12 @@ namespace SpreadsheetGrid_Core
             this.ResumeLayout(false);
             this.PerformLayout();
             // 
-            // saveToolStripMenuItem
+            // saveAsToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveAsToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 
         }
 
@@ -224,8 +235,9 @@ namespace SpreadsheetGrid_Core
         private Button sample_button;
         private CheckBox sample_checkbox;
         private TextBox sample_textbox;
-        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem saveAsToolStripMenuItem;
         private ToolStripMenuItem loadToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
     }
 }
 

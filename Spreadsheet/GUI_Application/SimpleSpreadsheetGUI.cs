@@ -38,6 +38,7 @@ namespace SpreadsheetGrid_Core
         private Spreadsheet s;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private string FilePath;
         public SimpleSpreadsheetGUI()
         {
             // allows to use the keybinding
@@ -112,7 +113,7 @@ namespace SpreadsheetGrid_Core
             {
                 try
                 {
-                    s.Save("spreadsheat.exe");
+                    saveToolStripMenuItem_Click(null, null);
                     Close();
                 }
                 catch (SpreadsheetReadWriteException)
@@ -221,7 +222,6 @@ namespace SpreadsheetGrid_Core
             }
             if (e.KeyCode == Keys.A)
             {
-                if (X > 0 && X <= 26)
                     this.grid_widget.SetSelection(X - 1, Y);
             }
             if (e.KeyCode == Keys.W)
@@ -242,6 +242,8 @@ namespace SpreadsheetGrid_Core
                 if (filepath.Length != 0)
                 {
                     s.Save(filepath);
+                    FilePath = filepath;
+                    saveToolStripMenuItem.Enabled = true;
                 }
             }
             catch (Exception f)
@@ -256,6 +258,10 @@ namespace SpreadsheetGrid_Core
                 }
             }
             
+        }
+        private void save_Click(object sender, System.EventArgs e)
+        {
+            s.Save(FilePath);
         }
 
         private void button1_Click(object sender, System.EventArgs e)
@@ -306,6 +312,7 @@ namespace SpreadsheetGrid_Core
             {
                 this.grid_widget.SetSelection(X, Y + 1);
             }
+           
         }
         /// <summary>
         /// Recalculates the values of the cells
@@ -324,6 +331,8 @@ namespace SpreadsheetGrid_Core
                 }
             }
         }
+
+        
 
     }
 }

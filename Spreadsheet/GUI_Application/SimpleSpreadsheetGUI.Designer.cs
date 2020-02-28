@@ -54,6 +54,7 @@ namespace SpreadsheetGrid_Core
             this.grid_widget = new SpreadsheetGrid_Core.SpreadsheetGridWidget();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.evaluate_button = new System.Windows.Forms.Button();
@@ -71,7 +72,7 @@ namespace SpreadsheetGrid_Core
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem, this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(584, 24);
@@ -104,6 +105,13 @@ namespace SpreadsheetGrid_Core
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.save_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // newToolStripMenuItem
             // 
@@ -244,8 +252,10 @@ namespace SpreadsheetGrid_Core
         private ToolStripMenuItem saveAsToolStripMenuItem;
         private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripMenuItem loadToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
         private TextBox cellTextBox;
         private TextBox valTextBox;
+        
     }
 }
 

@@ -18,14 +18,11 @@
 ///  
 /// </summary>
 
-using SpreadsheetGrid_Core;
-using System.Collections.Generic;
 using SpreadsheetUtilities;
 using SS;
 using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Windows.Forms;
-
 
 namespace SpreadsheetGrid_Core
 {
@@ -77,7 +74,6 @@ namespace SpreadsheetGrid_Core
             X = col;
             Y = row;
 
-
             int newY = Y + 1;
             String cell = lookup(X) + newY;
 
@@ -128,7 +124,6 @@ namespace SpreadsheetGrid_Core
                     MessageBox.Show("Task failed succesfully");
                 }
                 
-                
             }
            
         }
@@ -151,7 +146,18 @@ namespace SpreadsheetGrid_Core
                 }
                 catch (FormulaFormatException)
                 {
-                    MessageBox.Show("The format of the formula is not correct");
+
+                    string message = "The Formula you entered is not valid";
+                    string title = "Invalid Formula";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    MessageBox.Show(message, title, buttons, MessageBoxIcon.Error);
+                }
+                catch(CircularException)
+                {
+                    string message = "Circular dependency detected";
+                    string title = "Circular Exception";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    MessageBox.Show(message, title, buttons, MessageBoxIcon.Error);
                 }
 
                 grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
@@ -343,8 +349,33 @@ namespace SpreadsheetGrid_Core
                 }
             }
         }
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Welcome TA(s) to A6 Spreedsheet." + System.Environment.NewLine
+                + "This messagebox will help you understand a little bit how our Spreadsheet works." 
+                +System.Environment.NewLine 
+                +System.Environment.NewLine + 
+                "    1) For moving between cells, we set up WASD keys for the purposes of better navigation." 
+                + System.Environment.NewLine +
+                "    2) Pressing enter will allow to drop one value down on the Y coordinate." 
+                +System.Environment.NewLine +
+                "    3) Pressing enter or the Evaluate button will evaluate the corresponding cell" 
+                +System.Environment.NewLine +
+                "    4) Our undo button works similar to CTRL+Z, except not as sophisticated. It erases all contents" +
+                "of the cell and returns it to its previous content." 
+                +System.Environment.NewLine+
+                "    5) On the file menu, there are three important additions:"+
+                System.Environment.NewLine+
+                "        a) Load: which will load the file."+
+                System.Environment.NewLine+
+                "        b) Save: which saves the file in the current filepath." +
+                System.Environment.NewLine+
+                "        c) Save as: allows user to save in a new file." +
+                System.Environment.NewLine+
+                "    6) Overall, better than Excel", "Help", MessageBoxButtons.OK);
+        }
 
-        
+
 
     }
 }

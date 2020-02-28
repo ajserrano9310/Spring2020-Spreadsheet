@@ -13,6 +13,7 @@
 /// </summary>
 
 using SpreadsheetGrid_Core;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -59,14 +60,19 @@ namespace SpreadsheetGrid_Core
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.evaluate_button = new System.Windows.Forms.Button();
             this.evaluate_textbox = new System.Windows.Forms.TextBox();
-            this.menuStrip.SuspendLayout();
-            this.MainControlArea.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.SuspendLayout();
+            this.undo_Button = new System.Windows.Forms.Button();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cellTextBox = new System.Windows.Forms.TextBox();
             this.valTextBox = new System.Windows.Forms.TextBox();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bg_worker = new BackgroundWorker();
+            this.menuStrip.SuspendLayout();
+            this.MainControlArea.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.SuspendLayout();
+
+            // background worker
+            bg_worker.DoWork += bgw_DoWork;
 
             // 
             // menuStrip
@@ -144,6 +150,18 @@ namespace SpreadsheetGrid_Core
             this.MainControlArea.TabIndex = 4;
             this.MainControlArea.Controls.Add(this.cellTextBox);
             this.MainControlArea.Controls.Add(this.valTextBox);
+            this.MainControlArea.Controls.Add(this.undo_Button);
+            // 
+            // undo_Button
+            // 
+            this.undo_Button.Enabled = false;
+            this.undo_Button.Location = new System.Drawing.Point(535, 3);
+            this.undo_Button.Name = "undo_Button";
+            this.undo_Button.Size = new System.Drawing.Size(75, 23);
+            this.undo_Button.TabIndex = 3;
+            this.undo_Button.Text = "Undo";
+            this.undo_Button.UseVisualStyleBackColor = true;
+            this.undo_Button.Click += new System.EventHandler(this.undo_Button_Click);
             // 
             // grid_widget
             // 
@@ -240,7 +258,7 @@ namespace SpreadsheetGrid_Core
 
         #endregion
 
-        
+
         private SpreadsheetGridWidget grid_widget;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -257,7 +275,7 @@ namespace SpreadsheetGrid_Core
         private ToolStripMenuItem helpToolStripMenuItem;
         private TextBox cellTextBox;
         private TextBox valTextBox;
-        
+        private Button undo_Button;
+        private BackgroundWorker bg_worker;
     }
 }
-

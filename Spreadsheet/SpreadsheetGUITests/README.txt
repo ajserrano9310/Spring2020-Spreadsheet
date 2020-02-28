@@ -78,7 +78,7 @@ A total of 16 branches were created for the Assignment.
     - A6UndoAndBGWorker (Alejandro Rubio): Creating the undo feature and the addition of the Background Worker
     - A6TryCatchForFormulaFormat (Alejandro Serrano): Addition of try and catch for the FormulaFormatError and CircularExpression, 
       addition of Help MessageBox and README.
-    - A6TryCatchUndo (Alejandro Rubio): Branch to merge the try catch errors, Undo Button and Background Worker. 
+    - A6TryCatchAndBGWorker: Branch to merge the try catch errors and Background Worker. 
     - A6Testing (Alejandro Rubio): Some testing methods for the GUI.
     - A6FinalMerge: Final branch to merge everything together. 
     - A total of 20 commits were made. 

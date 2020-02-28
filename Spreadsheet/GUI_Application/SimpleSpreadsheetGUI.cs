@@ -125,7 +125,7 @@ namespace SpreadsheetGrid_Core
                 }
                 catch (SpreadsheetReadWriteException)
                 {
-                    MessageBox.Show("Task failed succesfully");
+                    MessageBox.Show("Failed to save");
                 }
             }
         }

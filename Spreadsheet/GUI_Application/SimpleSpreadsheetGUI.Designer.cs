@@ -199,6 +199,7 @@ namespace SpreadsheetGrid_Core
             this.cellTextBox.Name = "cellTextBox";
             this.cellTextBox.Size = new System.Drawing.Size(100, 26);
             this.cellTextBox.TabIndex = 3;
+            this.cellTextBox.ReadOnly = true;
             // 
             // valTextBox
             // 
@@ -206,6 +207,7 @@ namespace SpreadsheetGrid_Core
             this.valTextBox.Name = "valTextBox";
             this.valTextBox.Size = new System.Drawing.Size(100, 26);
             this.valTextBox.TabIndex = 4;
+            this.valTextBox.ReadOnly = true;
             // 
             // SimpleSpreadsheetGUI
             // 
@@ -216,7 +218,7 @@ namespace SpreadsheetGrid_Core
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "SimpleSpreadsheetGUI";
-            this.Text = "Sample GUI - Copy/Modify/Profit";
+            this.Text = "Assignment 6 - SpreadsheetGUI";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grid_widget_KeyDown);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

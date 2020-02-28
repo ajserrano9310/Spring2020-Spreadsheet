@@ -18,6 +18,19 @@
 ///  
 /// </summary>
 
+/// <summary>
+/// Assignment: Assignment Six - Spreadsheet GUI
+/// Author:    Alejandro Rubio
+/// Partner:   Alejandro Serrano
+/// Date:      2/28/2020
+/// Course:    CS 3500, University of Utah, School of Computing 
+/// Copyright: CS 3500, Alejandro Rubio and Alejandro Serrano - This work may not be copied for use in Academic Coursework. 
+/// 
+/// We, Alejandro Rubio and Alejandro Serrano, certify that we wrote this code from scratch and did not copy it in part or whole from  
+/// another source.  All references used in the completion of the assignment are cited in my README file. 
+/// 
+/// This file creates a Spreadsheet cell using the Formula and DependencyGraph Library.
+/// </summary>
 using SpreadsheetUtilities;
 using SS;
 using System;
@@ -28,7 +41,7 @@ namespace SpreadsheetGrid_Core
 {
     public partial class SimpleSpreadsheetGUI : Form
     {
-
+        
         private int X;
         private int Y;
         private TextBox box;
@@ -87,10 +100,7 @@ namespace SpreadsheetGrid_Core
             }
 
             cellTextBox.Text = cell;
-            this.cellTextBox.ReadOnly = true;
-
             valTextBox.Text = s.GetCellValue(cell).ToString();
-            this.valTextBox.ReadOnly = true;
 
         }
 
@@ -164,24 +174,6 @@ namespace SpreadsheetGrid_Core
                 
             }
             recalculateText();
-        }
-
-        /// <summary>
-        /// Checkbox handler
-        /// </summary>
-        /// <param name="sender"> the checkbox (note the casting operator as)</param>
-        /// <param name="e">not used</param>
-        private void sample_checkbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if ((sender as CheckBox).Checked)
-            {
-                grid_widget.SetValue(1, 1, "checked");
-            }
-            else
-            {
-                grid_widget.SetValue(1, 1, "not checked");
-            }
-
         }
 
         /// <summary>
@@ -313,17 +305,31 @@ namespace SpreadsheetGrid_Core
 
             }
         }
-
+        /// <summary>
+        /// When the sample_textbox is active
+        /// the keybindings are deactivated. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void sample_textbox_Enter(object sender, EventArgs e)
         {
             this.KeyPreview = false;
         }
-
+        /// <summary>
+        /// When the sample_textbox is not active
+        /// keybindings are activated again.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void sample_textbox_Leave(object sender, EventArgs e)
         {
             this.KeyPreview = true;
         }
-
+        /// <summary>
+        /// Pressing enter will move the cell selection down one. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void sample_textbox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -333,7 +339,8 @@ namespace SpreadsheetGrid_Core
            
         }
         /// <summary>
-        /// Recalculates the values of the cells
+        /// Recalculates the values of the cells after
+        /// some modification has been made. 
         /// </summary>
         private void recalculateText()
         {
@@ -349,6 +356,12 @@ namespace SpreadsheetGrid_Core
                 }
             }
         }
+        /// <summary>
+        /// Gives a message box with the information on how to use 
+        /// the Spreadsheet. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Welcome TA(s) to A6 Spreedsheet." + System.Environment.NewLine
@@ -374,8 +387,5 @@ namespace SpreadsheetGrid_Core
                 System.Environment.NewLine+
                 "    6) Overall, better than Excel", "Help", MessageBoxButtons.OK);
         }
-
-
-
     }
 }

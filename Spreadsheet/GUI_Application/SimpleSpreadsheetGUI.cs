@@ -37,19 +37,29 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("SpreadsheetGUITests")]
 namespace SpreadsheetGrid_Core
 {
     public partial class SimpleSpreadsheetGUI : Form
     {
-        private int X;
-        private int Y;
-        private TextBox box;
-        private Spreadsheet s;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private string FilePath;
-        private Stack<string> cellName;
-        private Stack<string> cellContent;
+        // X coordinate for setting horizontal value
+        internal int X;
+        // Y coordinate for setting vertical value
+        internal int Y;
+        // textbox that will hold content of cell
+        internal TextBox box;
+        // internal representation of spreadsheet
+        internal Spreadsheet s;
+        // Dialogs for saving and loading files
+        internal System.Windows.Forms.OpenFileDialog openFileDialog1;
+        internal System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        // Filepath for saving
+        internal string FilePath;
+        // Stacks for the Undo implementation
+        internal Stack<string> cellName;
+        internal Stack<string> cellContent;
         public SimpleSpreadsheetGUI()
         {
             cellName = new Stack<string>();
@@ -71,13 +81,13 @@ namespace SpreadsheetGrid_Core
         /// create a popup that contains the information from that cell
         /// </summary>
         /// <param name="ss"></param>
-        private void DisplaySelection(SpreadsheetGridWidget ss)
+        internal void DisplaySelection(SpreadsheetGridWidget ss)
         {
             ss.GetValue(X, Y, out string val);
             
                 if (!val.Equals("")){
                     
-                        sample_button_Click(null, null);
+                        evaluate_Button_Click(null, null);
                 }
             int row, col;
             string value;
@@ -86,7 +96,7 @@ namespace SpreadsheetGrid_Core
             X = col;
             Y = row;
             int newY = Y + 1;
-            String cell = lookup(X) + newY;
+            String cell = lookupCordToVar(X) + newY;
             if (s.GetCellContents(cell) is Formula)
             {
                     evaluate_textbox.Text = "=" + s.GetCellContents(cell).ToString();
@@ -100,14 +110,14 @@ namespace SpreadsheetGrid_Core
 
         }
         // Deals with the New menu
-        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
+        internal void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Tell the application context to run the form on the same
             // thread as the other forms.
             Spreadsheet_Window.getAppContext().RunForm(new SimpleSpreadsheetGUI());
         }
         // Deals with the Close menu
-        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
+        internal void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string message = "Do you want to save?";
             var result = MessageBox.Show(message, "Closing Spreadsheet",
@@ -130,21 +140,29 @@ namespace SpreadsheetGrid_Core
             }
         }
         /// <summary>
-        /// Example of how to use a button
+        /// Evaluates contents of the textbox
         /// </summary>
         /// <param name="sender"> not used </param>
         /// <param name="e"> not used </param>
-        private void sample_button_Click(object sender, EventArgs e)
+        internal void evaluate_Button_Click(object sender, EventArgs e)
         {
             if (!(box is null))
             {
                 int newY = Y + 1;
-                String cell = lookup(X) + newY;
+                String cell = lookupCordToVar(X) + newY;
              
                 try
                 {
                     grid_widget.GetValue(X, Y, out string val);
-                    cellContent.Push(s.GetCellContents(cell).ToString());
+                    Object f = s.GetCellContents(cell);
+                    if (f is Formula) {
+                        cellContent.Push("="+f.ToString());
+                    }
+                    else
+                    {
+                        cellContent.Push(f.ToString());
+                    }
+                    
                     s.SetContentsOfCell(cell, box.Text);
                     cellName.Push(cell);
                     undo_Button.Enabled = true;
@@ -152,6 +170,7 @@ namespace SpreadsheetGrid_Core
                         grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
                     bg_worker.RunWorkerAsync();
                 }
+                // catching possible exceptions 
                 catch (FormulaFormatException)
                 {
 
@@ -175,11 +194,11 @@ namespace SpreadsheetGrid_Core
         }
 
         /// <summary>
-        /// Textbox handler
+        /// Textbox to write the contents of a cell 
         /// </summary>
         /// <param name="sender"> the textbox </param>
         /// <param name="e">not used</param>
-        private void sample_textbox_TextChanged(object sender, EventArgs e)
+        internal void evaluate_textbox_TextChanged(object sender, EventArgs e)
         {
             box = sender as TextBox;
             grid_widget.SetValue(X, Y, box.Text);
@@ -191,7 +210,7 @@ namespace SpreadsheetGrid_Core
         /// </summary>
         /// <param name="num">X coordinate</param>
         /// <returns>cell name</returns>
-        private string lookup(int num)
+        internal string lookupCordToVar(int num)
         {
             num = num + 65;
             char numChar = (char)num;
@@ -203,7 +222,7 @@ namespace SpreadsheetGrid_Core
         /// </summary>
         /// <param name="letter">first letter of cell name</param>
         /// <returns>X coordinate</returns>
-        private int lookupVarToCord(char letter)
+        internal int lookupVarToCord(char letter)
         {
             int index = char.ToUpper(letter) - 65;
             return index;
@@ -215,7 +234,7 @@ namespace SpreadsheetGrid_Core
         /// </summary>
         /// <param name="sender">not used</param>
         /// <param name="e">key pressed</param>
-        private void grid_widget_KeyDown(object sender, KeyEventArgs e)
+        internal void grid_widget_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.S)
             {
@@ -236,10 +255,18 @@ namespace SpreadsheetGrid_Core
             if (e.KeyCode == Keys.Enter)
                 this.grid_widget.SetSelection(X, Y + 1);
         }
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Save tool strip menu that will allow user to keep
+        /// saving on the same file or create a new one 
+        /// </summary>
+        /// <param name="sender">not used</param>
+        /// <param name="e">not used</param>
+        internal void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
+                // opens a save file dialog that allows the user to save a file with 
+                // personalized name 
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.Filter = "sprd files (*.sprd)|*.sprd|All files (*.*)|*.*";
                 saveFileDialog1.ShowDialog();
@@ -263,14 +290,26 @@ namespace SpreadsheetGrid_Core
                 }
             }
         }
-        private void save_Click(object sender, System.EventArgs e)
+        /// <summary>
+        /// Save click that saves on the same file
+        /// </summary>
+        /// <param name="sender">not used</param>
+        /// <param name="e">mouse click</param>
+        internal void save_Click(object sender, System.EventArgs e)
         {
             s.Save(FilePath);
         }
-        private void button1_Click(object sender, System.EventArgs e)
+        /// <summary>
+        /// Load button click that loads a file and overrides
+        /// the current one. 
+        /// </summary>
+        /// <param name="sender">not used</param>
+        /// <param name="e">not used</param>
+        internal void load_Button_Click(object sender, System.EventArgs e)
         {
             try
             {
+                // opens a file dialog box that will allow the user to load a new file
                 OpenFileDialog openFileDialog1 = new OpenFileDialog();
                 openFileDialog1.Filter = "sprd files (*.sprd)|*.sprd|All files (*.*)|*.*";
                 openFileDialog1.ShowDialog();
@@ -280,6 +319,7 @@ namespace SpreadsheetGrid_Core
                     s = new Spreadsheet(filepath, f => true, f => f.ToUpper(), "six");
                     List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
                     ClearCells();
+                    // recalculates the cells. 
                     foreach (string name in nonEmptyCells)
                     {
                         string numS = name.Substring(1, name.Length - 1);
@@ -295,7 +335,7 @@ namespace SpreadsheetGrid_Core
                 DialogResult result = MessageBox.Show(message, title, buttons, MessageBoxIcon.Error);
                 if (result == DialogResult.Yes)
                 {
-                    button1_Click(null, null);
+                    load_Button_Click(null, null);
                 }
             }
         }
@@ -303,9 +343,9 @@ namespace SpreadsheetGrid_Core
         /// When the sample_textbox is active
         /// the keybindings are deactivated. 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void sample_textbox_Enter(object sender, EventArgs e)
+        /// <param name="sender">not used</param>
+        /// <param name="e">entering the textbox</param>
+        internal void evaluate_textbox_Enter(object sender, EventArgs e)
         {
             this.KeyPreview = false;
         }
@@ -313,18 +353,18 @@ namespace SpreadsheetGrid_Core
         /// When the sample_textbox is not active
         /// keybindings are activated again.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void sample_textbox_Leave(object sender, EventArgs e)
+        /// <param name="sender">not used</param>
+        /// <param name="e">leaving texbox</param>
+        internal void evaluate_textbox_Leave(object sender, EventArgs e)
         {
             this.KeyPreview = true;
         }
         /// <summary>
         /// Pressing enter will move the cell selection down one. 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void sample_textbox_KeyDown(object sender, KeyEventArgs e)
+        /// <param name="sender">not used</param>
+        /// <param name="e">key pressed</param>
+        internal void evaluate_textbox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -335,7 +375,7 @@ namespace SpreadsheetGrid_Core
         /// Recalculates the values of the cells after
         /// some modification has been made. 
         /// </summary>
-        private void recalculateText()
+        internal void recalculateText()
         {
             List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
             foreach (string cell in nonEmptyCells)
@@ -348,7 +388,7 @@ namespace SpreadsheetGrid_Core
                 }
             }
         }
-        private void undo_Button_Click(object sender, EventArgs e)
+        internal void undo_Button_Click(object sender, EventArgs e)
         {
             string content = cellContent.Pop();
             string name = cellName.Pop();
@@ -362,11 +402,11 @@ namespace SpreadsheetGrid_Core
             }
             bg_worker.RunWorkerAsync();
         }
-        private void bgw_DoWork(object sender, DoWorkEventArgs e)
+        internal void bgw_DoWork(object sender, DoWorkEventArgs e)
         {
             recalculateText();
         }
-        private void ClearCells()
+        internal void ClearCells()
         {
             for(int i = 0; i < 27; i++)
             {
@@ -382,7 +422,7 @@ namespace SpreadsheetGrid_Core
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        internal void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Welcome TA(s) to A6 Spreedsheet." + System.Environment.NewLine
                 + "This messagebox will help you understand a little bit how our Spreadsheet works." 
@@ -406,6 +446,11 @@ namespace SpreadsheetGrid_Core
                 "        c) Save as: allows user to save in a new file." +
                 System.Environment.NewLine+
                 "    6) Overall, better than Excel", "Help", MessageBoxButtons.OK);
+        }
+        internal string getValue(int x, int y)
+        {
+            grid_widget.GetValue(x, y, out string val);
+            return val;
         }
     }
 }

@@ -97,3 +97,13 @@ A total of 16 branches were created for the Assignment.
     cell contents. 
     - The reason why we decided to use WASD for movement instead of the arrow keys is because the arrow keys
     were already been used for moving the scroll bars. 
+
+9. Unit Testing. 
+
+- Most of the testing was done when running the GUI visually. For instance, 
+  checking if values were recalculating; if we could open more than one spreadsheet window; 
+  if the spreadsheet was giving errors when the cell name did not exist or if it was a circular
+  exception. In addition, if the spreadsheet was saving and loading files correctly. We created a new file,
+  wrote some values, saved, and then opened a new one next to the first and checked if both
+  were equal, and if values were being placed in the correct cells. 
+- Some testing can be found in the SpreadsheetGUITests.cs document.

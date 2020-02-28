@@ -90,7 +90,7 @@ namespace SpreadsheetGrid_Core
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             this.loadToolStripMenuItem.Text = "Load";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.button1_Click);
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.load_Button_Click);
             // 
             // fileToolStripMenuItem
             // 
@@ -198,7 +198,7 @@ namespace SpreadsheetGrid_Core
             this.evaluate_button.TabIndex = 0;
             this.evaluate_button.Text = "Evaluate";
             this.evaluate_button.UseVisualStyleBackColor = true;
-            this.evaluate_button.Click += new System.EventHandler(this.sample_button_Click);
+            this.evaluate_button.Click += new System.EventHandler(this.evaluate_Button_Click);
             // 
             // evaluate_textbox
             // 
@@ -206,10 +206,10 @@ namespace SpreadsheetGrid_Core
             this.evaluate_textbox.Name = "evaluate_textbox";
             this.evaluate_textbox.Size = new System.Drawing.Size(100, 20);
             this.evaluate_textbox.TabIndex = 2;
-            this.evaluate_textbox.TextChanged += new System.EventHandler(this.sample_textbox_TextChanged);
-            this.evaluate_textbox.Enter += new System.EventHandler(this.sample_textbox_Enter);
-            this.evaluate_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sample_textbox_KeyDown);
-            this.evaluate_textbox.Leave += new System.EventHandler(this.sample_textbox_Leave);
+            this.evaluate_textbox.TextChanged += new System.EventHandler(this.evaluate_textbox_TextChanged);
+            this.evaluate_textbox.Enter += new System.EventHandler(this.evaluate_textbox_Enter);
+            this.evaluate_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.evaluate_textbox_KeyDown);
+            this.evaluate_textbox.Leave += new System.EventHandler(this.evaluate_textbox_Leave);
             // 
             // cellTextBox
             // 

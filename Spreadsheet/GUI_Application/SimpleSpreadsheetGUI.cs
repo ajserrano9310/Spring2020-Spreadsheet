@@ -186,11 +186,7 @@ namespace SpreadsheetGrid_Core
                     MessageBoxButtons buttons = MessageBoxButtons.OK;
                     MessageBox.Show(message, title, buttons, MessageBoxIcon.Error);
                 }
-
-                
-                
             }
-
         }
 
         /// <summary>
@@ -388,6 +384,11 @@ namespace SpreadsheetGrid_Core
                 }
             }
         }
+        /// <summary>
+        /// Event for the Undo button when it is clicked
+        /// </summary>
+        /// <param name="sender">not used</param>
+        /// <param name="e">not used</param>
         internal void undo_Button_Click(object sender, EventArgs e)
         {
             string content = cellContent.Pop();
@@ -402,10 +403,19 @@ namespace SpreadsheetGrid_Core
             }
             bg_worker.RunWorkerAsync();
         }
+        /// <summary>
+        /// Action of the BackgroundWorker
+        /// Recalculates all the cells
+        /// </summary>
+        /// <param name="sender">not used</param>
+        /// <param name="e">not used</param>
         internal void bgw_DoWork(object sender, DoWorkEventArgs e)
         {
             recalculateText();
         }
+        /// <summary>
+        /// Clears all the content of the spreadsheet
+        /// </summary>
         internal void ClearCells()
         {
             for(int i = 0; i < 27; i++)
@@ -447,6 +457,13 @@ namespace SpreadsheetGrid_Core
                 System.Environment.NewLine+
                 "    6) Overall, better than Excel", "Help", MessageBoxButtons.OK);
         }
+        /// <summary>
+        /// This is a helper method for SpreadsheetGUITests since we it does not have access to grid_widget
+        /// Returns the value at position x,y
+        /// </summary>
+        /// <param name="x">The coordinate x</param>
+        /// <param name="y">The coordinate y</param>
+        /// <returns>The value at coordinates x,y</returns>
         internal string getValue(int x, int y)
         {
             grid_widget.GetValue(x, y, out string val);

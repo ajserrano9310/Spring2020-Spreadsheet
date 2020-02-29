@@ -60,7 +60,7 @@ Hours Estimated/Worked         Assignment                       Note
 
 6. GitHub Repo and Commit Number:
 
-7a730ca04eabe3ebae97c50e1b13da1f4624ff8b
+5a788e32a4799574da528a28b32f8c7702df20c6
 https://github.com/uofu-cs3500-spring20/assignment-six-completed-spreadsheet-teamalejandros 
 
 

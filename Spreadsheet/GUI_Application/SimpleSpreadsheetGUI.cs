@@ -1,10 +1,9 @@
-﻿/// <summary>
-///   Original Author: Joe Zachary
-///   Further Authors: H. James de St. Germain
+﻿/// <summary> 
+/// AbstractSpreadsheet
+/// 
+///   The SpreadsheetGUI containing cells was originally written by Joe Zachary and H. James de St. Germain. 
+///   The current SpreadsheetGUI was used by Alejandro Rubio and Alejandro Serrano.
 ///   
-///   Dates          : 2012-ish - Original 
-///                    2020     - Updated for use with ASP Core
-///                    
 ///   This code represents a Windows Form element for a Spreadsheet. It includes
 ///   a Menu Bar with two operations (close/new) as well as the GRID of the spreadsheet.
 ///   The GRID is a separate class found in SpreadsheetGridWidget
@@ -96,6 +95,7 @@ namespace SpreadsheetGrid_Core
             X = col;
             Y = row;
             int newY = Y + 1;
+            // generates the string cell name in the form A1
             String cell = lookupCordToVar(X) + newY;
             if (s.GetCellContents(cell) is Formula)
             {
@@ -155,6 +155,8 @@ namespace SpreadsheetGrid_Core
                 {
                     grid_widget.GetValue(X, Y, out string val);
                     Object f = s.GetCellContents(cell);
+                    // we check if its the type of formula to push in the stack as
+                    // "=A1+A2"
                     if (f is Formula) {
                         cellContent.Push("="+f.ToString());
                     }
@@ -165,6 +167,7 @@ namespace SpreadsheetGrid_Core
                     
                     s.SetContentsOfCell(cell, box.Text);
                     cellName.Push(cell);
+                    // enables the undo botton after the first modification
                     undo_Button.Enabled = true;
 
                         grid_widget.SetValue(X, Y, s.GetCellValue(cell).ToString());
@@ -315,7 +318,7 @@ namespace SpreadsheetGrid_Core
                     s = new Spreadsheet(filepath, f => true, f => f.ToUpper(), "six");
                     List<string> nonEmptyCells = new List<string>(s.GetNamesOfAllNonemptyCells());
                     ClearCells();
-                    // recalculates the cells. 
+                    // recalculates the cells after loaded file
                     foreach (string name in nonEmptyCells)
                     {
                         string numS = name.Substring(1, name.Length - 1);
@@ -401,6 +404,7 @@ namespace SpreadsheetGrid_Core
             {
                 undo_Button.Enabled = false;
             }
+            // background worker recalculates cells 
             bg_worker.RunWorkerAsync();
         }
         /// <summary>

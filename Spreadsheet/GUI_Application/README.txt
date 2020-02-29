@@ -11,11 +11,11 @@ All the Projects include copies of the READMEs and the Solution README has been 
 
 2. Assignment Specific Topics
 
-We believe the Assignment will take around 13 hours to complete. 
-It took us about 15 hours to finish the project.
+We believe the Assignment will take around 15 hours to complete. 
+It took us about 17 hours to finish the project.
 
-Alejandro Rubio: 7.5 hours.
-Alejandro Serrano: 7.5 hours. 
+Alejandro Rubio: 8.5 hours.
+Alejandro Serrano: 8.5 hours. 
 We worked together every session. Very minimal work was done outside of the Cade Lab.
 
 Unlike the other assignmnets (2-5) where most of the tools we needed we already had learned, 
@@ -41,6 +41,10 @@ Hours Estimated/Worked         Assignment                       Note
     1. https://docs.microsoft.com/ - https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.messagebox?view=netframework-4.8
     2. https://stackoverflow.com - https://stackoverflow.com/questions/11518529/how-to-call-a-button-click-event-from-another-method
     3. https://stackoverflow.com - https://stackoverflow.com/questions/3172731/forms-not-responding-to-keydown-events
+    4. https://c-sharpcorner.com/ - https://www.c-sharpcorner.com/UploadFile/mahesh/understanding-message-box-in-windows-forms-using-C-Sharp/
+    5. https://docs.microsoft.com/ - https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.messagebox?view=netframework-4.8
+    6. https://stackoverflow.com/ - https://stackoverflow.com/questions/11518529/how-to-call-a-button-click-event-from-another-method
+    7. https://stackoverflow.com/ - https://stackoverflow.com/questions/3172731/forms-not-responding-to-keydown-events
 
 5. Good Team Practices:
 
@@ -62,7 +66,7 @@ https://github.com/uofu-cs3500-spring20/assignment-six-completed-spreadsheet-tea
 
 7. Branching:
 
-A total of 16 branches were created for the Assignment. 
+A total of 15 branches were created for the Assignment. 
 
     - A5Fix (Alejandro Rubio): Fixing A5 mistakes
     - A6TextBoxLink (Alejandro Serrano): Linking the textbox to the cells
@@ -78,10 +82,9 @@ A total of 16 branches were created for the Assignment.
     - A6UndoAndBGWorker (Alejandro Rubio): Creating the undo feature and the addition of the Background Worker
     - A6TryCatchForFormulaFormat (Alejandro Serrano): Addition of try and catch for the FormulaFormatError and CircularExpression, 
       addition of Help MessageBox and README.
-    - A6TryCatchAndBGWorker: Branch to merge the try catch errors and Background Worker. 
+    - A6TryCatchAndBGWorker(Alejandro Rubio): Branch to merge the try catch errors and Background Worker. 
     - A6Testing (Alejandro Rubio): Some testing methods for the GUI.
-    - A6FinalMerge: Final branch to merge everything together. 
-    - A total of 20 commits were made. 
+    - A total of 32 commits were made. 
 
     The merging process the first time was complicated since we didn't know how to resolve the conflicts. We also
     did not know we had to accept the merge in order for it to happen. 
@@ -91,12 +94,12 @@ A total of 16 branches were created for the Assignment.
 8. Additional Features and Design Decisions
 
     - For the additional feature we decided to create an Undo button that would allow 
-    the user to return to the previous state the cell was in. It is not as sophisticated as
-    the regular Undo which can delete letter for letter, but it deletes the entire content
-    of the cell. For this, we used two stacks: one that holds the cell names and another for the
-    cell contents. 
+      the user to return to the previous state the cell was in. It is not as sophisticated as
+      the regular Undo which can delete letter for letter, but it deletes the entire content
+      of the cell. For this, we used two stacks: one that holds the cell names and another for the
+      cell contents. 
     - The reason why we decided to use WASD for movement instead of the arrow keys is because the arrow keys
-    were already been used for moving the scroll bars. 
+      were already been used for moving the scroll bars. 
 
 9. Unit Testing. 
 

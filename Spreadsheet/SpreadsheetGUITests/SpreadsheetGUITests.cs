@@ -4,7 +4,19 @@ using SpreadsheetGrid_Core;
 using SS;
 using System.IO;
 using System.Windows.Forms;
-
+/// <summary>
+/// Assignment: Assignment Six - Spreadsheet GUI
+/// Author:    Alejandro Rubio
+/// Partner:   Alejandro Serrano
+/// Date:      2/28/2020
+/// Course:    CS 3500, University of Utah, School of Computing 
+/// Copyright: CS 3500, Alejandro Rubio and Alejandro Serrano - This work may not be copied for use in Academic Coursework. 
+/// 
+/// We, Alejandro Rubio and Alejandro Serrano, certify that we wrote this code from scratch and did not copy it in part or whole from  
+/// another source.  All references used in the completion of the assignment are cited in my README file. 
+/// 
+/// This file tests certain methods for the Spreadsheet GUI. 
+/// </summary>
 namespace SpreadsheetGUITests
 {
     [TestClass]

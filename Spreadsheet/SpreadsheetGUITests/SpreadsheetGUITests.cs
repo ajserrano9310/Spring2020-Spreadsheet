@@ -23,7 +23,7 @@ namespace SpreadsheetGUITests
     public class SpreadsheetGUITests
     {
         /// <summary>
-        /// Test for the Save method that saves the Spreadsheet as a .sprd file
+        /// test for the Save method that saves the Spreadsheet as a .sprd file
         /// </summary>
         [TestMethod]
         public void TestSave()
